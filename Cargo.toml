@@ -1,0 +1,11 @@
+[package]
+name = "tmf-client"
+version = "0.1.0"
+edition = "2021"
+authors = ["Ryan Ruckley <rruckley@gmail.com"]
+description = "A Rust client library for TMF conformant APIs"
+
+[dependencies]
+actix-web = "4.5.1"
+env_logger = "0.11.1"
+tmflib = { git = "https://github.com/rruckley/tmflib.gif"}
