@@ -2,7 +2,7 @@
 
 use tmflib::tmf620::catalog::Catalog;
 use tmflib::tmf620::category::Category;
-use tmflib::{HasId, Uri};
+use tmflib::Uri;
 use super::{get_tmf,list_tmf};
 use crate::common::tmf_error::TMFError;
 
@@ -24,6 +24,13 @@ impl TMF620Category {
         get_tmf(self.host.clone(),_id.into())
     }
     /// Get a list of catalogs applying optional filter
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let categories = TMFClient::new("http://localhost:8000")
+    ///     .tmf620()
+    ///     .category()
+    ///     .list(None);
+    /// ```
     pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Category>,TMFError> {
         list_tmf(self.host.clone(),filter)
     }
