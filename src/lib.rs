@@ -45,7 +45,11 @@ impl Into<String> for QueryOptions {
             Some(l) => format!("limit={}",l.to_string()),
             None => String::default(),
         };
-        format!("{}",limit)   
+        let offset = match self.offset {
+            Some(o) => format!("offset={}",o.to_string()),
+            None => String::default(),
+        };
+        format!("{}&{}",limit,offset)   
     }
 }
 

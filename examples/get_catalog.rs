@@ -7,7 +7,7 @@ fn main() {
     let mut client = TMFClient::new("http://localhost:8000");
     let filter = QueryOptions::default()
         .limit(1)
-        .offset(0);
+        .offset(1);
     let tmf = client.tmf620()
         .catalog()
         .list(Some(filter));
