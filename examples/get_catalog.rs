@@ -1,11 +1,12 @@
 //! Get Catalog Example
 
 use tmf_client::{TMFClient,QueryOptions};
+use tmflib::HasName;
 
 fn main() {
-    let mut client = TMFClient::new("http://localhost:8080");
+    let mut client = TMFClient::new("http://localhost:8000");
     let filter = QueryOptions::default()
-        .limit(5)
+        .limit(1)
         .offset(0);
     let tmf = client.tmf620()
         .catalog()
@@ -13,7 +14,9 @@ fn main() {
     match tmf {
         Ok(r) => {
             // It worked
-            println!("It worked: {} items",r.len())
+            for c in r {
+                println!("Entry: {}",c.get_name())
+            }
         },
         Err(e) => {
             println!("Error: {:?}",e)
