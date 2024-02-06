@@ -39,17 +39,21 @@ impl QueryOptions {
     }
 }
 
-impl Into<String> for QueryOptions {
-    fn into(self) -> String {
-        let limit = match self.limit {
-            Some(l) => format!("limit={}",l.to_string()),
+impl From<QueryOptions> for String {
+    fn from(val: QueryOptions) -> Self {
+        let limit = match val.limit {
+            Some(l) => format!("limit={}",l),
             None => String::default(),
         };
-        let offset = match self.offset {
-            Some(o) => format!("offset={}",o.to_string()),
+        let offset = match val.offset {
+            Some(o) => format!("offset={}",o),
             None => String::default(),
         };
-        format!("{}&{}",limit,offset)   
+        let name = match val.name {
+            Some(n) => format!("name={}",n),
+            None => String::default(),
+        };
+        format!("{}&{}&{}",limit,offset,name)   
     }
 }
 
@@ -60,6 +64,11 @@ pub struct TMFClient {
 }
 
 impl TMFClient {
+    /// Create a new TMFClient instance
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let client = TMFClient::new("http://localhost:8000");
+    /// ```
     pub fn new(host : impl Into<String>) -> TMFClient {
         TMFClient {
             host : host.into(),
@@ -68,6 +77,12 @@ impl TMFClient {
         }
     }
 
+    /// Create access TMF620 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf620 = TMFClient::new("http://localhost:8000")
+    ///     .tmf620();
+    /// ```
     pub fn tmf620(&mut self) -> TMF620 {
         match self.tmf620.as_mut() {
             Some(tmf) => tmf.clone(),
@@ -80,6 +95,12 @@ impl TMFClient {
         }
     }
 
+    /// Create access TMF622 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf620 = TMFClient::new("http://localhost:8000")
+    ///     .tmf622();
+    /// ```
     pub fn tmf622(&mut self) -> TMF622 {
         match self.tmf622.as_mut() {
             Some(tmf) => tmf.clone(),
@@ -90,5 +111,23 @@ impl TMFClient {
                 tmf
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_filter_limit() {
+        let filter = QueryOptions::default().limit(111);
+
+        assert_eq!(filter.limit,Some(111));
+    }
+
+    #[test]
+    fn test_filter_offset() {
+        let filter = QueryOptions::default().offset(222);
+
+        assert_eq!(filter.offset,Some(222));
     }
 }
