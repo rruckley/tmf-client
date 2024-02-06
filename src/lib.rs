@@ -11,11 +11,11 @@ use tmf::tmf622::TMF622;
 #[derive(Clone, Default, Debug)]
 pub struct QueryOptions {
     /// Specific set of fields delimited by comma
-    fields : Option<String>,
-    limit : Option<u16>,
-    offset : Option<u16>,
+    pub fields : Option<String>,
+    pub limit : Option<u16>,
+    pub offset : Option<u16>,
     /// Filter on name
-    name : Option<String>,
+    pub name : Option<String>,
 }
 
 impl QueryOptions {
@@ -36,6 +36,16 @@ impl QueryOptions {
     pub fn name(mut self, name : impl Into<String>) -> QueryOptions {
         self.name = Some(name.into());
         self
+    }
+}
+
+impl Into<String> for QueryOptions {
+    fn into(self) -> String {
+        let limit = match self.limit {
+            Some(l) => format!("limit={}",l.to_string()),
+            None => String::default(),
+        };
+        format!("{}",limit)   
     }
 }
 
