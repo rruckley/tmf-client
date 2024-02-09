@@ -7,7 +7,7 @@ fn main() {
     // Get a list of categories from TMF620
     let mut client = TMFClient::new("http://localhost:8000");
     let filter = QueryOptions::default()
-        .limit(1)
+        .limit(2)
         .offset(0);
     let tmf = client.tmf620()
         .category()
