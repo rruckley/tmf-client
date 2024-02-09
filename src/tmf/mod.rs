@@ -28,6 +28,6 @@ pub fn list_tmf<T : HasId + HasName + DeserializeOwned>(host: Uri, filter : Opti
     let url = format!("{}{}?{}",host,T::get_class_href(),filter);
     println!("Filter: {}",filter);
     let catalogs = reqwest::blocking::get(url)?.text()?;
-    let output : Vec<T> = serde_json::from_str(catalogs.as_str()).unwrap();
+    let output : Vec<T> = serde_json::from_str(catalogs.as_str())?;
     Ok(output)
 }
