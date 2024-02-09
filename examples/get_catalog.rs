@@ -6,8 +6,8 @@ use tmflib::HasName;
 fn main() {
     let mut client = TMFClient::new("http://localhost:8000");
     let filter = QueryOptions::default()
-        .limit(1)
-        .offset(1);
+        .limit(2)
+        .offset(0);
     let tmf = client.tmf620()
         .catalog()
         .list(Some(filter));
