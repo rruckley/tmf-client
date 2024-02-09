@@ -2,6 +2,8 @@
 
 use tmflib::tmf620::catalog::Catalog;
 use tmflib::tmf620::category::Category;
+use tmflib::tmf620::product_offering::ProductOffering;
+use tmflib::tmf620::product_offering_price::ProductOfferingPrice;
 use tmflib::Uri;
 use super::{get_tmf,list_tmf};
 use crate::common::tmf_error::TMFError;
@@ -42,8 +44,6 @@ pub struct TMF620Catalog {
     host : Uri,
 }
 
-
-
 impl TMF620Catalog {
     /// Create a new catalog reference
     pub fn new(host : Uri) -> TMF620Catalog {
@@ -55,6 +55,52 @@ impl TMF620Catalog {
     }
     /// Get a list of catalogs applying optional filter
     pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Catalog>,TMFError> {
+        list_tmf(self.host.clone(),filter)
+    }
+}
+
+/// TMF620 ProductOffering API calls
+#[derive(Clone,Default,Debug)]
+pub struct TMF620ProductOffering {
+    host : Uri,
+}
+
+impl TMF620ProductOffering {
+    /// Create a new product_offering reference
+    pub fn new(host : Uri) -> TMF620ProductOffering {
+        TMF620ProductOffering { host }
+    }
+
+    /// Get a single product offering
+    pub fn get(&self, _id : impl Into<String>) -> Result<Vec<ProductOffering>,TMFError> {
+        get_tmf(self.host.clone(),_id.into())
+    }
+
+    /// Get a list of catalogs applying optional filter
+    pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<ProductOffering>,TMFError> {
+        list_tmf(self.host.clone(),filter)
+    }
+}
+
+/// TMF620 ProductOffering API calls
+#[derive(Clone,Default,Debug)]
+pub struct TMF620ProductOfferingPrice {
+    host : Uri,
+}
+
+impl TMF620ProductOfferingPrice {
+    /// Create a new product_offering reference
+    pub fn new(host : Uri) -> TMF620ProductOfferingPrice {
+        TMF620ProductOfferingPrice { host }
+    }
+
+    /// Get a single product offering
+    pub fn get(&self, _id : impl Into<String>) -> Result<Vec<ProductOfferingPrice>,TMFError> {
+        get_tmf(self.host.clone(),_id.into())
+    }
+
+    /// Get a list of catalogs applying optional filter
+    pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<ProductOfferingPrice>,TMFError> {
         list_tmf(self.host.clone(),filter)
     }
 }
@@ -79,5 +125,15 @@ impl TMF620 {
     /// Return function for managing categories
     pub fn category(&self) -> TMF620Category {
         TMF620Category::new(self.host.clone())
+    }
+
+    /// Return function for managing product_offering
+    pub fn product_offering(&self) -> TMF620ProductOffering {
+        TMF620ProductOffering::new(self.host.clone())
+    }
+
+    /// Return function for managing product_offering
+    pub fn product_offering_price(&self) -> TMF620ProductOfferingPrice {
+        TMF620ProductOfferingPrice::new(self.host.clone())
     }
 }
