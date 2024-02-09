@@ -4,6 +4,7 @@ use tmflib::tmf620::catalog::Catalog;
 use tmflib::tmf620::category::Category;
 use tmflib::tmf620::product_offering::ProductOffering;
 use tmflib::tmf620::product_offering_price::ProductOfferingPrice;
+use tmflib::tmf620::product_specification::ProductSpecification;
 use tmflib::Uri;
 use super::{get_tmf,list_tmf};
 use crate::common::tmf_error::TMFError;
@@ -105,6 +106,29 @@ impl TMF620ProductOfferingPrice {
     }
 }
 
+/// TMF620 ProductSpecification API calls
+#[derive(Clone,Default,Debug)]
+pub struct TMF620ProductSpecification {
+    host : Uri,
+}
+
+impl TMF620ProductSpecification {
+    /// Create a new product_offering reference
+    pub fn new(host : Uri) -> TMF620ProductSpecification {
+        TMF620ProductSpecification { host }
+    }
+
+    /// Get a single product offering
+    pub fn get(&self, _id : impl Into<String>) -> Result<Vec<ProductSpecification>,TMFError> {
+        get_tmf(self.host.clone(),_id.into())
+    }
+
+    /// Get a list of catalogs applying optional filter
+    pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<ProductSpecification>,TMFError> {
+        list_tmf(self.host.clone(),filter)
+    }
+}
+
 /// Product Catalogue API
 #[derive(Clone,Default,Debug)]
 pub struct TMF620 {
@@ -135,5 +159,10 @@ impl TMF620 {
     /// Return function for managing product_offering
     pub fn product_offering_price(&self) -> TMF620ProductOfferingPrice {
         TMF620ProductOfferingPrice::new(self.host.clone())
+    }
+
+    /// Return function for managing product_offering
+    pub fn product_specification(&self) -> TMF620ProductSpecification {
+        TMF620ProductSpecification::new(self.host.clone())
     }
 }
