@@ -28,6 +28,14 @@ impl From<TMFError> for String {
     }
 }
 
+impl From<serde_json::Error> for TMFError {
+    fn from(value: serde_json::Error) -> Self {
+        TMFError {
+            message : value.to_string(),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
