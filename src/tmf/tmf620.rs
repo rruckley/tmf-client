@@ -1,5 +1,6 @@
 //! TMF620 Product Catalogue
 
+
 use tmflib::tmf620::catalog::Catalog;
 use tmflib::tmf620::category::Category;
 use tmflib::tmf620::product_offering::ProductOffering;
@@ -9,7 +10,7 @@ use tmflib::Uri;
 use super::{get_tmf,list_tmf};
 use crate::common::tmf_error::TMFError;
 
-use crate::QueryOptions;
+use crate::{QueryOptions,Operations};
 
 /// TMF620 Category API calls
 #[derive(Clone,Default,Debug)]
@@ -26,16 +27,29 @@ impl TMF620Category {
     pub fn get(&self, _id : impl Into<String>) -> Result<Vec<Category>,TMFError> {
         get_tmf(self.host.clone(),_id.into())
     }
-    /// Get a list of catalogs applying optional filter
-    /// ```
-    /// # use tmf_client::TMFClient;
-    /// let categories = TMFClient::new("http://localhost:8000")
-    ///     .tmf620()
-    ///     .category()
-    ///     .list(None);
-    /// ```
+    
     pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Category>,TMFError> {
         list_tmf(self.host.clone(),filter)
+    }
+}
+
+impl Operations for TMF620Category {
+    type TMF = Category;
+
+    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))    
+    }
+    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))        
+    }
+    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
+        get_tmf(self.host.clone(),id.into())    
+    }
+    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
+        list_tmf(self.host.clone(),filter)    
+    }
+    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))
     }
 }
 
@@ -50,15 +64,29 @@ impl TMF620Catalog {
     pub fn new(host : Uri) -> TMF620Catalog {
         TMF620Catalog { host }
     }
-    /// Get a single catalog entry
-    pub fn get(&self, _id : impl Into<String>) -> Result<Vec<Catalog>,TMFError> {
-        get_tmf(self.host.clone(),_id.into())
+}
+
+impl Operations for TMF620Catalog {
+    type TMF = Catalog;
+
+    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))    
     }
-    /// Get a list of catalogs applying optional filter
-    pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Catalog>,TMFError> {
-        list_tmf(self.host.clone(),filter)
+    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))    
+    }
+    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
+        get_tmf(self.host.clone(),id.into())    
+    }
+    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
+        list_tmf(self.host.clone(),filter)    
+    }
+    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))    
     }
 }
+
+
 
 /// TMF620 ProductOffering API calls
 #[derive(Clone,Default,Debug)]
@@ -71,15 +99,25 @@ impl TMF620ProductOffering {
     pub fn new(host : Uri) -> TMF620ProductOffering {
         TMF620ProductOffering { host }
     }
+}
 
-    /// Get a single product offering
-    pub fn get(&self, _id : impl Into<String>) -> Result<Vec<ProductOffering>,TMFError> {
-        get_tmf(self.host.clone(),_id.into())
+impl Operations for TMF620ProductOffering {
+    type TMF = ProductOffering;
+
+    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))    
     }
-
-    /// Get a list of catalogs applying optional filter
-    pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<ProductOffering>,TMFError> {
-        list_tmf(self.host.clone(),filter)
+    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))        
+    }
+    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
+        get_tmf(self.host.clone(),id.into())    
+    }
+    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
+        list_tmf(self.host.clone(),filter)    
+    }
+    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))
     }
 }
 
@@ -94,15 +132,25 @@ impl TMF620ProductOfferingPrice {
     pub fn new(host : Uri) -> TMF620ProductOfferingPrice {
         TMF620ProductOfferingPrice { host }
     }
+}
 
-    /// Get a single product offering
-    pub fn get(&self, _id : impl Into<String>) -> Result<Vec<ProductOfferingPrice>,TMFError> {
-        get_tmf(self.host.clone(),_id.into())
+impl Operations for TMF620ProductOfferingPrice {
+    type TMF = ProductOfferingPrice;
+
+    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))    
     }
-
-    /// Get a list of catalogs applying optional filter
-    pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<ProductOfferingPrice>,TMFError> {
-        list_tmf(self.host.clone(),filter)
+    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))        
+    }
+    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
+        get_tmf(self.host.clone(),id.into())    
+    }
+    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
+        list_tmf(self.host.clone(),filter)    
+    }
+    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))
     }
 }
 
@@ -117,15 +165,25 @@ impl TMF620ProductSpecification {
     pub fn new(host : Uri) -> TMF620ProductSpecification {
         TMF620ProductSpecification { host }
     }
+}
 
-    /// Get a single product offering
-    pub fn get(&self, _id : impl Into<String>) -> Result<Vec<ProductSpecification>,TMFError> {
-        get_tmf(self.host.clone(),_id.into())
+impl Operations for TMF620ProductSpecification {
+    type TMF = ProductSpecification;
+
+    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))    
     }
-
-    /// Get a list of catalogs applying optional filter
-    pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<ProductSpecification>,TMFError> {
-        list_tmf(self.host.clone(),filter)
+    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))        
+    }
+    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
+        get_tmf(self.host.clone(),id.into())    
+    }
+    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
+        list_tmf(self.host.clone(),filter)    
+    }
+    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        Err(TMFError::from("Not implemented"))
     }
 }
 
