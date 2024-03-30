@@ -4,8 +4,11 @@
 pub mod tmf;
 pub mod common;
 
+use common::tmf_error::TMFError;
 use tmf::tmf620::TMF620;
 use tmf::tmf622::TMF622;
+
+use tmflib::HasId;
 
 /// Fields for filtering output
 #[derive(Clone, Default, Debug)]
@@ -55,6 +58,40 @@ impl From<QueryOptions> for String {
         };
         format!("{}&{}&{}",limit,offset,name)   
     }
+}
+
+pub trait Operations {
+    type TMF : HasId;
+
+    /// Get a specific tmf object by Id
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let categories = TMFClient::new("http://localhost:8000")
+    ///     .tmf620()
+    ///     .category()
+    ///     .get("ID123");
+    /// ```
+    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError>;
+    /// Get a list of tmf objects applying optional filter
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let categories = TMFClient::new("http://localhost:8000")
+    ///     .tmf620()
+    ///     .category()
+    ///     .list(None);
+    /// ```
+    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError>;
+    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError>;
+    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError>;
+    /// Delete a specific tmf object by Id
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let categories = TMFClient::new("http://localhost:8000")
+    ///     .tmf620()
+    ///     .category()
+    ///     .get("ID123");
+    /// ```
+    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError>;
 }
 
 pub struct TMFClient {
