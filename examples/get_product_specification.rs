@@ -1,6 +1,6 @@
 //! Product Offering Example
 
-use tmf_client::{TMFClient,QueryOptions};
+use tmf_client::{TMFClient,QueryOptions,Operations};
 use tmflib::{HasId,HasName};
 
 fn main() {

@@ -1,6 +1,6 @@
 //! Get Catalog Example
 
-use tmf_client::{TMFClient,QueryOptions};
+use tmf_client::{TMFClient,QueryOptions,Operations};
 use tmflib::HasName;
 
 fn main() {

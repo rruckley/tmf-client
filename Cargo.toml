@@ -1,13 +1,13 @@
 [package]
 name = "tmf-client"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com"]
 description = "A Rust client library for TMF conformant APIs"
 
 [dependencies]
-env_logger = "0.11.1"
-reqwest = {version = "0.11.24", features = ["blocking"]}
-serde = "1.0.196"
-serde_json = "1.0.113"
+env_logger = "0.11.3"
+reqwest = {version = "0.12.2", features = ["blocking"]}
+serde = "1.0"
+serde_json = "1.0"
 tmflib = { git = "https://github.com/rruckley/tmflib.git"}
