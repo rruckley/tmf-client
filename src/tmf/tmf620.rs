@@ -7,7 +7,7 @@ use tmflib::tmf620::product_offering::ProductOffering;
 use tmflib::tmf620::product_offering_price::ProductOfferingPrice;
 use tmflib::tmf620::product_specification::ProductSpecification;
 use tmflib::Uri;
-use super::{get_tmf,list_tmf};
+use super::{get_tmf,list_tmf,create_tmf,update_tmf,delete_tmf};
 use crate::common::tmf_error::TMFError;
 
 use crate::{QueryOptions,Operations};
@@ -23,24 +23,16 @@ impl TMF620Category {
     pub fn new(host : Uri) -> TMF620Category {
         TMF620Category { host }
     }
-    /// Get a single catalog entry
-    pub fn get(&self, _id : impl Into<String>) -> Result<Vec<Category>,TMFError> {
-        get_tmf(self.host.clone(),_id.into())
-    }
-    
-    pub fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Category>,TMFError> {
-        list_tmf(self.host.clone(),filter)
-    }
 }
 
 impl Operations for TMF620Category {
     type TMF = Category;
 
-    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        create_tmf(self.host.clone(), item)   
     }
-    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))        
+    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        delete_tmf(self.host.clone(), id)        
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
         get_tmf(self.host.clone(),id.into())    
@@ -48,8 +40,8 @@ impl Operations for TMF620Category {
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)    
     }
-    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))
+    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        update_tmf(self.host.clone(), id, patch)
     }
 }
 
