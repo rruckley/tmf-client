@@ -13,8 +13,8 @@ pub mod tmf622;
 pub fn get_tmf<T : HasId + HasName + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
     // Return results
     let url = format!("{}{}/{}",host,T::get_class_href(),id);
-    let catalogs = reqwest::blocking::get(url)?.text()?;
-    let output : Vec<T> = serde_json::from_str(catalogs.as_str()).unwrap();
+    let objects = reqwest::blocking::get(url)?.text()?;
+    let output : Vec<T> = serde_json::from_str(objects.as_str()).unwrap();
     Ok(output)
 }
 
@@ -27,7 +27,26 @@ pub fn list_tmf<T : HasId + HasName + DeserializeOwned>(host: Uri, filter : Opti
     };
     let url = format!("{}{}?{}",host,T::get_class_href(),filter);
     println!("Filter: {}",filter);
-    let catalogs = reqwest::blocking::get(url)?.text()?;
-    let output : Vec<T> = serde_json::from_str(catalogs.as_str())?;
+    let objects = reqwest::blocking::get(url)?.text()?;
+    let output : Vec<T> = serde_json::from_str(objects.as_str())?;
     Ok(output)
+}
+
+/// Create a new TMF object
+pub fn create_tmf<T : HasId + DeserializeOwned>(host : Uri, _item : T) -> Result<T,TMFError> {
+    let _url = format!("{}{}",host,T::get_class_href());
+    Err(TMFError::from("Not implemented yet"))
+}
+
+/// Update an existing TMF object
+pub fn update_tmf<T : HasId + DeserializeOwned>(host : Uri, id : impl Into<String>, _patch : T) -> Result<T,TMFError> {
+    let _url = format!("{}{}/{}",host,T::get_class_href(),id.into());
+    //let object = reqwest::blocking::ClientBuilder:
+    Err(TMFError::from("Not implemented yet"))
+}
+
+/// Delete an existing TMF object
+pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMFError> {
+    let _url = format!("{}{}/{}",host,T::get_class_href(),id.into());
+    Err(TMFError::from("Not implemented yet"))
 }
