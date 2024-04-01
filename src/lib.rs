@@ -65,7 +65,7 @@ pub trait Operations {
 
     /// Get a specific tmf object by Id
     /// ```
-    /// # use tmf_client::TMFClient;
+    /// # use tmf_client::{TMFClient,Operations};
     /// let categories = TMFClient::new("http://localhost:8000")
     ///     .tmf620()
     ///     .category()
@@ -74,7 +74,7 @@ pub trait Operations {
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError>;
     /// Get a list of tmf objects applying optional filter
     /// ```
-    /// # use tmf_client::TMFClient;
+    /// # use tmf_client::{TMFClient,Operations};
     /// let categories = TMFClient::new("http://localhost:8000")
     ///     .tmf620()
     ///     .category()
@@ -85,11 +85,11 @@ pub trait Operations {
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError>;
     /// Delete a specific tmf object by Id
     /// ```
-    /// # use tmf_client::TMFClient;
+    /// # use tmf_client::{TMFClient,Operations};
     /// let categories = TMFClient::new("http://localhost:8000")
     ///     .tmf620()
     ///     .category()
-    ///     .get("ID123");
+    ///     .delete("ID123");
     /// ```
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError>;
 }
