@@ -143,8 +143,8 @@ impl TMFClient {
             Some(tmf) => tmf.clone(),
             None => {
                 // Allocate a new instance
-                let tmf = TMF622 {};
-                self.tmf622 = Some(TMF622 {  });
+                let tmf = TMF622::new(self.host.clone());
+                self.tmf622 = Some(tmf.clone());
                 tmf
             }
         }
