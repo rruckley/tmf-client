@@ -4,6 +4,7 @@ version = "0.1.1"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com"]
 description = "A Rust client library for TMF conformant APIs"
+license = "Apache-2.0"
 
 [dependencies]
 env_logger = "0.11.3"
