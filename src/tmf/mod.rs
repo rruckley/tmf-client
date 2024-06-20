@@ -5,17 +5,35 @@ use crate::QueryOptions;
 use crate::common::tmf_error::TMFError;
 use tmflib::{HasId,Uri};
 use serde::de::DeserializeOwned;
-
+use oauth2::basic::BasicClient;
+// use oauth2::reqwest::http_client;
+use oauth2::{
+    ClientId,
+    ClientSecret,
+    AuthUrl,
+    TokenUrl
+};
 pub mod tmf620;
 pub mod tmf622;
+
+/// Get a new OAuth toekn
+pub fn get_token() {
+    let _client = BasicClient::new(
+        ClientId::new(std::env::var("OAUTH_CLIENT_ID").unwrap()),
+        Some(ClientSecret::new(std::env::var("OAUTH_CLIENT_SECRET").unwrap())),
+        AuthUrl::new(std::env::var("OAUTH_AUTH_URL").unwrap()).unwrap(),
+        Some(TokenUrl::new(std::env::var("OAUTH_TOKEN_URL").unwrap()).unwrap())
+    );
+}
 
 /// Make API call to retrieve a single TMF object
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
     // Return results
     let url = format!("{}{}/{}",host,T::get_class_href(),id);
-    let objects = reqwest::blocking::get(url)?.text()?;
-    let output : Vec<T> = serde_json::from_str(objects.as_str()).unwrap();
-    Ok(output)
+    // let objects = reqwest::blocking::get(url)?.text()?;
+    // let output : Vec<T> = serde_json::from_str(objects.as_str()).unwrap();
+    // Ok(output)
+    Err(TMFError::from("Converting to OAuth support"))
 }
 
 /// Make API call to retrieve a set of TMF objects according to filter
