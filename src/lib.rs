@@ -1,5 +1,23 @@
 
-#[warn(missing_docs)]
+// Copyright [2024] [Ryan Ruckley]
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//! TMF Client
+//! # Description
+//! This library provides a client into TMF APIs leveraging tmflib for schema definitons.
+
+#![warn(missing_docs)]
 
 pub mod tmf;
 pub mod common;
@@ -15,27 +33,31 @@ use tmflib::HasId;
 pub struct QueryOptions {
     /// Specific set of fields delimited by comma
     pub fields : Option<String>,
+    /// Number of records to return
     pub limit : Option<u16>,
+    /// Offset for first record in returned results
     pub offset : Option<u16>,
-    /// Filter on name
+    /// Simple filter on name field, if it exists.
     pub name : Option<String>,
 }
 
 impl QueryOptions {
+    /// Set the fields to return as a comma separated list.
     pub fn fields(mut self, fields : String) -> QueryOptions {
         self.fields = Some(fields);
         self
     }
+    /// Set the number of records to return
     pub fn limit(mut self, limit : u16) -> QueryOptions {
         self.limit = Some(limit);
         self
     }
-
+    /// Set the offset for the returned results, i.e. number of records to skip.
     pub fn offset(mut self, offset : u16) -> QueryOptions {
         self.offset = Some(offset);
         self
     }
-
+    /// Set simple filter on value of name field if exists.
     pub fn name(mut self, name : impl Into<String>) -> QueryOptions {
         self.name = Some(name.into());
         self
@@ -60,7 +82,9 @@ impl From<QueryOptions> for String {
     }
 }
 
+/// Standard REST aligned operations supported by all TMF APIs
 pub trait Operations {
+    /// The concrete TMF schema type
     type TMF : HasId;
 
     /// Get a specific tmf object by Id
@@ -81,7 +105,29 @@ pub trait Operations {
     ///     .list(None);
     /// ```
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError>;
+    /// Create a new TMF object
+    /// ```
+    /// # use tmf_client::{TMFClient,Operations};
+    /// use tmflib::tmf620::category::Category;
+    /// let category = Category::new("My Category");
+    /// let new_catalog = TMFClient::new("http://localhost:8000")
+    ///     .tmf620()
+    ///     .category()
+    ///     .create(category);
+    /// ```
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError>;
+    /// Update an existing TMF object
+    /// ```
+    /// # use tmf_client::{TMFClient,Operations};
+    /// use tmflib::tmf620::category::Category;
+    /// use tmflib::{HasId,HasName};
+    /// let mut existing = Category::new("My Category");
+    /// existing.set_name("New Category Name");
+    /// let result = TMFClient::new("http://localhost:8080")
+    ///     .tmf620()
+    ///     .category()
+    ///     .update(existing.get_id(),existing);
+    /// ```
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError>;
     /// Delete a specific tmf object by Id
     /// ```
@@ -94,6 +140,15 @@ pub trait Operations {
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError>;
 }
 
+/// TMFClient for interacting with TMF APIs.
+/// ```
+/// use tmf_client::{TMFClient,Operations,QueryOptions};
+/// let filter = QueryOptions::default().limit(5);
+/// let specifications = TMFClient::new("http://localhost:8000")
+///     .tmf620()
+///     .product_specification()
+///     .list(Some(filter));
+/// ```
 pub struct TMFClient {
     host : String,
     tmf620 : Option<TMF620>,
