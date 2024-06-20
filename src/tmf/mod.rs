@@ -30,10 +30,10 @@ pub fn get_token() {
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
     // Return results
     let url = format!("{}{}/{}",host,T::get_class_href(),id);
-    // let objects = reqwest::blocking::get(url)?.text()?;
-    // let output : Vec<T> = serde_json::from_str(objects.as_str()).unwrap();
-    // Ok(output)
-    Err(TMFError::from("Converting to OAuth support"))
+    let objects = reqwest::blocking::get(url)?.text()?;
+    let output : Vec<T> = serde_json::from_str(objects.as_str()).unwrap();
+    Ok(output)
+    // Err(TMFError::from("Converting to OAuth support"))
 }
 
 /// Make API call to retrieve a set of TMF objects according to filter
