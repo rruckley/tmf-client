@@ -18,7 +18,7 @@ pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<V
     // Return results
     let url = format!("{}{}/{}",host,T::get_class_href(),id);
     let objects = reqwest::blocking::get(url)?.text()?;
-    let output : Vec<T> = serde_json::from_str(objects.as_str()).unwrap();
+    let output : Vec<T> = serde_json::from_str(objects.as_str())?;
     Ok(output)
 }
 
