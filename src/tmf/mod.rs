@@ -11,6 +11,7 @@ use serde::{de::DeserializeOwned, Serialize};
 
 pub mod tmf620;
 pub mod tmf622;
+pub mod tmf629;
 pub mod tmf632;
 
 /// Make API call to retrieve a single TMF object
