@@ -4,7 +4,8 @@ use crate::Operations;
 use crate::common::tmf_error::TMFError;
 use super::{
     get_tmf,
-    list_tmf
+    list_tmf,
+    create_tmf,
 };
 
 /// TMF622 Product Order Object
@@ -16,8 +17,8 @@ pub struct TMF622ProductOrder {
 impl Operations for TMF622ProductOrder {
     type TMF = ProductOrder;
 
-    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,crate::common::tmf_error::TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn create(&self, item : Self::TMF) -> Result<Self::TMF,crate::common::tmf_error::TMFError> {
+        create_tmf(self.host.clone(), item)    
     }
 
     fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,crate::common::tmf_error::TMFError> {
