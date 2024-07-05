@@ -3,7 +3,10 @@
 
 use tmflib::tmf632::organization_v4::Organization;
 use tmflib::Uri;
+#[cfg(feature = "v4")]
 use tmflib::tmf632::individual_v4::Individual;
+#[cfg(feature = "v5")]
+use tmflib::tmf632::individual_v5::Individual;
 use crate::Operations;
 use crate::common::tmf_error::TMFError;
 use super::{
