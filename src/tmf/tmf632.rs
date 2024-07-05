@@ -2,7 +2,7 @@
 //! 
 
 use tmflib::tmf632::organization_v4::Organization;
-use tmflib::{Uri,HasId,HasName};
+use tmflib::Uri;
 use tmflib::tmf632::individual_v4::Individual;
 use crate::Operations;
 use crate::common::tmf_error::TMFError;
@@ -16,6 +16,7 @@ pub struct TMF632Individual {
     host : Uri,
 }
 
+/// TMF632 Organization
 pub struct TMF632Organization {
     host : Uri,
 }
@@ -33,7 +34,7 @@ impl Operations for TMF632Individual {
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(), item)
     }
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
         Err(TMFError::from("Not implemented"))     
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
@@ -42,7 +43,7 @@ impl Operations for TMF632Individual {
     fn list(&self, filter : Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)    
     }
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
         Err(TMFError::from("Not implemented"))     
     }
 }
@@ -60,7 +61,7 @@ impl Operations for TMF632Organization {
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(), item)    
     }
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
         Err(TMFError::from("Not implemented"))      
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
@@ -69,7 +70,7 @@ impl Operations for TMF632Organization {
     fn list(&self, filter : Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)    
     }
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
         Err(TMFError::from("Not implemented"))    
     }
 }
