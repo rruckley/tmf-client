@@ -7,6 +7,7 @@ pub mod common;
 use common::tmf_error::TMFError;
 use tmf::tmf620::TMF620;
 use tmf::tmf622::TMF622;
+use tmf::tmf629::TMF629;
 use tmf::tmf632::TMF632;
 
 use tmflib::HasId;
@@ -99,6 +100,7 @@ pub struct TMFClient {
     host : String,
     tmf620 : Option<TMF620>,
     tmf622 : Option<TMF622>,
+    tmf629 : Option<TMF629>,
     tmf632 : Option<TMF632>,
 }
 
@@ -113,6 +115,7 @@ impl TMFClient {
             host : host.into(),
             tmf620 : None,
             tmf622 : None,
+            tmf629 : None,
             tmf632 : None,
         }
     }
@@ -148,6 +151,23 @@ impl TMFClient {
                 // Allocate a new instance
                 let tmf = TMF622::new(self.host.clone());
                 self.tmf622 = Some(tmf.clone());
+                tmf
+            }
+        }
+    }
+
+    /// Create access to TMF632 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf632 = TMFClient::new("http://localhost:8000")
+    ///     .tmf629();
+    /// ```
+    pub fn tmf629(&mut self) -> TMF629 {
+        match self.tmf629.as_mut() {
+            Some(tmf) => tmf.clone(),
+            None => {
+                let tmf = TMF629::new(self.host.clone());
+                self.tmf629 = Some(tmf.clone());
                 tmf
             }
         }
