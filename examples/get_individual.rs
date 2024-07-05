@@ -1,6 +1,6 @@
 //! Get Individual Example
 
-use tmf_client::{TMFClient,QueryOptions,Operations};
+use tmf_client::{TMFClient,Operations};
 use tmf_client::common::tmf_error::TMFError;
 use tmflib::{HasId,HasName};
 
