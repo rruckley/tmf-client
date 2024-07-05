@@ -8,6 +8,7 @@ use serde::de::DeserializeOwned;
 
 pub mod tmf620;
 pub mod tmf622;
+pub mod tmf632;
 
 /// Make API call to retrieve a single TMF object
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
