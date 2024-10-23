@@ -65,7 +65,7 @@ impl From<QueryOptions> for String {
 pub trait Operations {
     type TMF : HasId;
 
-    /// Get a specific tmf object by Id
+    /// Get a specific TMF object by Id
     /// ```
     /// # use tmf_client::{TMFClient,Operations};
     /// let categories = TMFClient::new("http://localhost:8000")
@@ -76,14 +76,19 @@ pub trait Operations {
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError>;
     /// Get a list of tmf objects applying optional filter
     /// ```
-    /// # use tmf_client::{TMFClient,Operations};
+    /// # use tmf_client::{TMFClient,QueryOptions,Operations};
+    /// let filter = QueryOptions::default()
+    ///     .limit(15)
+    ///     .offset(10);
     /// let categories = TMFClient::new("http://localhost:8000")
     ///     .tmf620()
     ///     .category()
-    ///     .list(None);
+    ///     .list(Some(filter));
     /// ```
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError>;
+    /// Create a new instance of a TMF object
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError>;
+    /// Update an existing TMF Object using the provided patch object
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError>;
     /// Delete a specific tmf object by Id
     /// ```
