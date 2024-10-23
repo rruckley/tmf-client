@@ -7,6 +7,7 @@ pub mod common;
 use common::tmf_error::TMFError;
 use tmf::tmf620::TMF620;
 use tmf::tmf622::TMF622;
+use tmf::tmf629::TMF629;
 use tmf::tmf632::TMF632;
 
 use tmflib::HasId;
@@ -64,7 +65,7 @@ impl From<QueryOptions> for String {
 pub trait Operations {
     type TMF : HasId;
 
-    /// Get a specific tmf object by Id
+    /// Get a specific TMF object by Id
     /// ```
     /// # use tmf_client::{TMFClient,Operations};
     /// let categories = TMFClient::new("http://localhost:8000")
@@ -75,14 +76,19 @@ pub trait Operations {
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError>;
     /// Get a list of tmf objects applying optional filter
     /// ```
-    /// # use tmf_client::{TMFClient,Operations};
+    /// # use tmf_client::{TMFClient,QueryOptions,Operations};
+    /// let filter = QueryOptions::default()
+    ///     .limit(15)
+    ///     .offset(10);
     /// let categories = TMFClient::new("http://localhost:8000")
     ///     .tmf620()
     ///     .category()
-    ///     .list(None);
+    ///     .list(Some(filter));
     /// ```
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError>;
+    /// Create a new instance of a TMF object
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError>;
+    /// Update an existing TMF Object using the provided patch object
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError>;
     /// Delete a specific tmf object by Id
     /// ```
@@ -99,6 +105,7 @@ pub struct TMFClient {
     host : String,
     tmf620 : Option<TMF620>,
     tmf622 : Option<TMF622>,
+    tmf629 : Option<TMF629>,
     tmf632 : Option<TMF632>,
 }
 
@@ -113,6 +120,7 @@ impl TMFClient {
             host : host.into(),
             tmf620 : None,
             tmf622 : None,
+            tmf629 : None,
             tmf632 : None,
         }
     }
@@ -148,6 +156,23 @@ impl TMFClient {
                 // Allocate a new instance
                 let tmf = TMF622::new(self.host.clone());
                 self.tmf622 = Some(tmf.clone());
+                tmf
+            }
+        }
+    }
+
+    /// Create access to TMF632 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf632 = TMFClient::new("http://localhost:8000")
+    ///     .tmf629();
+    /// ```
+    pub fn tmf629(&mut self) -> TMF629 {
+        match self.tmf629.as_mut() {
+            Some(tmf) => tmf.clone(),
+            None => {
+                let tmf = TMF629::new(self.host.clone());
+                self.tmf629 = Some(tmf.clone());
                 tmf
             }
         }
