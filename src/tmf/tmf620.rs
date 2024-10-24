@@ -61,8 +61,8 @@ impl TMF620Catalog {
 impl Operations for TMF620Catalog {
     type TMF = Catalog;
 
-    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        create_tmf(self.host.clone(), item)   
     }
     fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
         Err(TMFError::from("Not implemented"))    
@@ -96,8 +96,8 @@ impl TMF620ProductOffering {
 impl Operations for TMF620ProductOffering {
     type TMF = ProductOffering;
 
-    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        create_tmf(self.host.clone(), item)    
     }
     fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
         Err(TMFError::from("Not implemented"))        
@@ -129,8 +129,8 @@ impl TMF620ProductOfferingPrice {
 impl Operations for TMF620ProductOfferingPrice {
     type TMF = ProductOfferingPrice;
 
-    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        create_tmf(self.host.clone(), item)    
     }
     fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
         Err(TMFError::from("Not implemented"))        
@@ -162,8 +162,8 @@ impl TMF620ProductSpecification {
 impl Operations for TMF620ProductSpecification {
     type TMF = ProductSpecification;
 
-    fn create(&self, _item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
+        create_tmf(self.host.clone(), item)  
     }
     fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
         Err(TMFError::from("Not implemented"))        
