@@ -1,8 +1,10 @@
 
 //! Error Module
 
+/// TMFError returned on error
 #[derive(Debug,Default)]
 pub struct TMFError {
+    /// Error message
     pub message : String,
 }
 
