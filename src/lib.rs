@@ -30,9 +30,6 @@ use tmf::tmf632::TMF632;
 
 use tmflib::HasId;
 
-#[cfg(feature = "oauth2")]
-use oauth2::*;
-
 /// Fields for filtering output
 #[derive(Clone, Default, Debug)]
 pub struct QueryOptions {
