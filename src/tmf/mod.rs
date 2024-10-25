@@ -25,7 +25,7 @@ pub mod tmf629;
 pub mod tmf632;
 
 /// Get a new OAuth toekn
-#[cfg(feature = "outh2")]
+#[cfg(feature = "oauth2")]
 pub fn get_token() {
     let _client = BasicClient::new(
         ClientId::new(std::env::var("OAUTH_CLIENT_ID").unwrap()),
