@@ -7,8 +7,12 @@ use crate::QueryOptions;
 use crate::common::tmf_error::TMFError;
 use tmflib::{HasId,Uri};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
+
+#[cfg(feature = "oauth2")]
 use oauth2::basic::BasicClient;
-// use oauth2::reqwest::http_client;
+
+#[cfg(feature = "oauth2")]
 use oauth2::{
     ClientId,
     ClientSecret,
@@ -17,8 +21,11 @@ use oauth2::{
 };
 pub mod tmf620;
 pub mod tmf622;
+pub mod tmf629;
+pub mod tmf632;
 
 /// Get a new OAuth toekn
+#[cfg(feature = "outh2")]
 pub fn get_token() {
     let _client = BasicClient::new(
         ClientId::new(std::env::var("OAUTH_CLIENT_ID").unwrap()),
