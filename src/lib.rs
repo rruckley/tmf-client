@@ -5,12 +5,23 @@ pub mod tmf;
 pub mod common;
 
 use common::tmf_error::TMFError;
+#[cfg(feature = "tmf620")]
 use tmf::tmf620::TMF620;
+#[cfg(feature = "tmf622")]
 use tmf::tmf622::TMF622;
+#[cfg(feature = "tmf629")]
 use tmf::tmf629::TMF629;
+#[cfg(feature = "tmf632")]
 use tmf::tmf632::TMF632;
+#[cfg(feature = "tmf633")]
+use tmf::tmf633::TMF633;
+#[cfg(feature = "tmf648")]
+use tmf::tmf648::TMF648;
+#[cfg(feature = "tmf674")]
+use tmf::tmf674::TMF674;
 
-use tmflib::HasId;
+
+use tmflib::{HasId,Uri};
 
 /// Fields for filtering output
 #[derive(Clone, Default, Debug)]
@@ -101,12 +112,33 @@ pub trait Operations {
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError>;
 }
 
+pub trait HasNew<T : Clone> {
+    fn new(host : Uri) -> T;
+}
+
 pub struct TMFClient {
     host : String,
     tmf620 : Option<TMF620>,
     tmf622 : Option<TMF622>,
     tmf629 : Option<TMF629>,
     tmf632 : Option<TMF632>,
+    tmf633 : Option<TMF633>,
+    tmf648 : Option<TMF648>,
+    tmf674 : Option<TMF674>,
+}
+
+// Create a new instance
+fn instantiate<T : Clone + HasNew<T>>(tmf : &mut Option<T>,hostname : String) -> T {
+    match tmf {
+        // If we already have an instance, clone that.
+        Some(t) => t.clone(),
+        // Else we need to create a new one and also store it.
+        None => {
+            let new_tmf = T::new(hostname);
+            tmf.replace(new_tmf.clone());
+            new_tmf
+        },
+    }
 }
 
 impl TMFClient {
@@ -122,8 +154,13 @@ impl TMFClient {
             tmf622 : None,
             tmf629 : None,
             tmf632 : None,
+            tmf633 : None,
+            tmf648:  None,
+            tmf674 : None,
         }
     }
+
+
 
     /// Create access to TMF620 API
     /// ```
@@ -132,15 +169,7 @@ impl TMFClient {
     ///     .tmf620();
     /// ```
     pub fn tmf620(&mut self) -> TMF620 {
-        match self.tmf620.as_mut() {
-            Some(tmf) => tmf.clone(),
-            None => {
-                // Allocate a new instance
-                let tmf = TMF620::new(self.host.clone());
-                self.tmf620 = Some(tmf.clone());
-                tmf
-            }
-        }
+        instantiate(&mut self.tmf620,self.host.clone())
     }
 
     /// Create access to TMF622 API
@@ -150,15 +179,7 @@ impl TMFClient {
     ///     .tmf622();
     /// ```
     pub fn tmf622(&mut self) -> TMF622 {
-        match self.tmf622.as_mut() {
-            Some(tmf) => tmf.clone(),
-            None => {
-                // Allocate a new instance
-                let tmf = TMF622::new(self.host.clone());
-                self.tmf622 = Some(tmf.clone());
-                tmf
-            }
-        }
+        instantiate(&mut self.tmf622, self.host.clone())
     }
 
     /// Create access to TMF632 API
@@ -168,14 +189,7 @@ impl TMFClient {
     ///     .tmf629();
     /// ```
     pub fn tmf629(&mut self) -> TMF629 {
-        match self.tmf629.as_mut() {
-            Some(tmf) => tmf.clone(),
-            None => {
-                let tmf = TMF629::new(self.host.clone());
-                self.tmf629 = Some(tmf.clone());
-                tmf
-            }
-        }
+        instantiate(&mut self.tmf629, self.host.clone())
     }
 
     /// Create access to TMF632 API
@@ -185,14 +199,19 @@ impl TMFClient {
     ///     .tmf632();
     /// ```
     pub fn tmf632(&mut self) -> TMF632 {
-        match self.tmf632.as_mut() {
-            Some(tmf) => tmf.clone(),
-            None => {
-                let tmf = TMF632::new(self.host.clone());
-                self.tmf632 = Some(tmf.clone());
-                tmf
-            }
-        }
+        instantiate(&mut self.tmf632, self.host.clone())
+    }
+
+    pub fn tmf633(&mut self) -> TMF633 {
+        instantiate(&mut self.tmf633, self.host.clone())
+    }
+
+    pub fn tmf648(&mut self) -> TMF648 {
+        instantiate(&mut self.tmf648, self.host.clone())
+    }
+
+    pub fn tmf674(&mut self) -> TMF674 {
+        instantiate(&mut self.tmf674, self.host.clone())
     }
 }
 
