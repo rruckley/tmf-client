@@ -4,7 +4,7 @@
 use tmflib::tmf629::customer::Customer;
 use tmflib::Uri;
 
-use crate::Operations;
+use crate::{Operations,HasNew};
 use crate::common::tmf_error::TMFError;
 use super::{
     create_tmf, get_tmf, list_tmf
@@ -48,14 +48,15 @@ pub struct TMF629 {
     host : Uri,
 }
 
-impl TMF629 {
-    /// Create a new instance of TMF622 API
-    pub fn new(host : Uri) -> TMF629 {
+impl HasNew<TMF629> for TMF629 {
+    fn new(host : Uri) -> TMF629 {
         TMF629 {
             host
-        }
+        }  
     }
+}
 
+impl TMF629 {
     /// Access the Customer API
     pub fn customer(&mut self) -> TMF629Customer {
         TMF629Customer::new(self.host.clone())

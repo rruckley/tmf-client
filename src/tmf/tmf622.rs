@@ -1,6 +1,6 @@
 //! TMF622 Product Order
 use tmflib::{tmf622::product_order_v4::ProductOrder, Uri};
-use crate::Operations;
+use crate::{Operations,HasNew};
 use crate::common::tmf_error::TMFError;
 use super::{
     get_tmf,
@@ -51,14 +51,15 @@ pub struct TMF622 {
     host : Uri,
 }
 
-impl TMF622 {
-    /// Create a new instance of TMF622 API
-    pub fn new(host : Uri) -> TMF622 {
+impl HasNew<TMF622> for TMF622 {
+    fn new(host : Uri) -> TMF622 {
         TMF622 {
             host
-        }
+        }      
     }
+}
 
+impl TMF622 {
     /// Access the order module of TMF622.
     pub fn order(&self) -> TMF622ProductOrder {
         TMF622ProductOrder::new(self.host.clone())

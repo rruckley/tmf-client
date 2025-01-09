@@ -7,7 +7,7 @@ use tmflib::Uri;
 use tmflib::tmf632::individual_v4::Individual;
 #[cfg(feature = "v5")]
 use tmflib::tmf632::individual_v5::Individual;
-use crate::Operations;
+use crate::{Operations,HasNew};
 use crate::common::tmf_error::TMFError;
 use super::{
     create_tmf, get_tmf, list_tmf
@@ -84,14 +84,15 @@ pub struct TMF632 {
     host : Uri,
 }
 
-impl TMF632 {
-    /// Create a new instance of TMF622 API
-    pub fn new(host : Uri) -> TMF632 {
+impl HasNew<TMF632> for TMF632 {
+    fn new(host : Uri) -> TMF632 {
         TMF632 {
             host
-        }
+        }       
     }
+}
 
+impl TMF632 {
     /// Access the order module of TMF622.
     pub fn individual(&self) -> TMF632Individual {
         TMF632Individual::new(self.host.clone())

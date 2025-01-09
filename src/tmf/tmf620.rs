@@ -10,7 +10,7 @@ use tmflib::Uri;
 use super::{get_tmf,list_tmf,create_tmf,update_tmf,delete_tmf};
 use crate::common::tmf_error::TMFError;
 
-use crate::{QueryOptions,Operations};
+use crate::{QueryOptions,Operations,HasNew};
 
 /// TMF620 Category API calls
 #[derive(Clone,Default,Debug)]
@@ -185,13 +185,15 @@ pub struct TMF620 {
     host : Uri,
 }
 
-impl TMF620 {
-    /// Create a new instance of TMF620 API
-    pub fn new(host : Uri) -> TMF620 {
+impl HasNew<TMF620> for TMF620 {
+    fn new(host : Uri) -> TMF620 {
         TMF620 {
             host
-        }
+        }        
     }
+}
+
+impl TMF620 {
     /// Return function for managing catalogs
     pub fn catalog(&self) -> TMF620Catalog {
         TMF620Catalog::new(self.host.clone())
