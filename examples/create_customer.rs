@@ -10,7 +10,7 @@ fn main() -> Result<(),TMFError> {
 
     let customer = Customer::new(org);
 
-    let new_customer = TMFClient::new("http://localhost:8000")
+    let new_customer = TMFClient::new("http://localhost:8001")
         .tmf629()
         .customer()
         .create(customer)?;

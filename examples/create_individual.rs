@@ -10,7 +10,7 @@ fn main() -> Result<(),TMFError> {
         .gender("Male")
         .title("Master");
 
-    let mut client = TMFClient::new("http://localhost:8000");
+    let mut client = TMFClient::new("http://localhost:8001");
 
     let new_individual = client.tmf632().individual().create(individual)?;
 
