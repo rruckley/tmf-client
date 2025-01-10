@@ -6,7 +6,7 @@ use tmflib::{HasId,HasName};
 
 
 fn main() -> Result<(),TMFError> {
-    let mut client = TMFClient::new("http://localhost:8000");
+    let mut client = TMFClient::new("http://localhost:8001");
 
     let individuals = client
         .tmf632()

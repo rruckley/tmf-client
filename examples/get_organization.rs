@@ -6,7 +6,7 @@ use tmflib::{HasId,HasName};
 
 fn main() -> Result<(),TMFError> {
 
-    let organizations = TMFClient::new("http://localhost:8000")
+    let organizations = TMFClient::new("http://localhost:8001")
         .tmf632()
         .organization()
         .list(None)?;
