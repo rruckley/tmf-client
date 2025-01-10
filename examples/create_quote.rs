@@ -11,7 +11,7 @@ fn main() -> Result<(),TMFError> {
     let new_quote = TMFClient::new("http://localhost:8001")
         .tmf648()
         .quote()
-        .create(quote);
+        .create(quote)?;
 
 
     dbg!(new_quote);
