@@ -1,18 +1,23 @@
 //! Create Organization Example
 
-use tmf_client::{Operations, TMFClient};
 use tmf_client::common::tmf_error::TMFError;
+#[cfg(feature = "tmf632")]
+use tmf_client::{Operations, TMFClient};
+#[cfg(feature = "tmf632")]
 use tmflib::tmf632::organization_v4::Organization;
 
 fn main() -> Result<(),TMFError> {
-    let org = Organization::new("An Organization");
+    #[cfg(feature = "tmf632")]
+    {
+        let org = Organization::new("An Organization");
 
-    let client = TMFClient::new("http://localhost:8000")
-        .tmf632()
-        .organization()
-        .create(org)?;
-
-    dbg!(client);
+        let client = TMFClient::new("http://localhost:8001")
+            .tmf632()
+            .organization()
+            .create(org)?;
+    
+        dbg!(client);    
+    }
 
     Ok(())
 }

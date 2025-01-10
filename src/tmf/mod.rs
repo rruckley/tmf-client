@@ -9,10 +9,20 @@ use tmflib::{HasId,Uri};
 use serde::{de::DeserializeOwned, Serialize};
 // use log::info;
 
+#[cfg(feature = "tmf620")]
 pub mod tmf620;
+#[cfg(feature = "tmf622")]
 pub mod tmf622;
+#[cfg(feature = "tmf629")]
 pub mod tmf629;
+#[cfg(feature = "tmf632")]
 pub mod tmf632;
+#[cfg(feature = "tmf633")]
+pub mod tmf633;
+#[cfg(feature = "tmf648")]
+pub mod tmf648;
+#[cfg(feature = "tmf674")]
+pub mod tmf674;
 
 /// Make API call to retrieve a single TMF object
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {

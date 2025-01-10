@@ -1,30 +1,24 @@
-//! TMF629 Module
-//! Manage objects with TMF629 Customer Management API.
+//! TMF674 Module
 
-use tmflib::tmf629::customer::Customer;
 use tmflib::Uri;
+use tmflib::tmf674::geographic_site_v4::GeographicSite;
 
-use crate::{Operations,HasNew};
 use crate::common::tmf_error::TMFError;
+use crate::{Operations,HasNew};
 use super::{
-    create_tmf, get_tmf, list_tmf
+    create_tmf,
+    get_tmf,
+    list_tmf,
 };
 
-/// TMF629 Customer API
-pub struct TMF629Customer {
-    host  :Uri,
+/// TMF674 GeographicSite API Object
+pub struct TMF674GeographicSite {
+    host : Uri,
 }
 
-impl TMF629Customer {
-    /// Create a new instance of the Customer module of TMF629 API
-    pub fn new(host : Uri) -> TMF629Customer {
-        TMF629Customer { host }
-    }
-}
-
-impl Operations for TMF629Customer {
-    type TMF = Customer;
-
+impl Operations for TMF674GeographicSite {
+    type TMF = GeographicSite;
+    
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(),item)    
     }
@@ -42,23 +36,25 @@ impl Operations for TMF629Customer {
     }
 }
 
-/// TMF629 Customer Management API
+/// Product Catalogue API
 #[derive(Clone,Default,Debug)]
-pub struct TMF629 {
+pub struct TMF674 {
     host : Uri,
 }
 
-impl HasNew<TMF629> for TMF629 {
-    fn new(host : Uri) -> TMF629 {
-        TMF629 {
+impl HasNew<TMF674> for TMF674 {
+    fn new(host : Uri) -> TMF674 {
+        TMF674 {
             host
-        }  
+        }
     }
 }
 
-impl TMF629 {
-    /// Access the Customer API
-    pub fn customer(&mut self) -> TMF629Customer {
-        TMF629Customer::new(self.host.clone())
+impl TMF674 {
+    /// Provide a GeographicSite API object
+    pub fn site(&self) -> TMF674GeographicSite {
+        TMF674GeographicSite {
+            host: self.host.clone(),
+        }
     }
 }
