@@ -28,7 +28,17 @@ pub mod tmf674;
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
     // Return results
     let url = format!("{}{}/{}",host,T::get_class_href(),id);
-    let objects = reqwest::blocking::get(url)?.text()?;
+    // let objects = reqwest::blocking::get(url)?.text()?;
+    let client = reqwest::blocking::Client::new();    
+    let pkg = env!("CARGO_PKG_NAME");
+    let ver = env!("CARGO_PKG_VERSION");
+
+    let agent = format!("{}/{}",pkg,ver);
+    let objects = client
+        .get(url)
+        .header("User-Agent", agent)
+        .send()?
+        .text()?;
     let output : Vec<T> = serde_json::from_str(objects.as_str())?;
     Ok(output)
 }
@@ -42,7 +52,16 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
     };
     let url = format!("{}{}?{}",host,T::get_class_href(),filter);
     // info!("Filter: {}",filter);
-    let objects = reqwest::blocking::get(url)?.text()?;
+    let client = reqwest::blocking::Client::new();    
+    let pkg = env!("CARGO_PKG_NAME");
+    let ver = env!("CARGO_PKG_VERSION");
+
+    let agent = format!("{}/{}",pkg,ver);
+    let objects = client
+        .get(url)
+        .header("User-Agent", agent)
+        .send()?
+        .text()?;
     let output : Vec<T> = serde_json::from_str(objects.as_str())?;
     Ok(output)
 }
