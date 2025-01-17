@@ -1,6 +1,6 @@
 [package]
 name = "tmf-client"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com"]
 description = "A Rust client library for TMF conformant APIs"
