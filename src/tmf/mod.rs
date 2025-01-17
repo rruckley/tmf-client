@@ -39,8 +39,8 @@ pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<V
         .header("User-Agent", agent)
         .send()?
         .text()?;
-    let output : Vec<T> = serde_json::from_str(objects.as_str())?;
-    Ok(output)
+    let output : T = serde_json::from_str(objects.as_str())?;
+    Ok(vec![output])
 }
 
 /// Make API call to retrieve a set of TMF objects according to filter
