@@ -81,14 +81,28 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
 }
 
 /// Update an existing TMF object
-pub fn update_tmf<T : HasId + DeserializeOwned>(host : Uri, id : impl Into<String>, _patch : T) -> Result<T,TMFError> {
-    let _url = format!("{}{}/{}",host,T::get_class_href(),id.into());
-    //let object = reqwest::blocking::ClientBuilder:
-    Err(TMFError::from("Not implemented yet"))
+pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : impl Into<String>, patch : T) -> Result<T,TMFError> {
+    let url = format!("{}{}/{}",host,T::get_class_href(),id.into());
+    let client = reqwest::blocking::Client::new();
+    let body_str = serde_json::to_string(&patch)?;
+    let mut res = client.patch(url)
+        .body(body_str)
+        .send()?;
+    let mut output = String::default();
+    let _ = res.read_to_string(&mut output);
+    let item : T = serde_json::from_str(output.as_str())?;
+    Ok(item)
 }
 
 /// Delete an existing TMF object
 pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMFError> {
-    let _url = format!("{}{}/{}",host,T::get_class_href(),id.into());
-    Err(TMFError::from("Not implemented yet"))
+    let url = format!("{}{}/{}",host,T::get_class_href(),id.into().clone());
+    let client = reqwest::blocking::Client::new();
+    let mut _res = client.delete(url)
+        .send()?;
+    // Return empty object for now to avoid
+    // round trip to retrieve object
+    let out = T::default();
+    // out.set_id(id);
+    Ok(out)
 }
