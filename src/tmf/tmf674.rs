@@ -6,9 +6,7 @@ use tmflib::tmf674::geographic_site_v4::GeographicSite;
 use crate::common::tmf_error::TMFError;
 use crate::{Operations,HasNew};
 use super::{
-    create_tmf,
-    get_tmf,
-    list_tmf,
+    create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf
 };
 
 /// TMF674 GeographicSite API Object
@@ -22,8 +20,8 @@ impl Operations for TMF674GeographicSite {
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(),item)    
     }
-    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented")) 
+    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        delete_tmf::<GeographicSite>(self.host.clone(), id) 
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
         get_tmf(self.host.clone(),id.into())  
@@ -31,8 +29,8 @@ impl Operations for TMF674GeographicSite {
     fn list(&self, filter : Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)  
     }
-    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented")) 
+    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        update_tmf(self.host.clone(), id, patch) 
     }
 }
 
