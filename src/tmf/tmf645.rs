@@ -1,5 +1,5 @@
-//! TMF629 Module
-//! Manage objects with TMF629 Customer Management API.
+//! TMF645 Service Qualifcation API
+//! Manage objects with TMF645 Service Qualification API
 
 use tmflib::tmf629::customer::Customer;
 use tmflib::Uri;
@@ -7,22 +7,22 @@ use tmflib::Uri;
 use crate::{Operations,HasNew};
 use crate::common::tmf_error::TMFError;
 use super::{
-    create_tmf, get_tmf, list_tmf, update_tmf, delete_tmf
+    create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf
 };
 
-/// TMF629 Customer API
-pub struct TMF629Customer {
-    host  :Uri,
+/// TMF645 Service Qualification API
+pub struct TMF645CheckServiceQualification {
+    host : Uri,
 }
 
-impl TMF629Customer {
-    /// Create a new instance of the Customer module of TMF629 API
-    pub fn new(host : Uri) -> TMF629Customer {
-        TMF629Customer { host }
+impl TMF645CheckServiceQualification {
+    /// Create a new instance of the Service Qualificatoin module of TMF645 API
+    pub fn new(host : Uri) -> TMF645CheckServiceQualification {
+        TMF645CheckServiceQualification { host }
     }
 }
 
-impl Operations for TMF629Customer {
+impl Operations for TMF645CheckServiceQualification {
     type TMF = Customer;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
@@ -42,23 +42,23 @@ impl Operations for TMF629Customer {
     }
 }
 
-/// TMF629 Customer Management API
+/// TMF645 Service Qualification API
 #[derive(Clone,Default,Debug)]
-pub struct TMF629 {
+pub struct TMF645 {
     host : Uri,
 }
 
-impl HasNew<TMF629> for TMF629 {
-    fn new(host : Uri) -> TMF629 {
-        TMF629 {
+impl HasNew<TMF645> for TMF645 {
+    fn new(host : Uri) -> TMF645 {
+        TMF645 {
             host
-        }  
+        }
     }
 }
 
-impl TMF629 {
-    /// Access the Customer API
-    pub fn customer(&mut self) -> TMF629Customer {
-        TMF629Customer::new(self.host.clone())
+impl TMF645 {
+    /// Access the Check Service Qualification API
+    pub fn check_qualifcation(&mut self) -> TMF645CheckServiceQualification {
+        TMF645CheckServiceQualification::new(self.host.clone())
     }
 }
