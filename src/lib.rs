@@ -34,6 +34,8 @@ use tmf::tmf629::TMF629;
 use tmf::tmf632::TMF632;
 #[cfg(feature = "tmf633")]
 use tmf::tmf633::TMF633;
+#[cfg(feature = "tmf645")]
+use tmf::tmf645::TMF645;
 #[cfg(feature = "tmf648")]
 use tmf::tmf648::TMF648;
 #[cfg(feature = "tmf674")]
@@ -148,6 +150,8 @@ pub struct TMFClient {
     tmf632 : Option<TMF632>,
     #[cfg(feature = "tmf633")]
     tmf633 : Option<TMF633>,
+    #[cfg(feature = "tmf645")]
+    tmf645 : Option<TMF645>,
     #[cfg(feature = "tmf648")]
     tmf648 : Option<TMF648>,
     #[cfg(feature = "tmf674")]
@@ -187,6 +191,8 @@ impl TMFClient {
             tmf632 : None,
             #[cfg(feature = "tmf633")]
             tmf633 : None,
+            #[cfg(feature = "tmf645")]
+            tmf645 : None,
             #[cfg(feature = "tmf648")]
             tmf648:  None,
             #[cfg(feature = "tmf674")]
@@ -243,6 +249,11 @@ impl TMFClient {
     #[cfg(feature = "tmf633")]
     pub fn tmf633(&mut self) -> TMF633 {
         instantiate(&mut self.tmf633, self.host.clone())
+    }
+
+    #[cfg(feature = "tmf645")]
+    pub fn tmf645(&mut self) -> TMF645 {
+        instantiate(&mut self.tmf645, self.host.clone())
     }
 
     #[cfg(feature = "tmf648")]

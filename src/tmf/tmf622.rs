@@ -1,11 +1,13 @@
 //! TMF622 Product Order
 use tmflib::{tmf622::product_order_v4::ProductOrder, Uri};
 use crate::{Operations,HasNew};
-use crate::common::tmf_error::TMFError;
+
 use super::{
     get_tmf,
     list_tmf,
     create_tmf,
+    update_tmf,
+    delete_tmf
 };
 
 /// TMF622 Product Order Object
@@ -21,8 +23,8 @@ impl Operations for TMF622ProductOrder {
         create_tmf(self.host.clone(), item)    
     }
 
-    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,crate::common::tmf_error::TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,crate::common::tmf_error::TMFError> {
+        delete_tmf(self.host.clone(),id.into())
     }
 
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,crate::common::tmf_error::TMFError> {
@@ -33,8 +35,8 @@ impl Operations for TMF622ProductOrder {
         list_tmf(self.host.clone(),filter)   
     }
 
-    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,crate::common::tmf_error::TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,crate::common::tmf_error::TMFError> {
+        update_tmf(self.host.clone(),id.into(), patch)
     }
 }
 
