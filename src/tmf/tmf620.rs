@@ -64,8 +64,8 @@ impl Operations for TMF620Catalog {
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(), item)   
     }
-    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        delete_tmf(self.host.clone(), id)       
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
         get_tmf(self.host.clone(),id.into())    
@@ -73,8 +73,8 @@ impl Operations for TMF620Catalog {
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)    
     }
-    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))    
+    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        update_tmf(self.host.clone(), id, patch)    
     }
 }
 
@@ -99,8 +99,8 @@ impl Operations for TMF620ProductOffering {
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(), item)    
     }
-    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))        
+    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        delete_tmf(self.host.clone(), id)       
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
         get_tmf(self.host.clone(),id.into())    
@@ -108,8 +108,8 @@ impl Operations for TMF620ProductOffering {
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)    
     }
-    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))
+    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        update_tmf(self.host.clone(), id, patch)    
     }
 }
 
@@ -132,8 +132,8 @@ impl Operations for TMF620ProductOfferingPrice {
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(), item)    
     }
-    fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))        
+    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
+        delete_tmf(self.host.clone(), id)       
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
         get_tmf(self.host.clone(),id.into())    
@@ -141,8 +141,8 @@ impl Operations for TMF620ProductOfferingPrice {
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)    
     }
-    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))
+    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        update_tmf(self.host.clone(), id, patch)    
     }
 }
 
@@ -166,7 +166,7 @@ impl Operations for TMF620ProductSpecification {
         create_tmf(self.host.clone(), item)  
     }
     fn delete(&self, _id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))        
+        delete_tmf(self.host.clone(), id)       
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
         get_tmf(self.host.clone(),id.into())    
@@ -174,8 +174,8 @@ impl Operations for TMF620ProductSpecification {
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)    
     }
-    fn update(&self, _id : impl Into<String>, _patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        Err(TMFError::from("Not implemented"))
+    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+        update_tmf(self.host.clone(), id, patch)    
     }
 }
 
