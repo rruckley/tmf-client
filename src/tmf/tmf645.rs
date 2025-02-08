@@ -2,6 +2,7 @@
 //! Manage objects with TMF645 Service Qualification API
 
 use tmflib::tmf629::customer::Customer;
+use tmflib::tmf645::check_service_qualification::CheckServiceQualification;
 use tmflib::Uri;
 
 use crate::{Operations,HasNew};
@@ -23,7 +24,7 @@ impl TMF645CheckServiceQualification {
 }
 
 impl Operations for TMF645CheckServiceQualification {
-    type TMF = Customer;
+    type TMF = CheckServiceQualification;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(),item)    
