@@ -45,6 +45,13 @@ pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<V
     Ok(vec![output])
 }
 
+fn get_agent() -> String {
+    let pkg = env!("CARGO_PKG_NAME");
+    let ver = env!("CARGO_PKG_VERSION");
+
+    format!("{}/{}",pkg,ver)
+}
+
 /// Make API call to retrieve a set of TMF objects according to filter
 pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOptions>) -> Result<Vec<T>,TMFError> {
     // Return results
@@ -55,13 +62,10 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
     let url = format!("{}{}?{}",host,T::get_class_href(),filter);
     // info!("Filter: {}",filter);
     let client = reqwest::blocking::Client::new();    
-    let pkg = env!("CARGO_PKG_NAME");
-    let ver = env!("CARGO_PKG_VERSION");
 
-    let agent = format!("{}/{}",pkg,ver);
     let objects = client
         .get(url)
-        .header("User-Agent", agent)
+        .header("User-Agent", get_agent())
         .send()?
         .text()?;
     let output : Vec<T> = serde_json::from_str(objects.as_str())?;
@@ -75,6 +79,7 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
     let body_str = serde_json::to_string(&item)?;
     let mut res = client.post(url)
         .body(body_str)
+        .header("User-Agent", get_agent())
         .send()?;
     let mut output = String::default();
     let _ = res.read_to_string(&mut output);
@@ -89,6 +94,7 @@ pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : imp
     let body_str = serde_json::to_string(&patch)?;
     let mut res = client.patch(url)
         .body(body_str)
+        .header("User-Agent", get_agent())
         .send()?;
     let mut output = String::default();
     let _ = res.read_to_string(&mut output);
@@ -101,6 +107,7 @@ pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMF
     let url = format!("{}{}/{}",host,T::get_class_href(),id.into().clone());
     let client = reqwest::blocking::Client::new();
     let mut _res = client.delete(url)
+        .header("User-Agent", get_agent())
         .send()?;
     // Return empty object for now to avoid
     // round trip to retrieve object
