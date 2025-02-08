@@ -1,11 +1,10 @@
 //! TMF645 Get Qualification Example
 
-use tmf_client::{common::tmf_error::TMFError, tmf::tmf645};
+use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "tmf645")]
 use tmf_client::{Operations, TMFClient};
-use tmflib::HasDescription;
 #[cfg(feature = "tmf645")]
-use tmflib::{HasId,HasName};
+use tmflib::{HasId,HasDescription};
 
 fn main() -> Result<(),TMFError> {
    #[cfg(feature = "tmf645")] 

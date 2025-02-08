@@ -1,7 +1,6 @@
 //! TMF645 Service Qualifcation API
 //! Manage objects with TMF645 Service Qualification API
 
-use tmflib::tmf629::customer::Customer;
 use tmflib::tmf645::check_service_qualification::CheckServiceQualification;
 use tmflib::Uri;
 
