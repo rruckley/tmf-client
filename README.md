@@ -13,6 +13,7 @@ Currently supports:
 - TMF629
 - TMF632
 - TMF633
+- TMF645
 - TMF648
 - TMF674
 
