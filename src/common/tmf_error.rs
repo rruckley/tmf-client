@@ -5,11 +5,11 @@ use thiserror::Error;
 
 #[derive(Debug,Error)]
 pub enum TMFError {
-    #[error("Error: {0}")]
-    NoConnetion(String),
-    #[error("Error: {0}")]
+    #[error("TMFError: {0}")]
+    NoConnection(String),
+    #[error("TMFError: {0}")]
     Unknown(String),
-    #[error("Error: {0}")]
+    #[error("TMFError: {0}")]
     Serialization(String)
 }
 
@@ -21,7 +21,7 @@ impl From<&str> for TMFError {
 
 impl From<reqwest::Error> for TMFError {
     fn from(value: reqwest::Error) -> Self {
-        TMFError::NoConnetion(value.to_string())
+        TMFError::NoConnection(value.to_string())
     }
 }
 
@@ -44,7 +44,7 @@ mod tests {
     fn test_error_from_str() {
         let err = TMFError::from("ThisIsAnError");
 
-        assert_eq!(err.to_string(),"Error: ThisIsAnError".to_string());
+        assert_eq!(err.to_string(),"TMFError: ThisIsAnError".to_string());
     }
 
     #[test]
