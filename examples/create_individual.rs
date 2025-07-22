@@ -10,12 +10,12 @@ use tmf_client::{Operations, TMFClient};
 fn main() -> Result<(),TMFError> {
     #[cfg(feature = "tmf632")]
     {
-        let individual = Individual::new("John Quarry Citizen")
+        let individual = Individual::new("John Example Citizen")
             .email("John.q.cititzen@example.com")
             .gender("Male")
             .title("Master");
 
-        let mut client = TMFClient::new("http://localhost:8001");
+        let mut client = TMFClient::new("https://localhost:8001");
 
         let new_individual = client.tmf632().individual().create(individual)?;
 

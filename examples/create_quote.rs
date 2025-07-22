@@ -13,7 +13,7 @@ fn main() -> Result<(),TMFError> {
     {
         let quote = Quote::new();
 
-        let new_quote = TMFClient::new("http://localhost:8001")
+        let new_quote = TMFClient::new("https://localhost:8001")
             .tmf648()
             .quote()
             .create(quote)?;

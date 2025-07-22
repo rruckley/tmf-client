@@ -11,7 +11,7 @@ fn main() -> Result<(),TMFError> {
     {
         let org = Organization::new("An Organization");
 
-        let client = TMFClient::new("http://localhost:8001")
+        let client = TMFClient::new("https://localhost:8001")
             .tmf632()
             .organization()
             .create(org)?;

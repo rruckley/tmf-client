@@ -33,6 +33,8 @@ pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<V
     // let objects = reqwest::blocking::get(url)?.text()?;
         let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        // .http2_prior_knowledge()
+        .use_rustls_tls()
         .build()?;   
     let pkg = env!("CARGO_PKG_NAME");
     let ver = env!("CARGO_PKG_VERSION");
@@ -65,6 +67,7 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
     // info!("Filter: {}",filter);
         let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .use_rustls_tls()
         .build()?;   
 
     let objects = client
@@ -82,6 +85,7 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
     // let client = reqwest::blocking::Client::new();
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .use_rustls_tls()
         .build()?;
     let body_str = serde_json::to_string(&item)?;
     let mut res = client.post(url)
@@ -99,6 +103,7 @@ pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : imp
     let url = format!("{}{}/{}",host,T::get_class_href(),id.into());
         let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .use_rustls_tls()
         .build()?;
 
     let body_str = serde_json::to_string(&patch)?;
@@ -117,6 +122,7 @@ pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMF
     let url = format!("{}{}/{}",host,T::get_class_href(),id.into().clone());
         let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .use_rustls_tls()
         .build()?;
     
     let mut _res = client.delete(url)
