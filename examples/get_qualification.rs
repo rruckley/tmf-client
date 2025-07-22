@@ -9,7 +9,7 @@ use tmflib::{HasId,HasDescription};
 fn main() -> Result<(),TMFError> {
    #[cfg(feature = "tmf645")] 
    {
-        let qualifications = TMFClient::new("http://localhost:8001")
+        let qualifications = TMFClient::new("https://localhost:8001")
             .tmf645()
             .check_qualifcation()
             .list(None)?;

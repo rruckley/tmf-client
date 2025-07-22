@@ -11,7 +11,7 @@ fn main() -> Result<(),TMFError> {
     {
         let qualification = CheckServiceQualification::new("A Qualification Example");
 
-        let new_qual = TMFClient::new("http://localhost:8001")
+        let new_qual = TMFClient::new("https://localhost:8001")
             .tmf645()
             .check_qualifcation()
             .create(qualification)?;

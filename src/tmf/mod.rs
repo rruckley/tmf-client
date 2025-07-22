@@ -31,7 +31,11 @@ pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<V
     // Return results
     let url = format!("{}{}/{}",host,T::get_class_href(),id);
     // let objects = reqwest::blocking::get(url)?.text()?;
-    let client = reqwest::blocking::Client::new();    
+        let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        // .http2_prior_knowledge()
+        .use_rustls_tls()
+        .build()?;   
     let pkg = env!("CARGO_PKG_NAME");
     let ver = env!("CARGO_PKG_VERSION");
 
@@ -61,7 +65,10 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
     };
     let url = format!("{}{}?{}",host,T::get_class_href(),filter);
     // info!("Filter: {}",filter);
-    let client = reqwest::blocking::Client::new();    
+        let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .use_rustls_tls()
+        .build()?;   
 
     let objects = client
         .get(url)
@@ -75,7 +82,11 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
 /// Create a new TMF object
 pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T) -> Result<T,TMFError> {
     let url = format!("{}{}",host,T::get_class_href());
-    let client = reqwest::blocking::Client::new();
+    // let client = reqwest::blocking::Client::new();
+    let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .use_rustls_tls()
+        .build()?;
     let body_str = serde_json::to_string(&item)?;
     let mut res = client.post(url)
         .body(body_str)
@@ -90,7 +101,11 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
 /// Update an existing TMF object
 pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : impl Into<String>, patch : T) -> Result<T,TMFError> {
     let url = format!("{}{}/{}",host,T::get_class_href(),id.into());
-    let client = reqwest::blocking::Client::new();
+        let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .use_rustls_tls()
+        .build()?;
+
     let body_str = serde_json::to_string(&patch)?;
     let mut res = client.patch(url)
         .body(body_str)
@@ -105,7 +120,11 @@ pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : imp
 /// Delete an existing TMF object
 pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMFError> {
     let url = format!("{}{}/{}",host,T::get_class_href(),id.into().clone());
-    let client = reqwest::blocking::Client::new();
+        let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .use_rustls_tls()
+        .build()?;
+    
     let mut _res = client.delete(url)
         .header("User-Agent", get_agent())
         .send()?;

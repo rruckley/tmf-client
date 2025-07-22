@@ -11,11 +11,11 @@ use tmflib::tmf629::customer::Customer;
 fn main() -> Result<(),TMFError> {
     #[cfg(feature = "tmf629")]
     {
-        let org = Organization::new("An Organization");
+        let org = Organization::new("An Organization Example");
 
         let customer = Customer::new(org);
     
-        let new_customer = TMFClient::new("http://localhost:8001")
+        let new_customer = TMFClient::new("https://localhost:8001")
             .tmf629()
             .customer()
             .create(customer)?;

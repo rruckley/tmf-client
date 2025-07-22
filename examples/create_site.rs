@@ -12,7 +12,7 @@ fn main() -> Result<(),TMFError> {
     {
         let site = GeographicSite::new("Example Site");
 
-        let new_site = TMFClient::new("http://localhost:8001")
+        let new_site = TMFClient::new("https://localhost:8001")
             .tmf674()
             .site()
             .create(site)?;

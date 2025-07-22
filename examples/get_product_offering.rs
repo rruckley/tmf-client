@@ -8,7 +8,7 @@ use tmflib::{HasId,HasName};
 fn main() {
     #[cfg(feature = "tmf620")]
     {
-        let mut client = TMFClient::new("http://localhost:8001");
+        let mut client = TMFClient::new("https://localhost:8001");
         let filter = QueryOptions::default()
         //.limit(2)
         .offset(0);
