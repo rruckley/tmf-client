@@ -26,6 +26,8 @@ pub mod tmf648;
 #[cfg(feature = "tmf674")]
 pub mod tmf674;
 
+static USER_AGENT : &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
+
 /// Make API call to retrieve a single TMF object
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
     // Return results
@@ -33,27 +35,17 @@ pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<V
     // let objects = reqwest::blocking::get(url)?.text()?;
         let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .user_agent(USER_AGENT)
         // .http2_prior_knowledge()
         .use_rustls_tls()
         .build()?;   
-    let pkg = env!("CARGO_PKG_NAME");
-    let ver = env!("CARGO_PKG_VERSION");
 
-    let agent = format!("{}/{}",pkg,ver);
     let objects = client
         .get(url)
-        .header("User-Agent", agent)
         .send()?
         .text()?;
     let output : T = serde_json::from_str(objects.as_str())?;
     Ok(vec![output])
-}
-
-fn get_agent() -> String {
-    let pkg = env!("CARGO_PKG_NAME");
-    let ver = env!("CARGO_PKG_VERSION");
-
-    format!("{}/{}",pkg,ver)
 }
 
 /// Make API call to retrieve a set of TMF objects according to filter
@@ -68,11 +60,11 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
         let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
         .use_rustls_tls()
+        .user_agent(USER_AGENT)
         .build()?;   
 
     let objects = client
         .get(url)
-        .header("User-Agent", get_agent())
         .send()?
         .text()?;
     let output : Vec<T> = serde_json::from_str(objects.as_str())?;
@@ -86,11 +78,11 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
         .use_rustls_tls()
+        .user_agent(USER_AGENT)
         .build()?;
     let body_str = serde_json::to_string(&item)?;
     let mut res = client.post(url)
         .body(body_str)
-        .header("User-Agent", get_agent())
         .send()?;
     let mut output = String::default();
     let _ = res.read_to_string(&mut output);
@@ -104,12 +96,12 @@ pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : imp
         let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
         .use_rustls_tls()
+        .user_agent(USER_AGENT)
         .build()?;
 
     let body_str = serde_json::to_string(&patch)?;
     let mut res = client.patch(url)
         .body(body_str)
-        .header("User-Agent", get_agent())
         .send()?;
     let mut output = String::default();
     let _ = res.read_to_string(&mut output);
@@ -123,10 +115,10 @@ pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMF
         let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
         .use_rustls_tls()
+        .user_agent(USER_AGENT)
         .build()?;
     
     let mut _res = client.delete(url)
-        .header("User-Agent", get_agent())
         .send()?;
     // Return empty object for now to avoid
     // round trip to retrieve object
