@@ -1,6 +1,6 @@
 [package]
 name = "tmf-client"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com"]
 description = "A Rust client library for TMF conformant APIs"
@@ -15,10 +15,11 @@ tmf632 = ["tmflib/tmf632"]
 tmf633 = ["tmflib/tmf633"]
 tmf645 = ["tmflib/tmf645"]
 tmf648 = ["tmflib/tmf648"]
+tmf663 = ["tmflib/tmf663"]
 tmf674 = ["tmflib/tmf674"]
 v4 = ["tmflib/build-V4"]
 v5 = ["tmflib/build-V5"]
-default = ["tmf620","tmf622","tmf629","tmf632","tmf633","tmf645","tmf648","tmf674","v4"]
+default = ["tmf620","tmf622","tmf629","tmf632","tmf633","tmf645","tmf648","tmf663","tmf674","v4"]
 
 [dependencies]
 env_logger = "0.11.8"
