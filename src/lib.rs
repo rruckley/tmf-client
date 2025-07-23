@@ -38,6 +38,8 @@ use tmf::tmf633::TMF633;
 use tmf::tmf645::TMF645;
 #[cfg(feature = "tmf648")]
 use tmf::tmf648::TMF648;
+#[cfg(feature = "tmf663")]
+use tmf::tmf663::TMF663;
 #[cfg(feature = "tmf674")]
 use tmf::tmf674::TMF674;
 
@@ -154,6 +156,8 @@ pub struct TMFClient {
     tmf645 : Option<TMF645>,
     #[cfg(feature = "tmf648")]
     tmf648 : Option<TMF648>,
+    #[cfg(feature = "tmf663")]
+    tmf663 : Option<TMF663>,
     #[cfg(feature = "tmf674")]
     tmf674 : Option<TMF674>,
 }
@@ -195,6 +199,8 @@ impl TMFClient {
             tmf645 : None,
             #[cfg(feature = "tmf648")]
             tmf648:  None,
+            #[cfg(feature = "tmf663")]
+            tmf663:  None,
             #[cfg(feature = "tmf674")]
             tmf674 : None,
         }
@@ -261,6 +267,23 @@ impl TMFClient {
         instantiate(&mut self.tmf648, self.host.clone())
     }
 
+    /// Create access to TMF663 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf663 = TMFClient::new("http://localhost:8000")
+    ///     .tmf663();
+    /// ```
+    #[cfg(feature = "tmf663")]
+    pub fn tmf663(&mut self) -> TMF663 {
+        instantiate(&mut self.tmf663, self.host.clone())
+    }
+
+    /// Create access to TMF674 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf674 = TMFClient::new("http://localhost:8000")
+    ///     .tmf674();
+    /// ```
     #[cfg(feature = "tmf674")]
     pub fn tmf674(&mut self) -> TMF674 {
         instantiate(&mut self.tmf674, self.host.clone())
