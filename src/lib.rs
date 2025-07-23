@@ -35,6 +35,12 @@ use tmf::tmf632::TMF632;
 #[cfg(feature = "tmf633")]
 use tmf::tmf633::TMF633;
 #[cfg(feature = "tmf645")]
+#[cfg(feature = "tmf637")]
+use tmf::tmf637::TMF637;
+#[cfg(feature = "tmf638")]
+use tmf::tmf638::TMF638;
+#[cfg(feature = "tmf639")]
+use tmf::tmf639::TMF639;
 use tmf::tmf645::TMF645;
 #[cfg(feature = "tmf648")]
 use tmf::tmf648::TMF648;
