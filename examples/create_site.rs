@@ -10,7 +10,7 @@ use tmflib::tmf674::geographic_site_v4::GeographicSite;
 fn main() -> Result<(),TMFError> {
     #[cfg(feature = "tmf674")]
     {
-        let site = GeographicSite::new("Example Site");
+        let site = GeographicSite::new("Example Bad Site");
 
         let new_site = TMFClient::new("https://localhost:8001")
             .tmf674()

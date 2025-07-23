@@ -85,9 +85,15 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
         .body(body_str)
         .send()?;
     let mut output = String::default();
-    let _ = res.read_to_string(&mut output);
-    let item : T = serde_json::from_str(output.as_str())?;
-    Ok(item)
+    let _count = res.read_to_string(&mut output)?;
+    match res.status() {
+        reqwest::StatusCode::CREATED | reqwest::StatusCode::OK => {
+            let item : T = serde_json::from_str(output.as_str())?;
+            Ok(item)
+        },
+        _ => return Err(TMFError::Unknown(format!("Failed to create TMF object: {}", output))),
+    }
+    
 }
 
 /// Update an existing TMF object
