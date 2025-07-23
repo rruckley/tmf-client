@@ -37,6 +37,12 @@ impl From<serde_json::Error> for TMFError {
     }
 }
 
+impl From<std::io::Error> for TMFError {
+    fn from(value: std::io::Error) -> Self {
+        TMFError::NoConnection(value.to_string())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
