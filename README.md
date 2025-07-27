@@ -8,15 +8,18 @@ Interact with TMF compliant APIs using an SDK
 
 Currently supports:
 
-- TMF620
-- TMF622
-- TMF629
-- TMF632
-- TMF633
-- TMF645
-- TMF648
-- TMF663
-- TMF674
+- TMF620 Product Catalogue
+- TMF622 Product Order
+- TMF629 Customer
+- TMF632 Party
+- TMF633 Service Catalogue
+- TMF637 Product Inventory
+- TMF638 Service Inventory
+- TMF639 Resource Inventory
+- TMF645 Service Qualification
+- TMF648 Quote
+- TMF663 Shopping Cart
+- TMF674 Geographic Site
 
 ## Features
 
