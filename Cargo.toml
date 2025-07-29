@@ -22,7 +22,8 @@ tmf663 = ["tmflib/tmf663"]
 tmf674 = ["tmflib/tmf674"]
 v4 = ["tmflib/build-V4"]
 v5 = ["tmflib/build-V5"]
-default = ["tmf620","tmf622","tmf629","tmf632","tmf633","tmf637","tmf638","tmf639","tmf645","tmf648","tmf663","tmf674","v4"]
+insecure = []
+default = ["tmf620","tmf622","tmf629","tmf632","tmf633","tmf637","tmf638","tmf639","tmf645","tmf648","tmf663","tmf674","v4","insecure"]
 
 [dependencies]
 env_logger = "0.11.8"
