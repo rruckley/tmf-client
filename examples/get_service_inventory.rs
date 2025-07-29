@@ -8,7 +8,6 @@ use tmf_client::QueryOptions;
 fn main() -> Result<(),TMFError> {
     #[cfg(feature = "tmf638")]
     {
-        use tmflib::HasName;
 
         let opt = QueryOptions::default()
             // .name("SD L3 Service CFS Instance #0123087452")
