@@ -40,11 +40,13 @@ static USER_AGENT : &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
     // Return results
     let url = format!("{}{}/{}",host,T::get_class_href(),id);
-    // let objects = reqwest::blocking::get(url)?.text()?;
-        let client = reqwest::blocking::Client::builder()
-        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
+    
+    let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(insecure)// For testing purposes only, do not use in production
         .user_agent(USER_AGENT)
-        // .http2_prior_knowledge()
         .use_rustls_tls()
         .build()?;   
 
@@ -64,12 +66,14 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
         None => String::default(),
     };
     let url = format!("{}{}?{}",host,T::get_class_href(),filter);
-    // info!("Filter: {}",filter);
-        let client = reqwest::blocking::Client::builder()
-        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
-        .use_rustls_tls()
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
+    let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
         .user_agent(USER_AGENT)
-        .build()?;   
+        .use_rustls_tls()
+        .build()?;    
 
     let objects = client
         .get(url)
@@ -82,9 +86,11 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
 /// Create a new TMF object
 pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T) -> Result<T,TMFError> {
     let url = format!("{}{}",host,T::get_class_href());
-    // let client = reqwest::blocking::Client::new();
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
     let client = reqwest::blocking::Client::builder()
-        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
         .use_rustls_tls()
         .user_agent(USER_AGENT)
         .build()?;
@@ -99,7 +105,7 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
             let item : T = serde_json::from_str(output.as_str())?;
             Ok(item)
         },
-        _ => return Err(TMFError::Unknown(format!("Failed to create TMF object: {}", output))),
+        _ => Err(TMFError::Unknown(format!("Failed to create TMF object: {output}"))),
     }
     
 }
@@ -107,8 +113,11 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
 /// Update an existing TMF object
 pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : impl Into<String>, patch : T) -> Result<T,TMFError> {
     let url = format!("{}{}/{}",host,T::get_class_href(),id.into());
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
         let client = reqwest::blocking::Client::builder()
-        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
         .use_rustls_tls()
         .user_agent(USER_AGENT)
         .build()?;
@@ -126,8 +135,11 @@ pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : imp
 /// Delete an existing TMF object
 pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMFError> {
     let url = format!("{}{}/{}",host,T::get_class_href(),id.into().clone());
-        let client = reqwest::blocking::Client::builder()
-        .danger_accept_invalid_certs(true) // For testing purposes only, do not use in production
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
+    let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
         .use_rustls_tls()
         .user_agent(USER_AGENT)
         .build()?;
