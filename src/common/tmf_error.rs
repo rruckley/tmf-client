@@ -3,12 +3,16 @@
 
 use thiserror::Error;
 
+/// TMF Error
 #[derive(Debug,Error)]
 pub enum TMFError {
+    /// NoConnection Error when making a request to the TMF API
     #[error("TMFError: {0}")]
     NoConnection(String),
+    /// Unknown Error when making a request to the TMF API
     #[error("TMFError: {0}")]
     Unknown(String),
+    /// Serialization Error when serializing or deserializing a TMF object
     #[error("TMFError: {0}")]
     Serialization(String)
 }
