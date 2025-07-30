@@ -1,6 +1,6 @@
 //! TMF622 Product Order
 use tmflib::{tmf622::product_order_v4::ProductOrder, Uri};
-use crate::{Operations,HasNew};
+use crate::{Operations,Config,HasNew};
 
 use super::{
     get_tmf,
@@ -13,7 +13,7 @@ use super::{
 /// TMF622 Product Order Object
 pub struct TMF622ProductOrder {
     /// End-point for TMF622
-    host : Uri,
+    config : &'static Config,
 }
 
 impl Operations for TMF622ProductOrder {
@@ -54,9 +54,9 @@ pub struct TMF622 {
 }
 
 impl HasNew<TMF622> for TMF622 {
-    fn new(host : Uri) -> TMF622 {
+    fn new(config : &Config) -> TMF622 {
         TMF622 {
-            host
+            config
         }      
     }
 }

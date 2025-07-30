@@ -10,18 +10,18 @@ use tmflib::Uri;
 use super::{get_tmf,list_tmf,create_tmf,update_tmf,delete_tmf};
 use crate::common::tmf_error::TMFError;
 
-use crate::{QueryOptions,Operations,HasNew};
+use crate::{QueryOptions,Operations,HasNew,Config};
 
 /// TMF620 Category API calls
 #[derive(Clone,Default,Debug)]
 pub struct TMF620Category {
-    host : Uri,
+    config : &Config,
 }
 
 impl TMF620Category {
     /// Create a new category reference
-    pub fn new(host : Uri) -> TMF620Category {
-        TMF620Category { host }
+    pub fn new(config : &Config) -> TMF620Category {
+        TMF620Category { config }
     }
 }
 
@@ -29,13 +29,13 @@ impl Operations for TMF620Category {
     type TMF = Category;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(self.host.clone(), item)   
+        create_tmf(self.config, item)   
     }
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(self.host.clone(), id)        
+        delete_tmf(self.config, id)        
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(self.host.clone(),id.into())    
+        get_tmf(self.config,id.into())    
     }
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
         list_tmf(self.host.clone(),filter)    
