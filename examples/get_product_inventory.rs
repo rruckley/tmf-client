@@ -11,7 +11,7 @@ fn main() -> Result<(),TMFError> {
     {
         use tmflib::HasName;
 
-        let products = TMFClient::new("https://localhost:8001")
+        let products = TMFClient::new("https://localhost:8001",None)
             .tmf637()
             .product()
             .list(None)?;

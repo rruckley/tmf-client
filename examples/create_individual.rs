@@ -6,6 +6,7 @@ use tmflib::tmf632::individual_v4::Individual;
 #[cfg(feature = "tmf632")]
 use tmf_client::{Operations, TMFClient};
 
+use tmf_client::DEFAULT_PORT;
 
 fn main() -> Result<(),TMFError> {
     #[cfg(feature = "tmf632")]
@@ -15,7 +16,7 @@ fn main() -> Result<(),TMFError> {
             .gender("Male")
             .title("Master");
 
-        let mut client = TMFClient::new("https://localhost:8001");
+        let mut client =TMFClient::new("https://localhost:8001",Some(DEFAULT_PORT));
 
         let new_individual = client.tmf632().individual().create(individual)?;
 

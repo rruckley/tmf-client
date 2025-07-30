@@ -10,7 +10,7 @@ use tmflib::{HasId,HasName};
 fn main() -> Result<(),TMFError> {
     #[cfg(feature = "tmf632")]
     {
-        let mut client = TMFClient::new("https://localhost:8001");
+        let mut client = TMFClient::new("https://localhost:8001",None);
 
         let individuals = client
             .tmf632()

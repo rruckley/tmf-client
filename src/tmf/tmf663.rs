@@ -6,11 +6,10 @@
 //! interface for interacting with the API.
     
 
-use tmflib::Uri;
 use tmflib::tmf663::shopping_cart::ShoppingCart;
 
 use crate::common::tmf_error::TMFError;
-use crate::{Operations,HasNew};
+use crate::{Operations,HasNew,Config};
 use super::{
     create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf
 };
@@ -18,19 +17,19 @@ use super::{
 /// TMF663 Shopping Cart API Object
 #[derive(Clone,Default,Debug)]
 pub struct TMF663ShoppingCart {
-    host : Uri,
+    config: Config,
 }
 
 /// Operations trait implementation for TMF663ShoppingCart
 #[derive(Clone,Default,Debug)]
 pub struct TMF663 {
-    host: Uri,
+    config: Config,
 }
 
 impl HasNew<TMF663> for TMF663 {
-    fn new(host : Uri) -> TMF663 {
+    fn new(config : Config) -> TMF663 {
         TMF663 {
-            host
+            config
         }
     }
 }
@@ -41,13 +40,13 @@ impl TMF663 {
     /// to perform operations related to shopping carts.
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let shopping_cart = TMFClient::new("http://localhost:8000")
+    /// let shopping_cart = TMFClient::new("http://localhost:8000",None)
     ///     .tmf663()
     ///     .shopping_cart();
     /// ```
     pub fn shopping_cart(&self) -> TMF663ShoppingCart {
         TMF663ShoppingCart {
-            host: self.host.clone(),
+            config: self.config.clone(),
         }
     }
 }
@@ -56,18 +55,18 @@ impl Operations for TMF663ShoppingCart {
     type TMF = ShoppingCart;
     
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(self.host.clone(),item)    
+        create_tmf(&self.config,item)    
     }
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf::<ShoppingCart>(self.host.clone(), id) 
+        delete_tmf(&self.config, id) 
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(self.host.clone(),id.into())  
+        get_tmf(&self.config,id.into())  
     }
     fn list(&self, filter : Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(self.host.clone(),filter)  
+        list_tmf(&self.config,filter)  
     }
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(self.host.clone(), id, patch) 
+        update_tmf(&self.config, id, patch) 
     }
 }

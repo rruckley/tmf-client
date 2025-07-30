@@ -15,7 +15,7 @@ fn main() -> Result<(),TMFError>{
         use tmf_client::{Operations,TMFClient};
 
         // Initialize the TMF client with the base URI of your TMF server
-        let mut client = TMFClient::new("https://localhost:8001");
+        let mut client = TMFClient::new("https://localhost:8001",None);
 
         let out = client
             .tmf663()

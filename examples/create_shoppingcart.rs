@@ -13,7 +13,7 @@ fn main() -> Result<(),TMFError>{
     
 
     // Initialize the TMF client with the base URI of your TMF server
-    let mut client = TMFClient::new("https://localhost:8001");
+    let mut client = TMFClient::new("https://localhost:8001",None);
 
     let cart = ShoppingCart::new();
 

@@ -6,22 +6,22 @@ use tmflib::tmf620::category::Category;
 use tmflib::tmf620::product_offering::ProductOffering;
 use tmflib::tmf620::product_offering_price::ProductOfferingPrice;
 use tmflib::tmf620::product_specification::ProductSpecification;
-use tmflib::Uri;
+
 use super::{get_tmf,list_tmf,create_tmf,update_tmf,delete_tmf};
 use crate::common::tmf_error::TMFError;
 
-use crate::{QueryOptions,Operations,HasNew};
+use crate::{QueryOptions,Operations,HasNew,Config};
 
 /// TMF620 Category API calls
-#[derive(Clone,Default,Debug)]
+#[derive(Clone,Debug)]
 pub struct TMF620Category {
-    host : Uri,
+    config : Config,
 }
 
 impl TMF620Category {
     /// Create a new category reference
-    pub fn new(host : Uri) -> TMF620Category {
-        TMF620Category { host }
+    pub fn new(config : Config) -> TMF620Category {
+        TMF620Category { config }
     }
 }
 
@@ -29,32 +29,32 @@ impl Operations for TMF620Category {
     type TMF = Category;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(self.host.clone(), item)   
+        create_tmf(&self.config, item)   
     }
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(self.host.clone(), id)        
+        delete_tmf(&self.config, id)        
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(self.host.clone(),id.into())    
+        get_tmf(&self.config,id.into())    
     }
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(self.host.clone(),filter)    
+        list_tmf(&self.config,filter)    
     }
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(self.host.clone(), id, patch)
+        update_tmf(&self.config, id, patch)
     }
 }
 
 /// TMF620 Catalog API calls
-#[derive(Clone,Default,Debug)]
+#[derive(Clone,Debug)]
 pub struct TMF620Catalog {
-    host : Uri,
+    config : Config,
 }
 
 impl TMF620Catalog {
     /// Create a new catalog reference
-    pub fn new(host : Uri) -> TMF620Catalog {
-        TMF620Catalog { host }
+    pub fn new(config : Config) -> TMF620Catalog {
+        TMF620Catalog { config }
     }
 }
 
@@ -62,67 +62,67 @@ impl Operations for TMF620Catalog {
     type TMF = Catalog;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(self.host.clone(), item)   
+        create_tmf(&self.config, item)   
     }
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(self.host.clone(), id)       
+        delete_tmf(&self.config, id)       
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(self.host.clone(),id.into())    
+        get_tmf(&self.config,id.into())    
     }
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(self.host.clone(),filter)    
+        list_tmf(&self.config,filter)    
     }
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(self.host.clone(), id, patch)    
+        update_tmf(&self.config, id, patch)    
     }
 }
 
 
 
 /// TMF620 ProductOffering API calls
-#[derive(Clone,Default,Debug)]
+#[derive(Clone,Debug)]
 pub struct TMF620ProductOffering {
-    host : Uri,
+    config : Config,
 }
 
 impl TMF620ProductOffering {
     /// Create a new product_offering reference
-    pub fn new(host : Uri) -> TMF620ProductOffering {
-        TMF620ProductOffering { host }
+    pub fn new(config : Config) -> TMF620ProductOffering {
+        TMF620ProductOffering { config }
     }
 }
 
-impl Operations for TMF620ProductOffering {
+impl Operations for TMF620ProductOffering{
     type TMF = ProductOffering;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(self.host.clone(), item)    
+        create_tmf(&self.config, item)    
     }
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(self.host.clone(), id)       
+        delete_tmf(&self.config, id)       
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(self.host.clone(),id.into())    
+        get_tmf(&self.config,id.into())    
     }
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(self.host.clone(),filter)    
+        list_tmf(&self.config,filter)    
     }
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(self.host.clone(), id, patch)    
+        update_tmf(&self.config, id, patch)    
     }
 }
 
 /// TMF620 ProductOffering API calls
-#[derive(Clone,Default,Debug)]
+#[derive(Clone,Debug)]
 pub struct TMF620ProductOfferingPrice {
-    host : Uri,
+    config : Config,
 }
 
 impl TMF620ProductOfferingPrice {
     /// Create a new product_offering reference
-    pub fn new(host : Uri) -> TMF620ProductOfferingPrice {
-        TMF620ProductOfferingPrice { host }
+    pub fn new(config : Config) -> TMF620ProductOfferingPrice {
+        TMF620ProductOfferingPrice { config }
     }
 }
 
@@ -130,32 +130,32 @@ impl Operations for TMF620ProductOfferingPrice {
     type TMF = ProductOfferingPrice;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(self.host.clone(), item)    
+        create_tmf(&self.config, item)    
     }
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(self.host.clone(), id)       
+        delete_tmf(&self.config, id)       
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(self.host.clone(),id.into())    
+        get_tmf(&self.config,id.into())    
     }
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(self.host.clone(),filter)    
+        list_tmf(&self.config,filter)    
     }
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(self.host.clone(), id, patch)    
+        update_tmf(&self.config, id, patch)    
     }
 }
 
 /// TMF620 ProductSpecification API calls
-#[derive(Clone,Default,Debug)]
+#[derive(Clone,Debug)]
 pub struct TMF620ProductSpecification {
-    host : Uri,
+    config : Config,
 }
 
 impl TMF620ProductSpecification {
     /// Create a new product_offering reference
-    pub fn new(host : Uri) -> TMF620ProductSpecification {
-        TMF620ProductSpecification { host }
+    pub fn new(config : Config) -> TMF620ProductSpecification {
+        TMF620ProductSpecification { config }
     }
 }
 
@@ -163,32 +163,32 @@ impl Operations for TMF620ProductSpecification {
     type TMF = ProductSpecification;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(self.host.clone(), item)  
+        create_tmf(&self.config, item)  
     }
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(self.host.clone(), id)       
+        delete_tmf(&self.config, id)       
     }
     fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(self.host.clone(),id.into())    
+        get_tmf(&self.config,id.into())    
     }
     fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(self.host.clone(),filter)    
+        list_tmf(&self.config,filter)    
     }
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(self.host.clone(), id, patch)    
+        update_tmf(&self.config, id, patch)    
     }
 }
 
 /// Product Catalogue API
-#[derive(Clone,Default,Debug)]
+#[derive(Clone,Debug)]
 pub struct TMF620 {
-    host : Uri,
+    config : Config,
 }
 
 impl HasNew<TMF620> for TMF620 {
-    fn new(host : Uri) -> TMF620 {
+    fn new(config : Config) -> TMF620 {
         TMF620 {
-            host
+            config
         }        
     }
 }
@@ -196,25 +196,25 @@ impl HasNew<TMF620> for TMF620 {
 impl TMF620 {
     /// Return function for managing catalogs
     pub fn catalog(&self) -> TMF620Catalog {
-        TMF620Catalog::new(self.host.clone())
+        TMF620Catalog::new(self.config.clone())
     }
     /// Return function for managing categories
     pub fn category(&self) -> TMF620Category {
-        TMF620Category::new(self.host.clone())
+        TMF620Category::new(self.config.clone())
     }
 
     /// Return function for managing product_offering
     pub fn product_offering(&self) -> TMF620ProductOffering {
-        TMF620ProductOffering::new(self.host.clone())
+        TMF620ProductOffering::new(self.config.clone())
     }
 
     /// Return function for managing product_offering
     pub fn product_offering_price(&self) -> TMF620ProductOfferingPrice {
-        TMF620ProductOfferingPrice::new(self.host.clone())
+        TMF620ProductOfferingPrice::new(self.config.clone())
     }
 
     /// Return function for managing product_offering
     pub fn product_specification(&self) -> TMF620ProductSpecification {
-        TMF620ProductSpecification::new(self.host.clone())
+        TMF620ProductSpecification::new(self.config.clone())
     }
 }
