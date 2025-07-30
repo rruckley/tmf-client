@@ -7,13 +7,18 @@
 //! 
 //! Currently supports:
 //! 
-//! - TMF620
-//! - TMF622
-//! - TMF629
-//! - TMF632
-//! - TMF633
-//! - TMF648
-//! - TMF674
+//! - TMF620 Product Catalog Management
+//! - TMF622 Product Order Management
+//! - TMF629 Customer Management
+//! - TMF632 Party Management
+//! - TMF633 Service Catalog Management
+//! - TMF637 Product Inventory Management
+//! - TMF638 Service Inventory Management
+//! - TMF639 Resource Inventory Management
+//! - TMF645 Service Qualification Management
+//! - TMF648 Quote Management
+//! - TMF663 Shopping Cart Management
+//! - TMF674 Geographic Site Management
 //! 
 //! ## Features
 //! All TMF APIs can be conditionally compiled. Deafult includes all APIs using V4 specifications.
