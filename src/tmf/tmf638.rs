@@ -2,9 +2,8 @@
 
 // use tmflib::tmf637::v4::product::Product;
 use tmflib::tmf638::service::Service;
-use tmflib::Uri;
 
-use crate::{Operations,HasNew};
+use crate::{Operations,HasNew,Config};
 use crate::common::tmf_error::TMFError;
 use super::{
     create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf
@@ -27,19 +26,19 @@ use super::{
 // impl TMF645 {
 //     /// Access the Check Service Qualification API
 //     pub fn check_qualifcation(&mut self) -> TMF645CheckServiceQualification {
-//         TMF645CheckServiceQualification::new(self.host.clone())
+//         TMF645CheckServiceQualification::new(self.config)
 //     }
 // }
 
 /// TMF638 Service Inventory Management API
 pub struct TMF638ServiceInventoryManagement {
-    host: Uri,
+    config: Config,
 }
 
 impl TMF638ServiceInventoryManagement {
     /// Create a new instance of the Service Inventory Management module of TMF638 API
-    pub fn new(host: Uri) -> TMF638ServiceInventoryManagement {
-        TMF638ServiceInventoryManagement { host }
+    pub fn new(config: Config) -> TMF638ServiceInventoryManagement {
+        TMF638ServiceInventoryManagement { config }
     }
 }
 
@@ -47,19 +46,19 @@ impl Operations for TMF638ServiceInventoryManagement {
     type TMF = Service;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
-        create_tmf(self.host.clone(), item)
+        create_tmf(&self.config, item)
     }
     fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
-        delete_tmf(self.host.clone(), id.into())
+        delete_tmf(&self.config, id.into())
     }
     fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
-        get_tmf(self.host.clone(), id.into())
+        get_tmf(&self.config, id.into())
     }
     fn list(&self, filter: Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
-        list_tmf(self.host.clone(), filter)
+        list_tmf(&self.config, filter)
     }
     fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
-        update_tmf(self.host.clone(), id.into(), patch)
+        update_tmf(&self.config, id.into(), patch)
     }
 }
 
@@ -67,18 +66,18 @@ impl Operations for TMF638ServiceInventoryManagement {
 /// This module provides access to the Service Inventory Management API of TMF638.
 #[derive(Clone,Default,Debug)]
 pub struct TMF638 {
-    host: Uri,
+    config: Config,
 }
 
 impl HasNew<TMF638> for TMF638 {
-    fn new(host: Uri) -> TMF638 {
-        TMF638 { host }
+    fn new(config: Config) -> TMF638 {
+        TMF638 { config }
     }
 }
 
 impl TMF638 {
     /// Access the Product Inventory Management API
     pub fn service(&mut self) -> TMF638ServiceInventoryManagement {
-        super::tmf638::TMF638ServiceInventoryManagement::new(self.host.clone())
+        super::tmf638::TMF638ServiceInventoryManagement::new(self.config.clone())
     }
 }

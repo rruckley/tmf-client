@@ -9,7 +9,7 @@ fn main() {
     #[cfg(feature = "tmf620")]
     {
         // Get a list of categories from TMF620
-        let mut client = TMFClient::new("https://localhost:8001");
+        let mut client = TMFClient::new("https://localhost:8001",None);
         let filter = QueryOptions::default()
             .limit(2)
             .offset(0);

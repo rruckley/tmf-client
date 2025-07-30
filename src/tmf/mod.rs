@@ -5,7 +5,7 @@ use std::io::Read;
 
 use crate::{Config,QueryOptions};
 use crate::common::tmf_error::TMFError;
-use tmflib::{HasId,Uri};
+use tmflib::{HasId,};
 use serde::{de::DeserializeOwned, Serialize};
 // use log::info;
 
@@ -37,7 +37,7 @@ pub mod tmf674;
 static USER_AGENT : &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
 /// Make API call to retrieve a single TMF object
-pub fn get_tmf<T : HasId + DeserializeOwned>(config: &'static Config, id : String) -> Result<Vec<T>,TMFError> {
+pub fn get_tmf<T : HasId + DeserializeOwned>(config: &Config, id : String) -> Result<Vec<T>,TMFError> {
     // Return results
     let url = format!("{}{}/{}",config.host,T::get_class_href(),id);
     
@@ -124,13 +124,11 @@ pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(config : &Config, id
 }
 
 /// Delete an existing TMF object
-pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMFError> {
-    let url = format!("{}{}/{}",host,T::get_class_href(),id.into().clone());
-    let insecure = false;
-    #[cfg(feature = "insecure")]
-    let insecure = true; // For testing purposes only, do not use in production
+pub fn delete_tmf<T : HasId>(config : &Config, id : impl Into<String>) -> Result<T,TMFError> {
+    let url = format!("{}{}/{}",config.host,T::get_class_href(),id.into().clone());
+  
     let client = reqwest::blocking::Client::builder()
-        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
+        .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
         .use_rustls_tls()
         .user_agent(USER_AGENT)
         .build()?;
