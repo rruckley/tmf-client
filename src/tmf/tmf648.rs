@@ -1,29 +1,26 @@
-//! TMF629 Module
-//! Manage objects with TMF629 Customer Management API.
+//! TMF648 Module
 
-use tmflib::tmf629::customer::Customer;
 use tmflib::Uri;
+use tmflib::tmf648::quote::Quote;
 
-use crate::{Operations,HasNew};
 use crate::common::tmf_error::TMFError;
+use crate::{Operations,HasNew};
 use super::{
-    create_tmf, get_tmf, list_tmf, update_tmf, delete_tmf
+    create_tmf,
+    get_tmf,
+    list_tmf,
+    update_tmf,
+    delete_tmf
 };
 
-/// TMF629 Customer API
-pub struct TMF629Customer {
-    host  :Uri,
+
+/// Interact with the quote object from TMF648
+pub struct TMF648Quote {
+    host: Uri,
 }
 
-impl TMF629Customer {
-    /// Create a new instance of the Customer module of TMF629 API
-    pub fn new(host : Uri) -> TMF629Customer {
-        TMF629Customer { host }
-    }
-}
-
-impl Operations for TMF629Customer {
-    type TMF = Customer;
+impl Operations for TMF648Quote {
+    type TMF = Quote;
 
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
         create_tmf(self.host.clone(),item)    
@@ -42,23 +39,28 @@ impl Operations for TMF629Customer {
     }
 }
 
-/// TMF629 Customer Management API
+
+
+/// Product Catalogue API
 #[derive(Clone,Default,Debug)]
-pub struct TMF629 {
+pub struct TMF648 {
     host : Uri,
 }
 
-impl HasNew<TMF629> for TMF629 {
-    fn new(host : Uri) -> TMF629 {
-        TMF629 {
+impl HasNew<TMF648> for TMF648 {
+    fn new(host : Uri) -> TMF648 {
+        TMF648 {
             host
-        }  
+        }
     }
+
 }
 
-impl TMF629 {
-    /// Access the Customer API
-    pub fn customer(&mut self) -> TMF629Customer {
-        TMF629Customer::new(self.host.clone())
+impl TMF648 {
+    /// provide a quote API object to interact with
+    pub fn quote(&self) -> TMF648Quote {
+        TMF648Quote {
+            host: self.host.clone(),
+        }
     }
 }

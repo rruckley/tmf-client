@@ -19,30 +19,65 @@ use oauth2::{
     AuthUrl,
     TokenUrl
 };
+
+#[cfg(feature = "tmf620")]
 pub mod tmf620;
+#[cfg(feature = "tmf622")]
 pub mod tmf622;
+#[cfg(feature = "tmf629")]
 pub mod tmf629;
+#[cfg(feature = "tmf632")]
 pub mod tmf632;
+#[cfg(feature = "tmf633")]
+pub mod tmf633;
+#[cfg(feature = "tmf637")]
+pub mod tmf637;
+#[cfg(feature = "tmf638")]
+pub mod tmf638;
+#[cfg(feature = "tmf639")]
+pub mod tmf639;
+#[cfg(feature = "tmf645")]
+pub mod tmf645;
+#[cfg(feature = "tmf648")]
+pub mod tmf648;
+#[cfg(feature = "tmf663")]
+pub mod tmf663;
+#[cfg(feature = "tmf674")]
+pub mod tmf674;
+
+static USER_AGENT : &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
 /// Get a new OAuth toekn
 #[cfg(feature = "oauth2")]
 pub fn get_token() {
-    let _client = BasicClient::new(
-        ClientId::new(std::env::var("OAUTH_CLIENT_ID").unwrap()),
-        Some(ClientSecret::new(std::env::var("OAUTH_CLIENT_SECRET").unwrap())),
-        AuthUrl::new(std::env::var("OAUTH_AUTH_URL").unwrap()).unwrap(),
-        Some(TokenUrl::new(std::env::var("OAUTH_TOKEN_URL").unwrap()).unwrap())
-    );
+    // let _client = BasicClient::new(
+    //     ClientId::new(std::env::var("OAUTH_CLIENT_ID").unwrap()),
+    //     Some(ClientSecret::new(std::env::var("OAUTH_CLIENT_SECRET").unwrap())),
+    //     AuthUrl::new(std::env::var("OAUTH_AUTH_URL").unwrap()).unwrap(),
+    //     Some(TokenUrl::new(std::env::var("OAUTH_TOKEN_URL").unwrap()).unwrap())
+    // );
 }
 
 /// Make API call to retrieve a single TMF object
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
     // Return results
     let url = format!("{}{}/{}",host,T::get_class_href(),id);
-    let objects = reqwest::blocking::get(url)?.text()?;
-    let output : Vec<T> = serde_json::from_str(objects.as_str())?;
-    Ok(output)
-    // Err(TMFError::from("Converting to OAuth support"))
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
+    
+    let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(insecure)// For testing purposes only, do not use in production
+        .user_agent(USER_AGENT)
+        .use_rustls_tls()
+        .build()?;   
+
+    let objects = client
+        .get(url)
+        .send()?
+        .text()?;
+    let output : T = serde_json::from_str(objects.as_str())?;
+    Ok(vec![output])
 }
 
 /// Make API call to retrieve a set of TMF objects according to filter
@@ -53,8 +88,19 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
         None => String::default(),
     };
     let url = format!("{}{}?{}",host,T::get_class_href(),filter);
-    // info!("Filter: {}",filter);
-    let objects = reqwest::blocking::get(url)?.text()?;
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
+    let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
+        .user_agent(USER_AGENT)
+        .use_rustls_tls()
+        .build()?;    
+
+    let objects = client
+        .get(url)
+        .send()?
+        .text()?;
     let output : Vec<T> = serde_json::from_str(objects.as_str())?;
     Ok(output)
 }
@@ -62,9 +108,44 @@ pub fn list_tmf<T : HasId + DeserializeOwned>(host: Uri, filter : Option<QueryOp
 /// Create a new TMF object
 pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T) -> Result<T,TMFError> {
     let url = format!("{}{}",host,T::get_class_href());
-    let client = reqwest::blocking::Client::new();
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
+    let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
+        .use_rustls_tls()
+        .user_agent(USER_AGENT)
+        .build()?;
     let body_str = serde_json::to_string(&item)?;
     let mut res = client.post(url)
+        .body(body_str)
+        .send()?;
+    let mut output = String::default();
+    let _count = res.read_to_string(&mut output)?;
+    match res.status() {
+        reqwest::StatusCode::CREATED | reqwest::StatusCode::OK => {
+            let item : T = serde_json::from_str(output.as_str())?;
+            Ok(item)
+        },
+        _ => Err(TMFError::Unknown(format!("Failed to create TMF object: {output}"))),
+    }
+    
+}
+
+/// Update an existing TMF object
+pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, id : impl Into<String>, patch : T) -> Result<T,TMFError> {
+    let url = format!("{}{}/{}",host,T::get_class_href(),id.into());
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
+        let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
+        .use_rustls_tls()
+        .user_agent(USER_AGENT)
+        .build()?;
+
+    let body_str = serde_json::to_string(&patch)?;
+    let mut res = client.patch(url)
         .body(body_str)
         .send()?;
     let mut output = String::default();
@@ -73,15 +154,23 @@ pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(host : Uri, item : T
     Ok(item)
 }
 
-/// Update an existing TMF object
-pub fn update_tmf<T : HasId + DeserializeOwned>(host : Uri, id : impl Into<String>, _patch : T) -> Result<T,TMFError> {
-    let _url = format!("{}{}/{}",host,T::get_class_href(),id.into());
-    //let object = reqwest::blocking::ClientBuilder:
-    Err(TMFError::from("Not implemented yet"))
-}
-
 /// Delete an existing TMF object
 pub fn delete_tmf<T : HasId>(host : Uri, id : impl Into<String>) -> Result<T,TMFError> {
-    let _url = format!("{}{}/{}",host,T::get_class_href(),id.into());
-    Err(TMFError::from("Not implemented yet"))
+    let url = format!("{}{}/{}",host,T::get_class_href(),id.into().clone());
+    let insecure = false;
+    #[cfg(feature = "insecure")]
+    let insecure = true; // For testing purposes only, do not use in production
+    let client = reqwest::blocking::Client::builder()
+        .danger_accept_invalid_certs(insecure) // For testing purposes only, do not use in production
+        .use_rustls_tls()
+        .user_agent(USER_AGENT)
+        .build()?;
+    
+    let mut _res = client.delete(url)
+        .send()?;
+    // Return empty object for now to avoid
+    // round trip to retrieve object
+    let out = T::default();
+    // out.set_id(id);
+    Ok(out)
 }

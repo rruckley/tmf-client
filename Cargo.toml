@@ -1,6 +1,6 @@
 [package]
 name = "tmf-client"
-version = "0.1.1"
+version = "0.1.9"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com"]
 description = "A Rust client library for TMF conformant APIs"
@@ -8,15 +8,31 @@ repository = "https://github.com/rruckley/tmf-client"
 license = "Apache-2.0"
 
 [features]
+tmf620 = ["tmflib/tmf620"]
+tmf622 = ["tmflib/tmf622"]
+tmf629 = ["tmflib/tmf629"]
+tmf632 = ["tmflib/tmf632"]
+tmf633 = ["tmflib/tmf633"]
+tmf637 = ["tmflib/tmf637"]
+tmf638 = ["tmflib/tmf638"]
+tmf639 = ["tmflib/tmf639"]
+tmf645 = ["tmflib/tmf645"]
+tmf648 = ["tmflib/tmf648"]
+tmf663 = ["tmflib/tmf663"]
+tmf674 = ["tmflib/tmf674"]
 v4 = ["tmflib/build-V4"]
 v5 = ["tmflib/build-V5"]
+insecure = []
 oauth2 = ["dep:oauth2"]
-default = ["v4","oauth2"]
+default = ["tmf620","tmf622","tmf629","tmf632","tmf633","tmf637","tmf638","tmf639","tmf645","tmf648","tmf663","tmf674","v4","insecure","oauth2"]
 
 [dependencies]
 env_logger = "0.11.5"
-oauth2 = { version = "4.4.2", optional = true}
-reqwest = {version = "0.12.8", features = ["blocking","rustls-tls"]}
+oauth2 = { version = "5.0.0", optional = true}
+reqwest = {version = "0.12.22", features = ["blocking","rustls-tls"]}
 serde = "1.0.214"
 serde_json = "1.0.132"
 tmflib = "0.1.22"
+
+thiserror = "2.0.12"
+

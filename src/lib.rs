@@ -1,21 +1,22 @@
-
-// Copyright [2024] [Ryan Ruckley]
-
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-
-//     http://www.apache.org/licenses/LICENSE-2.0
-
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-//! TMF Client
-//! # Description
-//! This library provides a client into TMF APIs leveraging tmflib for schema definitons.
+//! # TMF Client Library
+//! 
+//! ## Description
+//! Interact with TMF compliant APIs using an SDK
+//! 
+//! ## Supported TMF APIs
+//! 
+//! Currently supports:
+//! 
+//! - TMF620
+//! - TMF622
+//! - TMF629
+//! - TMF632
+//! - TMF633
+//! - TMF648
+//! - TMF674
+//! 
+//! ## Features
+//! All TMF APIs can be conditionally compiled. Deafult includes all APIs using V4 specifications.
 
 #![warn(missing_docs)]
 
@@ -23,43 +24,89 @@ pub mod tmf;
 pub mod common;
 
 use common::tmf_error::TMFError;
+#[cfg(feature = "tmf620")]
 use tmf::tmf620::TMF620;
+#[cfg(feature = "tmf622")]
 use tmf::tmf622::TMF622;
+#[cfg(feature = "tmf629")]
 use tmf::tmf629::TMF629;
+#[cfg(feature = "tmf632")]
 use tmf::tmf632::TMF632;
+#[cfg(feature = "tmf633")]
+use tmf::tmf633::TMF633;
+#[cfg(feature = "tmf637")]
+use tmf::tmf637::TMF637;
+#[cfg(feature = "tmf638")]
+use tmf::tmf638::TMF638;
+#[cfg(feature = "tmf639")]
+use tmf::tmf639::TMF639;
+#[cfg(feature = "tmf645")]
+use tmf::tmf645::TMF645;
+#[cfg(feature = "tmf648")]
+use tmf::tmf648::TMF648;
+#[cfg(feature = "tmf663")]
+use tmf::tmf663::TMF663;
+#[cfg(feature = "tmf674")]
+use tmf::tmf674::TMF674;
 
-use tmflib::HasId;
+
+use tmflib::{HasId,Uri};
 
 /// Fields for filtering output
 #[derive(Clone, Default, Debug)]
 pub struct QueryOptions {
     /// Specific set of fields delimited by comma
     pub fields : Option<String>,
-    /// Number of records to return
+    /// Limit the number of results returned
     pub limit : Option<u16>,
-    /// Offset for first record in returned results
+    /// Offset the results returned
     pub offset : Option<u16>,
     /// Simple filter on name field, if it exists.
     pub name : Option<String>,
 }
 
 impl QueryOptions {
-    /// Set the fields to return as a comma separated list.
+    /// Setting the field on an existing QueryOptions
+    /// ```
+    /// # use tmf_client::QueryOptions;
+    /// let opt = QueryOptions::default()
+    ///     .fields("id,name,description".to_string());
+    /// ```
     pub fn fields(mut self, fields : String) -> QueryOptions {
         self.fields = Some(fields);
         self
     }
-    /// Set the number of records to return
+    /// Set the limit on the number of results returned
+    /// ```
+    /// # use tmf_client::QueryOptions;
+    /// let opt = QueryOptions::default()
+    ///     .limit(10);
+    /// ```
     pub fn limit(mut self, limit : u16) -> QueryOptions {
         self.limit = Some(limit);
         self
     }
-    /// Set the offset for the returned results, i.e. number of records to skip.
+
+    /// Set the offset on the number of results returned
+    /// ```
+    /// # use tmf_client::QueryOptions;
+    /// let opt = QueryOptions::default()
+    ///     .offset(5);
+    /// ```
     pub fn offset(mut self, offset : u16) -> QueryOptions {
         self.offset = Some(offset);
         self
     }
-    /// Set simple filter on value of name field if exists.
+
+    /// Set the name to filter on
+    /// ```
+    /// # use tmf_client::QueryOptions;
+    /// let opt = QueryOptions::default()
+    ///     .name("MyService".to_string());
+    /// ```
+    /// This will filter the results to only include those with the specified name.
+    /// If the name is not set, it will not filter on name.
+    ///
     pub fn name(mut self, name : impl Into<String>) -> QueryOptions {
         self.name = Some(name.into());
         self
@@ -69,24 +116,24 @@ impl QueryOptions {
 impl From<QueryOptions> for String {
     fn from(val: QueryOptions) -> Self {
         let limit = match val.limit {
-            Some(l) => format!("limit={}",l),
+            Some(l) => format!("limit={l}"),
             None => String::default(),
         };
         let offset = match val.offset {
-            Some(o) => format!("offset={}",o),
+            Some(o) => format!("offset={o}"),
             None => String::default(),
         };
         let name = match val.name {
-            Some(n) => format!("name={}",n),
+            Some(n) => format!("name={n}"),
             None => String::default(),
         };
-        format!("{}&{}&{}",limit,offset,name)   
+        format!("{limit}&{offset}&{name}")   
     }
 }
 
-/// Standard REST aligned operations supported by all TMF APIs
+/// Standard set of operations for all TMF objects
 pub trait Operations {
-    /// The concrete TMF schema type
+    /// The TMF object type that this trait operates on
     type TMF : HasId;
 
     /// Get a specific TMF object by Id
@@ -137,21 +184,54 @@ pub trait Operations {
     fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError>;
 }
 
-/// TMFClient for interacting with TMF APIs.
-/// ```
-/// use tmf_client::{TMFClient,Operations,QueryOptions};
-/// let filter = QueryOptions::default().limit(5);
-/// let specifications = TMFClient::new("http://localhost:8000")
-///     .tmf620()
-///     .product_specification()
-///     .list(Some(filter));
-/// ```
+/// Trait to create a new instance of a TMF object
+#[allow(clippy::new_ret_no_self)]
+pub trait HasNew<T : Clone> {
+    /// Create a new instance of the TMF object passin in the destination host Uri
+    fn new(host : Uri) -> T;
+}
+
+/// TMF Client
 pub struct TMFClient {
     host : String,
+    #[cfg(feature = "tmf620")]
     tmf620 : Option<TMF620>,
+    #[cfg(feature = "tmf622")]
     tmf622 : Option<TMF622>,
+    #[cfg(feature = "tmf629")]
     tmf629 : Option<TMF629>,
+    #[cfg(feature = "tmf632")]
     tmf632 : Option<TMF632>,
+    #[cfg(feature = "tmf633")]
+    tmf633 : Option<TMF633>,
+    #[cfg(feature = "tmf637")]
+    tmf637 : Option<TMF637>,
+    #[cfg(feature = "tmf638")]
+    tmf638 : Option<TMF638>,
+    #[cfg(feature = "tmf639")]
+    tmf639 : Option<TMF639>,
+    #[cfg(feature = "tmf645")]
+    tmf645 : Option<TMF645>,
+    #[cfg(feature = "tmf648")]
+    tmf648 : Option<TMF648>,
+    #[cfg(feature = "tmf663")]
+    tmf663 : Option<TMF663>,
+    #[cfg(feature = "tmf674")]
+    tmf674 : Option<TMF674>,
+}
+
+// Create a new instance
+fn instantiate<T : Clone + HasNew<T>>(tmf : &mut Option<T>,hostname : String) -> T {
+    match tmf {
+        // If we already have an instance, clone that.
+        Some(t) => t.clone(),
+        // Else we need to create a new one and also store it.
+        None => {
+            let new_tmf = T::new(hostname);
+            tmf.replace(new_tmf.clone());
+            new_tmf
+        },
+    }
 }
 
 impl TMFClient {
@@ -163,12 +243,34 @@ impl TMFClient {
     pub fn new(host : impl Into<String>) -> TMFClient {
         TMFClient {
             host : host.into(),
+            #[cfg(feature = "tmf620")]
             tmf620 : None,
+            #[cfg(feature = "tmf622")]
             tmf622 : None,
+            #[cfg(feature = "tmf629")]
             tmf629 : None,
+            #[cfg(feature = "tmf632")]
             tmf632 : None,
+            #[cfg(feature = "tmf633")]
+            tmf633 : None,
+            #[cfg(feature = "tmf637")]
+            tmf637 : None,
+            #[cfg(feature = "tmf638")]
+            tmf638 : None,
+            #[cfg(feature = "tmf639")]
+            tmf639 : None,
+            #[cfg(feature = "tmf645")]
+            tmf645 : None,
+            #[cfg(feature = "tmf648")]
+            tmf648:  None,
+            #[cfg(feature = "tmf663")]
+            tmf663:  None,
+            #[cfg(feature = "tmf674")]
+            tmf674 : None,
         }
     }
+
+
 
     /// Create access to TMF620 API
     /// ```
@@ -176,16 +278,9 @@ impl TMFClient {
     /// let tmf620 = TMFClient::new("http://localhost:8000")
     ///     .tmf620();
     /// ```
+    #[cfg(feature = "tmf620")]
     pub fn tmf620(&mut self) -> TMF620 {
-        match self.tmf620.as_mut() {
-            Some(tmf) => tmf.clone(),
-            None => {
-                // Allocate a new instance
-                let tmf = TMF620::new(self.host.clone());
-                self.tmf620 = Some(tmf.clone());
-                tmf
-            }
-        }
+        instantiate(&mut self.tmf620,self.host.clone())
     }
 
     /// Create access to TMF622 API
@@ -194,16 +289,9 @@ impl TMFClient {
     /// let tmf620 = TMFClient::new("http://localhost:8000")
     ///     .tmf622();
     /// ```
+    #[cfg(feature = "tmf622")]
     pub fn tmf622(&mut self) -> TMF622 {
-        match self.tmf622.as_mut() {
-            Some(tmf) => tmf.clone(),
-            None => {
-                // Allocate a new instance
-                let tmf = TMF622::new(self.host.clone());
-                self.tmf622 = Some(tmf.clone());
-                tmf
-            }
-        }
+        instantiate(&mut self.tmf622, self.host.clone())
     }
 
     /// Create access to TMF632 API
@@ -212,15 +300,9 @@ impl TMFClient {
     /// let tmf632 = TMFClient::new("http://localhost:8000")
     ///     .tmf629();
     /// ```
+    #[cfg(feature = "tmf629")]
     pub fn tmf629(&mut self) -> TMF629 {
-        match self.tmf629.as_mut() {
-            Some(tmf) => tmf.clone(),
-            None => {
-                let tmf = TMF629::new(self.host.clone());
-                self.tmf629 = Some(tmf.clone());
-                tmf
-            }
-        }
+        instantiate(&mut self.tmf629, self.host.clone())
     }
 
     /// Create access to TMF632 API
@@ -229,15 +311,97 @@ impl TMFClient {
     /// let tmf632 = TMFClient::new("http://localhost:8000")
     ///     .tmf632();
     /// ```
+    #[cfg(feature = "tmf632")]
     pub fn tmf632(&mut self) -> TMF632 {
-        match self.tmf632.as_mut() {
-            Some(tmf) => tmf.clone(),
-            None => {
-                let tmf = TMF632::new(self.host.clone());
-                self.tmf632 = Some(tmf.clone());
-                tmf
-            }
-        }
+        instantiate(&mut self.tmf632, self.host.clone())
+    }
+
+    /// Create access to TMF633 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf633 = TMFClient::new("http://localhost:8000")
+    ///     .tmf633();
+    /// ```
+    #[cfg(feature = "tmf633")]
+    pub fn tmf633(&mut self) -> TMF633 {
+        instantiate(&mut self.tmf633, self.host.clone())
+    }
+
+    /// Create access to TMF637 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf637 = TMFClient::new("http://localhost:8000")
+    ///     .tmf637();
+    /// ```
+    #[cfg(feature = "tmf637")]
+    pub fn tmf637(&mut self) -> TMF637 {
+        instantiate(&mut self.tmf637, self.host.clone())
+    }
+
+    /// Create access to TMF638 API
+    /// ```
+    /// # use tmf_client::TMFClient;                
+    /// let tmf638 = TMFClient::new("http://localhost:8000")
+    ///     .tmf638();
+    /// ```
+    #[cfg(feature = "tmf638")]
+    pub fn tmf638(&mut self) -> TMF638 {
+        instantiate(&mut self.tmf638, self.host.clone())
+    }
+
+    /// Create access to TMF639 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf639 = TMFClient::new("http://localhost:8000")
+    ///     .tmf639();
+    /// ```
+    #[cfg(feature = "tmf639")]
+    pub fn tmf639(&mut self) -> TMF639 {
+        instantiate(&mut self.tmf639, self.host.clone())
+    }
+
+    /// Create access to TMF645 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf645 = TMFClient::new("http://localhost:8000")
+    ///     .tmf645();
+    /// ```
+    #[cfg(feature = "tmf645")]
+    pub fn tmf645(&mut self) -> TMF645 {
+        instantiate(&mut self.tmf645, self.host.clone())
+    }
+
+    /// Create access to TMF648 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf648 = TMFClient::new("http://localhost:8000")
+    ///     .tmf648();
+    /// ```
+    #[cfg(feature = "tmf648")]
+    pub fn tmf648(&mut self) -> TMF648 {
+        instantiate(&mut self.tmf648, self.host.clone())
+    }
+
+    /// Create access to TMF663 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf663 = TMFClient::new("http://localhost:8000")
+    ///     .tmf663();
+    /// ```
+    #[cfg(feature = "tmf663")]
+    pub fn tmf663(&mut self) -> TMF663 {
+        instantiate(&mut self.tmf663, self.host.clone())
+    }
+
+    /// Create access to TMF674 API
+    /// ```
+    /// # use tmf_client::TMFClient;
+    /// let tmf674 = TMFClient::new("http://localhost:8000")
+    ///     .tmf674();
+    /// ```
+    #[cfg(feature = "tmf674")]
+    pub fn tmf674(&mut self) -> TMF674 {
+        instantiate(&mut self.tmf674, self.host.clone())
     }
 }
 
