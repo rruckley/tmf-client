@@ -61,7 +61,7 @@ pub struct QueryOptions {
     pub limit : Option<u16>,
     /// Offset the results returned
     pub offset : Option<u16>,
-    /// Filter on name
+    /// Simple filter on name field, if it exists.
     pub name : Option<String>,
 }
 
@@ -160,6 +160,18 @@ pub trait Operations {
     /// Create a new instance of a TMF object
     fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError>;
     /// Update an existing TMF Object using the provided patch object
+    /// Update an existing TMF object
+    /// ```
+    /// # use tmf_client::{TMFClient,Operations};
+    /// use tmflib::tmf620::category::Category;
+    /// use tmflib::{HasId,HasName};
+    /// let mut existing = Category::new("My Category");
+    /// existing.set_name("New Category Name");
+    /// let result = TMFClient::new("http://localhost:8080")
+    ///     .tmf620()
+    ///     .category()
+    ///     .update(existing.get_id(),existing);
+    /// ```
     fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError>;
     /// Delete a specific tmf object by Id
     /// ```

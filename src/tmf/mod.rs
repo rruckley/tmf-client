@@ -6,8 +6,19 @@ use std::io::Read;
 use crate::QueryOptions;
 use crate::common::tmf_error::TMFError;
 use tmflib::{HasId,Uri};
-use serde::{de::DeserializeOwned, Serialize};
-// use log::info;
+use serde::de::DeserializeOwned;
+use serde::Serialize;
+
+#[cfg(feature = "oauth2")]
+use oauth2::basic::BasicClient;
+
+#[cfg(feature = "oauth2")]
+use oauth2::{
+    ClientId,
+    ClientSecret,
+    AuthUrl,
+    TokenUrl
+};
 
 #[cfg(feature = "tmf620")]
 pub mod tmf620;
@@ -35,6 +46,17 @@ pub mod tmf663;
 pub mod tmf674;
 
 static USER_AGENT : &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
+
+/// Get a new OAuth toekn
+#[cfg(feature = "oauth2")]
+pub fn get_token() {
+    // let _client = BasicClient::new(
+    //     ClientId::new(std::env::var("OAUTH_CLIENT_ID").unwrap()),
+    //     Some(ClientSecret::new(std::env::var("OAUTH_CLIENT_SECRET").unwrap())),
+    //     AuthUrl::new(std::env::var("OAUTH_AUTH_URL").unwrap()).unwrap(),
+    //     Some(TokenUrl::new(std::env::var("OAUTH_TOKEN_URL").unwrap()).unwrap())
+    // );
+}
 
 /// Make API call to retrieve a single TMF object
 pub fn get_tmf<T : HasId + DeserializeOwned>(host: Uri, id : String) -> Result<Vec<T>,TMFError> {
