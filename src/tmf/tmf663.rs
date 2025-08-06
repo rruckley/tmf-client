@@ -4,33 +4,28 @@
 //! for operations such as creating, retrieving, and managing shopping carts.
 //! It is designed to be used with the TMFClient, which provides a convenient
 //! interface for interacting with the API.
-    
 
 use tmflib::tmf663::shopping_cart::ShoppingCart;
 
+use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Operations,HasNew,Config};
-use super::{
-    create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf
-};
+use crate::{Config, HasNew, Operations};
 
 /// TMF663 Shopping Cart API Object
-#[derive(Clone,Default,Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct TMF663ShoppingCart {
     config: Config,
 }
 
 /// Operations trait implementation for TMF663ShoppingCart
-#[derive(Clone,Default,Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct TMF663 {
     config: Config,
 }
 
 impl HasNew<TMF663> for TMF663 {
-    fn new(config : Config) -> TMF663 {
-        TMF663 {
-            config
-        }
+    fn new(config: Config) -> TMF663 {
+        TMF663 { config }
     }
 }
 
@@ -53,20 +48,20 @@ impl TMF663 {
 
 impl Operations for TMF663ShoppingCart {
     type TMF = ShoppingCart;
-    
-    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(&self.config,item)    
+
+    fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item)
     }
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(&self.config, id) 
+    fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id)
     }
-    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(&self.config,id.into())  
+    fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into())
     }
-    fn list(&self, filter : Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(&self.config,filter)  
+    fn list(&self, filter: Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter)
     }
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(&self.config, id, patch) 
+    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch)
     }
 }

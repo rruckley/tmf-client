@@ -8,17 +8,17 @@ use tmflib::tmf632::organization_v4::Organization;
 
 use tmf_client::DEFAULT_PORT;
 
-fn main() -> Result<(),TMFError> {
+fn main() -> Result<(), TMFError> {
     #[cfg(feature = "tmf632")]
     {
         let org = Organization::new("An Organization");
 
-        let client = TMFClient::new("https://localhost:8001",Some(DEFAULT_PORT))
+        let client = TMFClient::new("https://localhost:8001", Some(DEFAULT_PORT))
             .tmf632()
             .organization()
             .create(org)?;
-    
-        dbg!(client);    
+
+        dbg!(client);
     }
 
     Ok(())

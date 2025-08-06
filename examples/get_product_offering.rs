@@ -1,31 +1,28 @@
 //! Product Offering Example
 
 #[cfg(feature = "tmf620")]
-use tmf_client::{TMFClient,QueryOptions,Operations};
+use tmf_client::{Operations, QueryOptions, TMFClient};
 #[cfg(feature = "tmf620")]
-use tmflib::{HasId,HasName};
+use tmflib::{HasId, HasName};
 
 fn main() {
     #[cfg(feature = "tmf620")]
     {
-        let mut client = TMFClient::new("https://localhost:8001",None);
+        let mut client = TMFClient::new("https://localhost:8001", None);
         let filter = QueryOptions::default()
-        //.limit(2)
-        .offset(0);
-        let tmf = client.tmf620()
-        .product_offering()
-        .list(Some(filter));
+            //.limit(2)
+            .offset(0);
+        let tmf = client.tmf620().product_offering().list(Some(filter));
         match tmf {
             Ok(r) => {
                 // It worked
                 for c in r {
-                    println!("Entry: {} [{}]",c.get_name(),c.get_id())
+                    println!("Entry: {} [{}]", c.get_name(), c.get_id())
                 }
-            },
+            }
             Err(e) => {
-                println!("Error: {:?}",e)
-            },
+                println!("Error: {:?}", e)
+            }
         }
-    
     }
 }

@@ -3,11 +3,9 @@
 // use tmflib::tmf637::v4::product::Product;
 use tmflib::tmf639::resource::Resource;
 
-use crate::{Operations,HasNew,Config};
+use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use super::{
-    create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf
-};
+use crate::{Config, HasNew, Operations};
 
 /// TMF639 Resource Inventory Management API
 pub struct TMF639ResourceInventoryManagement {
@@ -43,7 +41,7 @@ impl Operations for TMF639ResourceInventoryManagement {
 
 /// TMF639 API
 /// This module provides access to the Resource Inventory Management API of TMF639.
-#[derive(Clone,Default,Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct TMF639 {
     config: Config,
 }

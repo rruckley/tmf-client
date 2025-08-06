@@ -4,20 +4,19 @@ use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "tmf632")]
 use tmf_client::{Operations, TMFClient};
 #[cfg(feature = "tmf632")]
-use tmflib::{HasId,HasName};
+use tmflib::{HasId, HasName};
 
-fn main() -> Result<(),TMFError> {
+fn main() -> Result<(), TMFError> {
     #[cfg(feature = "tmf632")]
     {
-        let organizations = TMFClient::new("https://localhost:8001",None)
-        .tmf632()
-        .organization()
-        .list(None)?;
+        let organizations = TMFClient::new("https://localhost:8001", None)
+            .tmf632()
+            .organization()
+            .list(None)?;
 
         for o in organizations {
-            println!("Name: {} , Id: {}",o.get_name(),o.get_id());
+            println!("Name: {} , Id: {}", o.get_name(), o.get_id());
         }
-
     }
 
     Ok(())

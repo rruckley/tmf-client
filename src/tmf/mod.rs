@@ -1,12 +1,12 @@
 //! TMF Modules
-//! 
+//!
 
 use std::io::Read;
 
-use crate::{Config,QueryOptions};
 use crate::common::tmf_error::TMFError;
-use tmflib::{HasId,};
+use crate::{Config, QueryOptions};
 use serde::{de::DeserializeOwned, Serialize};
+use tmflib::HasId;
 // use log::info;
 
 #[cfg(feature = "tmf620")]
@@ -34,107 +34,115 @@ pub mod tmf663;
 #[cfg(feature = "tmf674")]
 pub mod tmf674;
 
-static USER_AGENT : &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
+static USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
 /// Make API call to retrieve a single TMF object
-pub fn get_tmf<T : HasId + DeserializeOwned>(config: &Config, id : String) -> Result<Vec<T>,TMFError> {
+pub fn get_tmf<T: HasId + DeserializeOwned>(
+    config: &Config,
+    id: String,
+) -> Result<Vec<T>, TMFError> {
     // Return results
-    let url = format!("{}{}/{}",config.host,T::get_class_href(),id);
-    
+    let url = format!("{}{}/{}", config.host, T::get_class_href(), id);
+
     let client = reqwest::blocking::Client::builder()
-        .danger_accept_invalid_certs(config.insecure)// For testing purposes only, do not use in production
+        .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
         .user_agent(USER_AGENT)
         .use_rustls_tls()
-        .build()?;   
+        .build()?;
 
-    let objects = client
-        .get(url)
-        .send()?
-        .text()?;
-    let output : T = serde_json::from_str(objects.as_str())?;
+    let objects = client.get(url).send()?.text()?;
+    let output: T = serde_json::from_str(objects.as_str())?;
     Ok(vec![output])
 }
 
 /// Make API call to retrieve a set of TMF objects according to filter
-pub fn list_tmf<T : HasId + DeserializeOwned>(config: &Config, filter : Option<QueryOptions>) -> Result<Vec<T>,TMFError> {
+pub fn list_tmf<T: HasId + DeserializeOwned>(
+    config: &Config,
+    filter: Option<QueryOptions>,
+) -> Result<Vec<T>, TMFError> {
     // Return results
     let filter = match filter {
         Some(f) => f.into(),
         None => String::default(),
     };
-    let url = format!("{}{}?{}",config.host,T::get_class_href(),filter);
-   
+    let url = format!("{}{}?{}", config.host, T::get_class_href(), filter);
+
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
         .user_agent(USER_AGENT)
         .use_rustls_tls()
-        .build()?;    
+        .build()?;
 
-    let objects = client
-        .get(url)
-        .send()?
-        .text()?;
-    let output : Vec<T> = serde_json::from_str(objects.as_str())?;
+    let objects = client.get(url).send()?.text()?;
+    let output: Vec<T> = serde_json::from_str(objects.as_str())?;
     Ok(output)
 }
 
 /// Create a new TMF object
-pub fn create_tmf<T : HasId + Serialize + DeserializeOwned>(config: &Config, item : T) -> Result<T,TMFError> {
-    let url = format!("{}{}",config.host,T::get_class_href());
-   
+pub fn create_tmf<T: HasId + Serialize + DeserializeOwned>(
+    config: &Config,
+    item: T,
+) -> Result<T, TMFError> {
+    let url = format!("{}{}", config.host, T::get_class_href());
+
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
         .use_rustls_tls()
         .user_agent(USER_AGENT)
         .build()?;
     let body_str = serde_json::to_string(&item)?;
-    let mut res = client.post(url)
-        .body(body_str)
-        .send()?;
+    let mut res = client.post(url).body(body_str).send()?;
     let mut output = String::default();
     let _count = res.read_to_string(&mut output)?;
     match res.status() {
         reqwest::StatusCode::CREATED | reqwest::StatusCode::OK => {
-            let item : T = serde_json::from_str(output.as_str())?;
+            let item: T = serde_json::from_str(output.as_str())?;
             Ok(item)
-        },
-        _ => Err(TMFError::Unknown(format!("Failed to create TMF object: {output}"))),
+        }
+        _ => Err(TMFError::Unknown(format!(
+            "Failed to create TMF object: {output}"
+        ))),
     }
-    
 }
 
 /// Update an existing TMF object
-pub fn update_tmf<T : HasId + Serialize + DeserializeOwned>(config : &Config, id : impl Into<String>, patch : T) -> Result<T,TMFError> {
-    let url = format!("{}{}/{}",config.host,T::get_class_href(),id.into());
+pub fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
+    config: &Config,
+    id: impl Into<String>,
+    patch: T,
+) -> Result<T, TMFError> {
+    let url = format!("{}{}/{}", config.host, T::get_class_href(), id.into());
 
-        let client = reqwest::blocking::Client::builder()
+    let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
         .use_rustls_tls()
         .user_agent(USER_AGENT)
         .build()?;
 
     let body_str = serde_json::to_string(&patch)?;
-    let mut res = client.patch(url)
-        .body(body_str)
-        .send()?;
+    let mut res = client.patch(url).body(body_str).send()?;
     let mut output = String::default();
     let _ = res.read_to_string(&mut output);
-    let item : T = serde_json::from_str(output.as_str())?;
+    let item: T = serde_json::from_str(output.as_str())?;
     Ok(item)
 }
 
 /// Delete an existing TMF object
-pub fn delete_tmf<T : HasId>(config : &Config, id : impl Into<String>) -> Result<T,TMFError> {
-    let url = format!("{}{}/{}",config.host,T::get_class_href(),id.into().clone());
-  
+pub fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T, TMFError> {
+    let url = format!(
+        "{}{}/{}",
+        config.host,
+        T::get_class_href(),
+        id.into().clone()
+    );
+
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
         .use_rustls_tls()
         .user_agent(USER_AGENT)
         .build()?;
-    
-    let mut _res = client.delete(url)
-        .send()?;
+
+    let mut _res = client.delete(url).send()?;
     // Return empty object for now to avoid
     // round trip to retrieve object
     let out = T::default();
