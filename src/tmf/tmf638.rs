@@ -3,11 +3,9 @@
 // use tmflib::tmf637::v4::product::Product;
 use tmflib::tmf638::service::Service;
 
-use crate::{Operations,HasNew,Config};
+use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use super::{
-    create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf
-};
+use crate::{Config, HasNew, Operations};
 
 // /// TMF645 Service Qualification API
 // #[derive(Clone,Default,Debug)]
@@ -64,7 +62,7 @@ impl Operations for TMF638ServiceInventoryManagement {
 
 /// TMF638 API
 /// This module provides access to the Service Inventory Management API of TMF638.
-#[derive(Clone,Default,Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct TMF638 {
     config: Config,
 }

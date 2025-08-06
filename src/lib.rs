@@ -1,12 +1,12 @@
 //! # TMF Client Library
-//! 
+//!
 //! ## Description
 //! Interact with TMF compliant APIs using an SDK
-//! 
+//!
 //! ## Supported TMF APIs
-//! 
+//!
 //! Currently supports:
-//! 
+//!
 //! - TMF620 Product Catalog Management
 //! - TMF622 Product Order Management
 //! - TMF629 Customer Management
@@ -19,14 +19,14 @@
 //! - TMF648 Quote Management
 //! - TMF663 Shopping Cart Management
 //! - TMF674 Geographic Site Management
-//! 
+//!
 //! ## Features
 //! All TMF APIs can be conditionally compiled. Deafult includes all APIs using V4 specifications.
 
 #![warn(missing_docs)]
 
-pub mod tmf;
 pub mod common;
+pub mod tmf;
 
 use common::tmf_error::TMFError;
 #[cfg(feature = "tmf620")]
@@ -54,8 +54,7 @@ use tmf::tmf663::TMF663;
 #[cfg(feature = "tmf674")]
 use tmf::tmf674::TMF674;
 
-
-use tmflib::{HasId,Uri};
+use tmflib::{HasId, Uri};
 
 #[cfg(feature = "insecure")]
 const INSECURE: bool = true;
@@ -69,12 +68,12 @@ pub const DEFAULT_PORT: u16 = 8001;
 #[derive(Clone, Debug, Default)]
 pub struct Config {
     /// The host URI for the TMF API  
-    pub host : Uri,
-    /// The port to use for the TMF API 
-    /// 
-    pub port : u16,
+    pub host: Uri,
+    /// The port to use for the TMF API
+    ///
+    pub port: u16,
     /// The base path for the TMF API
-    pub insecure : bool,
+    pub insecure: bool,
 }
 
 impl Config {
@@ -83,11 +82,11 @@ impl Config {
     /// # use tmf_client::Config;
     /// let config = Config::new("http://localhost:8000", 8000);
     /// ```
-    pub fn new(host : impl Into<String>, port : u16) -> Config {
+    pub fn new(host: impl Into<String>, port: u16) -> Config {
         Config {
-            host : Uri::from(host.into()),
+            host: Uri::from(host.into()),
             port,
-            insecure : INSECURE,
+            insecure: INSECURE,
         }
     }
 }
@@ -96,13 +95,13 @@ impl Config {
 #[derive(Clone, Default, Debug)]
 pub struct QueryOptions {
     /// Specific set of fields delimited by comma
-    pub fields : Option<String>,
+    pub fields: Option<String>,
     /// Limit the number of results returned
-    pub limit : Option<u16>,
+    pub limit: Option<u16>,
     /// Offset the results returned
-    pub offset : Option<u16>,
+    pub offset: Option<u16>,
     /// Filter on name
-    pub name : Option<String>,
+    pub name: Option<String>,
 }
 
 impl QueryOptions {
@@ -112,7 +111,7 @@ impl QueryOptions {
     /// let opt = QueryOptions::default()
     ///     .fields("id,name,description".to_string());
     /// ```
-    pub fn fields(mut self, fields : String) -> QueryOptions {
+    pub fn fields(mut self, fields: String) -> QueryOptions {
         self.fields = Some(fields);
         self
     }
@@ -122,7 +121,7 @@ impl QueryOptions {
     /// let opt = QueryOptions::default()
     ///     .limit(10);
     /// ```
-    pub fn limit(mut self, limit : u16) -> QueryOptions {
+    pub fn limit(mut self, limit: u16) -> QueryOptions {
         self.limit = Some(limit);
         self
     }
@@ -133,7 +132,7 @@ impl QueryOptions {
     /// let opt = QueryOptions::default()
     ///     .offset(5);
     /// ```
-    pub fn offset(mut self, offset : u16) -> QueryOptions {
+    pub fn offset(mut self, offset: u16) -> QueryOptions {
         self.offset = Some(offset);
         self
     }
@@ -147,7 +146,7 @@ impl QueryOptions {
     /// This will filter the results to only include those with the specified name.
     /// If the name is not set, it will not filter on name.
     ///
-    pub fn name(mut self, name : impl Into<String>) -> QueryOptions {
+    pub fn name(mut self, name: impl Into<String>) -> QueryOptions {
         self.name = Some(name.into());
         self
     }
@@ -167,14 +166,14 @@ impl From<QueryOptions> for String {
             Some(n) => format!("name={n}"),
             None => String::default(),
         };
-        format!("{limit}&{offset}&{name}")   
+        format!("{limit}&{offset}&{name}")
     }
 }
 
 /// Standard set of operations for all TMF objects
 pub trait Operations {
     /// The TMF object type that this trait operates on
-    type TMF : HasId;
+    type TMF: HasId;
 
     /// Get a specific TMF object by Id
     /// ```
@@ -184,7 +183,7 @@ pub trait Operations {
     ///     .category()
     ///     .get("ID123");
     /// ```
-    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError>;
+    fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError>;
     /// Get a list of tmf objects applying optional filter
     /// ```
     /// # use tmf_client::{TMFClient,QueryOptions,Operations};
@@ -196,11 +195,11 @@ pub trait Operations {
     ///     .category()
     ///     .list(Some(filter));
     /// ```
-    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError>;
+    fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError>;
     /// Create a new instance of a TMF object
-    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError>;
+    fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError>;
     /// Update an existing TMF Object using the provided patch object
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError>;
+    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError>;
     /// Delete a specific tmf object by Id
     /// ```
     /// # use tmf_client::{TMFClient,Operations};
@@ -209,54 +208,54 @@ pub trait Operations {
     ///     .category()
     ///     .delete("ID123");
     /// ```
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError>;
+    fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError>;
 }
 
 /// Trait to create a new instance of a TMF object
 #[allow(clippy::new_ret_no_self)]
-pub trait HasNew<T : Clone> {
+pub trait HasNew<T: Clone> {
     /// Create a new instance of the TMF object passin in the destination host Uri
-    fn new(config : Config) -> T;
+    fn new(config: Config) -> T;
 }
 
 /// TMF Client
 pub struct TMFClient {
-    config : Config,
+    config: Config,
     #[cfg(feature = "tmf620")]
-    tmf620 : Option<TMF620>,
+    tmf620: Option<TMF620>,
     #[cfg(feature = "tmf622")]
-    tmf622 : Option<TMF622>,
+    tmf622: Option<TMF622>,
     #[cfg(feature = "tmf629")]
-    tmf629 : Option<TMF629>,
+    tmf629: Option<TMF629>,
     #[cfg(feature = "tmf632")]
-    tmf632 : Option<TMF632>,
+    tmf632: Option<TMF632>,
     #[cfg(feature = "tmf633")]
-    tmf633 : Option<TMF633>,
+    tmf633: Option<TMF633>,
     #[cfg(feature = "tmf637")]
-    tmf637 : Option<TMF637>,
+    tmf637: Option<TMF637>,
     #[cfg(feature = "tmf638")]
-    tmf638 : Option<TMF638>,
+    tmf638: Option<TMF638>,
     #[cfg(feature = "tmf639")]
-    tmf639 : Option<TMF639>,
+    tmf639: Option<TMF639>,
     #[cfg(feature = "tmf645")]
-    tmf645 : Option<TMF645>,
+    tmf645: Option<TMF645>,
     #[cfg(feature = "tmf648")]
-    tmf648 : Option<TMF648>,
+    tmf648: Option<TMF648>,
     #[cfg(feature = "tmf663")]
-    tmf663 : Option<TMF663>,
+    tmf663: Option<TMF663>,
     #[cfg(feature = "tmf674")]
-    tmf674 : Option<TMF674>,
+    tmf674: Option<TMF674>,
 }
 
 // Create a new instance
-fn instantiate<T : Clone + HasNew<T>>(api : &mut Option<T>, config : Config) -> T {
+fn instantiate<T: Clone + HasNew<T>>(api: &mut Option<T>, config: Config) -> T {
     match api {
         Some(instance) => instance.clone(),
         None => {
             let new_api = T::new(config);
             api.replace(new_api.clone());
             new_api
-        },
+        }
     }
 }
 
@@ -266,37 +265,35 @@ impl TMFClient {
     /// # use tmf_client::TMFClient;
     /// let client = TMFClient::new("http://localhost:8000",None);
     /// ```
-    pub fn new(host : impl Into<String>, port : Option<u16>) -> TMFClient {
+    pub fn new(host: impl Into<String>, port: Option<u16>) -> TMFClient {
         TMFClient {
-            config : Config::new(host,port.unwrap_or(DEFAULT_PORT)),
+            config: Config::new(host, port.unwrap_or(DEFAULT_PORT)),
             #[cfg(feature = "tmf620")]
-            tmf620 : None,
+            tmf620: None,
             #[cfg(feature = "tmf622")]
-            tmf622 : None,
+            tmf622: None,
             #[cfg(feature = "tmf629")]
-            tmf629 : None,
+            tmf629: None,
             #[cfg(feature = "tmf632")]
-            tmf632 : None,
+            tmf632: None,
             #[cfg(feature = "tmf633")]
-            tmf633 : None,
+            tmf633: None,
             #[cfg(feature = "tmf637")]
-            tmf637 : None,
+            tmf637: None,
             #[cfg(feature = "tmf638")]
-            tmf638 : None,
+            tmf638: None,
             #[cfg(feature = "tmf639")]
-            tmf639 : None,
+            tmf639: None,
             #[cfg(feature = "tmf645")]
-            tmf645 : None,
+            tmf645: None,
             #[cfg(feature = "tmf648")]
-            tmf648:  None,
+            tmf648: None,
             #[cfg(feature = "tmf663")]
-            tmf663:  None,
+            tmf663: None,
             #[cfg(feature = "tmf674")]
-            tmf674 : None,
+            tmf674: None,
         }
     }
-
-
 
     /// Create access to TMF620 API
     /// ```
@@ -306,9 +303,9 @@ impl TMFClient {
     /// ```
     #[cfg(feature = "tmf620")]
     pub fn tmf620(&mut self) -> TMF620 {
-        // // let instance = 
+        // // let instance =
         let config = self.config.clone();
-        let instance : TMF620 = instantiate(&mut self.tmf620,config);
+        let instance: TMF620 = instantiate(&mut self.tmf620, config);
         self.tmf620.replace(instance.clone());
         instance
     }
@@ -321,7 +318,7 @@ impl TMFClient {
     /// ```
     #[cfg(feature = "tmf622")]
     pub fn tmf622(&mut self) -> TMF622 {
-        instantiate(&mut self.tmf622,self.config.clone())
+        instantiate(&mut self.tmf622, self.config.clone())
     }
 
     /// Create access to TMF632 API
@@ -442,13 +439,13 @@ mod tests {
     fn test_filter_limit() {
         let filter = QueryOptions::default().limit(111);
 
-        assert_eq!(filter.limit,Some(111));
+        assert_eq!(filter.limit, Some(111));
     }
 
     #[test]
     fn test_filter_offset() {
         let filter = QueryOptions::default().offset(222);
 
-        assert_eq!(filter.offset,Some(222));
+        assert_eq!(filter.offset, Some(222));
     }
 }

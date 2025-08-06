@@ -1,26 +1,25 @@
 //! TMF620 Product Catalogue
 
-
 use tmflib::tmf620::catalog::Catalog;
 use tmflib::tmf620::category::Category;
 use tmflib::tmf620::product_offering::ProductOffering;
 use tmflib::tmf620::product_offering_price::ProductOfferingPrice;
 use tmflib::tmf620::product_specification::ProductSpecification;
 
-use super::{get_tmf,list_tmf,create_tmf,update_tmf,delete_tmf};
+use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
 
-use crate::{QueryOptions,Operations,HasNew,Config};
+use crate::{Config, HasNew, Operations, QueryOptions};
 
 /// TMF620 Category API calls
-#[derive(Clone,Debug)]
+#[derive(Clone, Debug)]
 pub struct TMF620Category {
-    config : Config,
+    config: Config,
 }
 
 impl TMF620Category {
     /// Create a new category reference
-    pub fn new(config : Config) -> TMF620Category {
+    pub fn new(config: Config) -> TMF620Category {
         TMF620Category { config }
     }
 }
@@ -28,32 +27,32 @@ impl TMF620Category {
 impl Operations for TMF620Category {
     type TMF = Category;
 
-    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(&self.config, item)   
+    fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item)
     }
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(&self.config, id)        
+    fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id)
     }
-    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(&self.config,id.into())    
+    fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into())
     }
-    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(&self.config,filter)    
+    fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter)
     }
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
+    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
         update_tmf(&self.config, id, patch)
     }
 }
 
 /// TMF620 Catalog API calls
-#[derive(Clone,Debug)]
+#[derive(Clone, Debug)]
 pub struct TMF620Catalog {
-    config : Config,
+    config: Config,
 }
 
 impl TMF620Catalog {
     /// Create a new catalog reference
-    pub fn new(config : Config) -> TMF620Catalog {
+    pub fn new(config: Config) -> TMF620Catalog {
         TMF620Catalog { config }
     }
 }
@@ -61,67 +60,65 @@ impl TMF620Catalog {
 impl Operations for TMF620Catalog {
     type TMF = Catalog;
 
-    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(&self.config, item)   
+    fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item)
     }
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(&self.config, id)       
+    fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id)
     }
-    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(&self.config,id.into())    
+    fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into())
     }
-    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(&self.config,filter)    
+    fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter)
     }
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(&self.config, id, patch)    
+    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch)
     }
 }
 
-
-
 /// TMF620 ProductOffering API calls
-#[derive(Clone,Debug)]
+#[derive(Clone, Debug)]
 pub struct TMF620ProductOffering {
-    config : Config,
+    config: Config,
 }
 
 impl TMF620ProductOffering {
     /// Create a new product_offering reference
-    pub fn new(config : Config) -> TMF620ProductOffering {
+    pub fn new(config: Config) -> TMF620ProductOffering {
         TMF620ProductOffering { config }
     }
 }
 
-impl Operations for TMF620ProductOffering{
+impl Operations for TMF620ProductOffering {
     type TMF = ProductOffering;
 
-    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(&self.config, item)    
+    fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item)
     }
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(&self.config, id)       
+    fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id)
     }
-    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(&self.config,id.into())    
+    fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into())
     }
-    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(&self.config,filter)    
+    fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter)
     }
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(&self.config, id, patch)    
+    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch)
     }
 }
 
 /// TMF620 ProductOffering API calls
-#[derive(Clone,Debug)]
+#[derive(Clone, Debug)]
 pub struct TMF620ProductOfferingPrice {
-    config : Config,
+    config: Config,
 }
 
 impl TMF620ProductOfferingPrice {
     /// Create a new product_offering reference
-    pub fn new(config : Config) -> TMF620ProductOfferingPrice {
+    pub fn new(config: Config) -> TMF620ProductOfferingPrice {
         TMF620ProductOfferingPrice { config }
     }
 }
@@ -129,32 +126,32 @@ impl TMF620ProductOfferingPrice {
 impl Operations for TMF620ProductOfferingPrice {
     type TMF = ProductOfferingPrice;
 
-    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(&self.config, item)    
+    fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item)
     }
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(&self.config, id)       
+    fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id)
     }
-    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(&self.config,id.into())    
+    fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into())
     }
-    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(&self.config,filter)    
+    fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter)
     }
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(&self.config, id, patch)    
+    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch)
     }
 }
 
 /// TMF620 ProductSpecification API calls
-#[derive(Clone,Debug)]
+#[derive(Clone, Debug)]
 pub struct TMF620ProductSpecification {
-    config : Config,
+    config: Config,
 }
 
 impl TMF620ProductSpecification {
     /// Create a new product_offering reference
-    pub fn new(config : Config) -> TMF620ProductSpecification {
+    pub fn new(config: Config) -> TMF620ProductSpecification {
         TMF620ProductSpecification { config }
     }
 }
@@ -162,34 +159,32 @@ impl TMF620ProductSpecification {
 impl Operations for TMF620ProductSpecification {
     type TMF = ProductSpecification;
 
-    fn create(&self, item : Self::TMF) -> Result<Self::TMF,TMFError> {
-        create_tmf(&self.config, item)  
+    fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item)
     }
-    fn delete(&self, id : impl Into<String>) -> Result<Self::TMF,TMFError> {
-        delete_tmf(&self.config, id)       
+    fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id)
     }
-    fn get(&self, id : impl Into<String>) -> Result<Vec<Self::TMF>,TMFError> {
-        get_tmf(&self.config,id.into())    
+    fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into())
     }
-    fn list(&self, filter : Option<QueryOptions>) -> Result<Vec<Self::TMF>,TMFError> {
-        list_tmf(&self.config,filter)    
+    fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter)
     }
-    fn update(&self, id : impl Into<String>, patch : Self::TMF) -> Result<Self::TMF,TMFError> {
-        update_tmf(&self.config, id, patch)    
+    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch)
     }
 }
 
 /// Product Catalogue API
-#[derive(Clone,Debug)]
+#[derive(Clone, Debug)]
 pub struct TMF620 {
-    config : Config,
+    config: Config,
 }
 
 impl HasNew<TMF620> for TMF620 {
-    fn new(config : Config) -> TMF620 {
-        TMF620 {
-            config
-        }        
+    fn new(config: Config) -> TMF620 {
+        TMF620 { config }
     }
 }
 
