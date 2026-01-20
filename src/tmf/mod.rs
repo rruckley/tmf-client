@@ -37,6 +37,7 @@ pub mod tmf674;
 static USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
 /// Make API call to retrieve a single TMF object
+#[cfg(feature = "blocking")]
 pub fn get_tmf<T: HasId + DeserializeOwned>(
     config: &Config,
     id: String,
@@ -56,6 +57,7 @@ pub fn get_tmf<T: HasId + DeserializeOwned>(
 }
 
 /// Make API call to retrieve a set of TMF objects according to filter
+#[cfg(feature = "blocking")]
 pub fn list_tmf<T: HasId + DeserializeOwned>(
     config: &Config,
     filter: Option<QueryOptions>,
@@ -79,6 +81,7 @@ pub fn list_tmf<T: HasId + DeserializeOwned>(
 }
 
 /// Create a new TMF object
+#[cfg(feature = "blocking")]
 pub fn create_tmf<T: HasId + Serialize + DeserializeOwned>(
     config: &Config,
     item: T,
@@ -106,6 +109,7 @@ pub fn create_tmf<T: HasId + Serialize + DeserializeOwned>(
 }
 
 /// Update an existing TMF object
+#[cfg(feature = "blocking")]
 pub fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
     config: &Config,
     id: impl Into<String>,
@@ -128,6 +132,7 @@ pub fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
 }
 
 /// Delete an existing TMF object
+#[cfg(feature = "blocking")]
 pub fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T, TMFError> {
     let url = format!(
         "{}{}/{}",
@@ -141,6 +146,30 @@ pub fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T,
         .use_rustls_tls()
         .user_agent(USER_AGENT)
         .build()?;
+
+    let mut _res = client.delete(url).send()?;
+    // Return empty object for now to avoid
+    // round trip to retrieve object
+    let out = T::default();
+    // out.set_id(id);
+    Ok(out)
+}
+
+#[cfg(not(feature = "blocking"))]
+pub async fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T, TMFError> {
+    let url = format!(
+        "{}{}/{}",
+        config.host,
+        T::get_class_href(),
+        id.into().clone()
+    );
+
+    let client = reqwest::Client::builder()
+        .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
+        .use_rustls_tls()
+        .user_agent(USER_AGENT)
+        .build()
+        .?;
 
     let mut _res = client.delete(url).send()?;
     // Return empty object for now to avoid
