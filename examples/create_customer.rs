@@ -6,7 +6,7 @@ use tmf_client::{TMFClient};
 #[cfg(feature = "blocking")]
 use crate::BlockingOperations;
 #[cfg(not(feature = "blocking"))]
-use crate::AsyncOperations;
+use tmf_client::AsyncOperations;
 
 #[cfg(feature = "tmf629")]
 use tmflib::tmf629::customer::Customer;
