@@ -7,7 +7,11 @@ use tmflib::tmf633::service_specification::ServiceSpecification;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew, Operations};
+use crate::{Config, HasNew};
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+#[cfg(not(feature = "blocking"))]
+use crate::AsyncOperations;
 
 /// ServiceCandidate API Object
 pub struct TMF633Candidate {
@@ -29,7 +33,8 @@ pub struct TMF633Specification {
     config: Config,
 }
 
-impl Operations for TMF633Candidate {
+#[cfg(feature = "blocking")]
+impl BlockingOperations for TMF633Candidate {
     type TMF = ServiceCandidate;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
@@ -49,7 +54,8 @@ impl Operations for TMF633Candidate {
     }
 }
 
-impl Operations for TMF633Catalog {
+#[cfg(feature = "blocking")]
+impl BlockingOperations for TMF633Catalog {
     type TMF = ServiceCatalog;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
@@ -69,7 +75,8 @@ impl Operations for TMF633Catalog {
     }
 }
 
-impl Operations for TMF633Category {
+#[cfg(feature = "blocking")]
+impl BlockingOperations for TMF633Category {
     type TMF = ServiceCategory;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
@@ -89,7 +96,8 @@ impl Operations for TMF633Category {
     }
 }
 
-impl Operations for TMF633Specification {
+#[cfg(feature = "blocking")]
+impl BlockingOperations for TMF633Specification {
     type TMF = ServiceSpecification;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {

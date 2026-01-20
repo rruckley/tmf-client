@@ -5,7 +5,9 @@ use tmflib::tmf629::customer::Customer;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew, Operations};
+use crate::{Config, HasNew};
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
 
 /// TMF629 Customer API
 pub struct TMF629Customer {
@@ -19,6 +21,7 @@ impl TMF629Customer {
     }
 }
 
+#[cfg(feature = "blocking")]
 impl Operations for TMF629Customer {
     type TMF = Customer;
 

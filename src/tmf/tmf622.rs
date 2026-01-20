@@ -1,5 +1,7 @@
 //! TMF622 Product Order
-use crate::{Config, HasNew, Operations};
+use crate::{Config, HasNew};
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
 use tmflib::tmf622::product_order_v4::ProductOrder;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
@@ -10,6 +12,7 @@ pub struct TMF622ProductOrder {
     config: Config,
 }
 
+#[cfg(feature = "blocking")]
 impl Operations for TMF622ProductOrder {
     type TMF = ProductOrder;
 

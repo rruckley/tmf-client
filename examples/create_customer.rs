@@ -2,7 +2,12 @@
 
 use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "tmf629")]
-use tmf_client::{Operations, TMFClient};
+use tmf_client::{TMFClient};
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+#[cfg(not(feature = "blocking"))]
+use crate::AsyncOperations;
+
 #[cfg(feature = "tmf629")]
 use tmflib::tmf629::customer::Customer;
 #[cfg(feature = "tmf629")]

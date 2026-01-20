@@ -171,7 +171,8 @@ impl From<QueryOptions> for String {
 }
 
 /// Standard set of operations for all TMF objects
-pub trait Operations {
+#[cfg(feature = "blocking")]
+pub trait BlockingOperations {
     /// The TMF object type that this trait operates on
     type TMF: HasId;
 
@@ -209,6 +210,48 @@ pub trait Operations {
     ///     .delete("ID123");
     /// ```
     fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError>;
+}
+
+/// Standard set of operations for all TMF objects
+#[cfg(not(feature = "blocking"))]
+pub trait AsyncOperations {
+    /// The TMF object type that this trait operates on
+    type TMF: HasId;
+
+    /// Get a specific TMF object by Id
+    /// ```
+    /// # use tmf_client::{TMFClient,Operations};
+    /// let categories = TMFClient::new("http://localhost:8000",None)
+    ///     .tmf620()
+    ///     .category()
+    ///     .get("ID123");
+    /// ```
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError>;
+    /// Get a list of tmf objects applying optional filter
+    /// ```
+    /// # use tmf_client::{TMFClient,QueryOptions,Operations};
+    /// let filter = QueryOptions::default()
+    ///     .limit(15)
+    ///     .offset(10);
+    /// let categories = TMFClient::new("http://localhost:8000",None)
+    ///     .tmf620()
+    ///     .category()
+    ///     .list(Some(filter));
+    /// ```
+    async fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError>;
+    /// Create a new instance of a TMF object
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError>;
+    /// Update an existing TMF Object using the provided patch object
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError>;
+    /// Delete a specific tmf object by Id
+    /// ```
+    /// # use tmf_client::{TMFClient,Operations};
+    /// let categories = TMFClient::new("http://localhost:8000",None)
+    ///     .tmf620()
+    ///     .category()
+    ///     .delete("ID123");
+    /// ```
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError>;
 }
 
 /// Trait to create a new instance of a TMF object
