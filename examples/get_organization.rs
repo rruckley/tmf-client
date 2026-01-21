@@ -2,7 +2,7 @@
 
 use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "tmf632")]
-use tmf_client::{Operations, TMFClient};
+use tmf_client::{BlockingOperations, TMFClient};
 #[cfg(feature = "tmf632")]
 use tmflib::{HasId, HasName};
 

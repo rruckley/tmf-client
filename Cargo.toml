@@ -16,8 +16,49 @@ name = "create_customer"
 required-features = ["blocking"]
 
 [[example]]
+name = "create_shoppingcart"
+required-features = ["blocking"]
+
+[[example]]
+name = "create_site"
+required-features = ["blocking"]
+
+[[example]]
 name = "create_individual"
 required-features = ["blocking"]
+
+[[example]]
+name = "get_organization"
+required-features = ["blocking"]
+
+[[example]]
+name = "get_product_inventory"
+required-features = ["blocking"]
+
+[[example]]
+name = "get_product_offering_price"
+required-features = ["blocking"]
+
+[[example]]
+name = "get_product_offering"
+required-features = ["blocking"]
+
+[[example]]
+name = "get_product_specification"
+required-features = ["blocking"]
+
+[[example]]
+name = "get_qualification"
+required-features = ["blocking"]
+
+[[example]]
+name = "get_quote"
+required-features = ["blocking"]
+
+[[example]]
+name = "get_resource_inventory"
+required-features = ["blocking"]
+
 
 [[example]]
 name = "create_quote"
