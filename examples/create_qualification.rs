@@ -1,10 +1,13 @@
 //! TMF645 Create Qualification Example
 
-use tmf_client::{common::tmf_error::TMFError, Operations, TMFClient};
+use tmf_client::{common::tmf_error::TMFError, TMFClient};
 use tmflib::tmf645::check_service_qualification::CheckServiceQualification;
 
+#[cfg(feature = "blocking")]
+use tmf_client::BlockingOperations;
+
 fn main() -> Result<(), TMFError> {
-    #[cfg(feature = "tmf645")]
+    #[cfg(feature = "blocking")]
     {
         use tmf_client::DEFAULT_PORT;
 

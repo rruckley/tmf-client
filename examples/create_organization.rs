@@ -1,15 +1,17 @@
 //! Create Organization Example
 
 use tmf_client::common::tmf_error::TMFError;
-#[cfg(feature = "tmf632")]
-use tmf_client::{Operations, TMFClient};
+#[cfg(feature = "blocking")]
+use tmf_client::{BlockingOperations, TMFClient};
+#[cfg(not(feature = "blocking"))]
+use tmf_client::{AsyncOperations, TMFClient};
 #[cfg(feature = "tmf632")]
 use tmflib::tmf632::organization_v4::Organization;
 
 use tmf_client::DEFAULT_PORT;
 
 fn main() -> Result<(), TMFError> {
-    #[cfg(feature = "tmf632")]
+    #[cfg(feature = "blocking")]
     {
         let org = Organization::new("An Organization");
 

@@ -7,6 +7,22 @@ description = "A Rust client library for TMF conformant APIs"
 repository = "https://github.com/rruckley/tmf-client"
 license = "Apache-2.0"
 
+[[example]]
+name = "get_catalog"
+required-features = ["blocking"]
+
+[[example]]
+name = "create_customer"
+required-features = ["blocking"]
+
+[[example]]
+name = "create_individual"
+required-features = ["blocking"]
+
+[[example]]
+name = "create_quote"
+required-features = ["blocking"]
+
 [features]
 tmf620 = ["tmflib/tmf620"]
 tmf622 = ["tmflib/tmf622"]
