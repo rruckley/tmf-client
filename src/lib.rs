@@ -178,7 +178,7 @@ pub trait BlockingOperations {
 
     /// Get a specific TMF object by Id
     /// ```
-    /// # use tmf_client::{TMFClient,Operations};
+    /// # use tmf_client::{TMFClient,BlockingOperations};
     /// let categories = TMFClient::new("http://localhost:8000",None)
     ///     .tmf620()
     ///     .category()
@@ -187,7 +187,7 @@ pub trait BlockingOperations {
     fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError>;
     /// Get a list of tmf objects applying optional filter
     /// ```
-    /// # use tmf_client::{TMFClient,QueryOptions,Operations};
+    /// # use tmf_client::{TMFClient,QueryOptions,BlockingOperations};
     /// let filter = QueryOptions::default()
     ///     .limit(15)
     ///     .offset(10);
@@ -203,7 +203,7 @@ pub trait BlockingOperations {
     fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError>;
     /// Delete a specific tmf object by Id
     /// ```
-    /// # use tmf_client::{TMFClient,Operations};
+    /// # use tmf_client::{TMFClient,BlockingOperations};
     /// let categories = TMFClient::new("http://localhost:8000",None)
     ///     .tmf620()
     ///     .category()

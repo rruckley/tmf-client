@@ -34,7 +34,7 @@ impl TMF632Individual {
 }
 
 #[cfg(feature= "blocking")]
-impl Operations for TMF632Individual {
+impl BlockingOperations for TMF632Individual {
     type TMF = Individual;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {

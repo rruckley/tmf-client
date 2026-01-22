@@ -141,7 +141,7 @@ impl TMF620ProductOffering {
 }
 
 #[cfg(feature = "blocking")]
-impl Operations for TMF620ProductOffering {
+impl BlockingOperations for TMF620ProductOffering {
     type TMF = ProductOffering;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
@@ -196,7 +196,7 @@ impl TMF620ProductOfferingPrice {
 }
 
 #[cfg(feature = "blocking")]
-impl Operations for TMF620ProductOfferingPrice {
+impl BlockingOperations for TMF620ProductOfferingPrice {
     type TMF = ProductOfferingPrice;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
@@ -251,7 +251,7 @@ impl TMF620ProductSpecification {
 }
 
 #[cfg(feature = "blocking")]
-impl Operations for TMF620ProductSpecification {
+impl BlockingOperations for TMF620ProductSpecification {
     type TMF = ProductSpecification;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {

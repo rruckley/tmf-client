@@ -1,7 +1,8 @@
 //! TMF Modules
 //!
 
-// use std::io::Read;
+#[cfg(feature = "blocking")]
+use std::io::Read;
 
 use crate::common::tmf_error::TMFError;
 use crate::{Config, QueryOptions};

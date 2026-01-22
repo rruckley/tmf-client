@@ -24,7 +24,7 @@ impl TMF629Customer {
 }
 
 #[cfg(feature = "blocking")]
-impl Operations for TMF629Customer {
+impl BlockingOperations for TMF629Customer {
     type TMF = Customer;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
