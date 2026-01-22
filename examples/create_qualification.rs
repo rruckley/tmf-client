@@ -9,7 +9,7 @@ fn main() -> Result<(), TMFError> {
     #[cfg(feature = "blocking")]
     {
         use tmf_client::DEFAULT_PORT;
-        use tmf_client::{common::tmf_error::TMFError, TMFClient};
+        use tmf_client::TMFClient;
         use tmflib::tmf645::check_service_qualification::CheckServiceQualification;
 
 

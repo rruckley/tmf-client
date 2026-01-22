@@ -7,7 +7,7 @@ fn main() -> Result<(), TMFError> {
     // This example demonstrates how to create a shopping cart using the TMF663 API.
     // Ensure you have the necessary dependencies and the TMFClient set up in your project.
 
-    use tmf_client::{Operations, TMFClient};
+    use tmf_client::{BlockingOperations, TMFClient};
     #[cfg(feature = "tmf663")]
     use tmflib::tmf663::shopping_cart::ShoppingCart;
 

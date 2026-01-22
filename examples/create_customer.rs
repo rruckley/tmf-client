@@ -3,8 +3,7 @@
 use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "tmf629")]
 use tmf_client::{TMFClient};
-#[cfg(feature = "blocking")]
-use crate::BlockingOperations;
+
 #[cfg(not(feature = "blocking"))]
 use tmf_client::AsyncOperations;
 
@@ -18,6 +17,9 @@ use tmf_client::DEFAULT_PORT;
 fn main() -> Result<(), TMFError> {
     #[cfg(feature = "tmf629")]
     {
+
+        use tmf_client::BlockingOperations;
+
         let org = Organization::new("An Organization Example");
 
         let customer = Customer::new(org);

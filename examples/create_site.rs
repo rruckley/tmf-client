@@ -2,7 +2,7 @@
 
 use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "tmf674")]
-use tmf_client::{Operations, TMFClient};
+use tmf_client::{BlockingOperations, TMFClient};
 #[cfg(feature = "tmf674")]
 use tmflib::tmf674::geographic_site_v4::GeographicSite;
 

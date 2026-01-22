@@ -2,13 +2,15 @@
 
 use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "tmf645")]
-use tmf_client::{Operations, TMFClient};
+use tmf_client::{BlockingOperations, TMFClient};
 #[cfg(feature = "tmf645")]
 use tmflib::{HasDescription, HasId};
 
 fn main() -> Result<(), TMFError> {
     #[cfg(feature = "tmf645")]
     {
+        use tmf_client::BlockingOperations;
+
         let qualifications = TMFClient::new("https://localhost:8001", None)
             .tmf645()
             .check_qualifcation()
