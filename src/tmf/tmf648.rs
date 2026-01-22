@@ -36,7 +36,7 @@ impl BlockingOperations for TMF648Quote {
     }
 }
 
-#[cfg(feature = "blocking")]
+#[cfg(not(feature = "blocking"))]
 impl AsyncOperations for TMF648Quote {
     type TMF = Quote;
 

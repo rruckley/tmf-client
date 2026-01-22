@@ -220,16 +220,16 @@ pub trait AsyncOperations {
 
     /// Get a specific TMF object by Id
     /// ```
-    /// # use tmf_client::{TMFClient,Operations};
+    /// # use tmf_client::{TMFClient,AsyncOperations};
     /// let categories = TMFClient::new("http://localhost:8000",None)
     ///     .tmf620()
     ///     .category()
     ///     .get("ID123");
     /// ```
-    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError>;
+    fn get(&self, id: impl Into<String>) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
     /// Get a list of tmf objects applying optional filter
     /// ```
-    /// # use tmf_client::{TMFClient,QueryOptions,Operations};
+    /// # use tmf_client::{TMFClient,QueryOptions,AsyncOperations};
     /// let filter = QueryOptions::default()
     ///     .limit(15)
     ///     .offset(10);
@@ -238,20 +238,20 @@ pub trait AsyncOperations {
     ///     .category()
     ///     .list(Some(filter));
     /// ```
-    async fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError>;
+    fn list(&self, filter: Option<QueryOptions>) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
     /// Create a new instance of a TMF object
-    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError>;
+    fn create(&self, item: Self::TMF) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
     /// Update an existing TMF Object using the provided patch object
-    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError>;
+    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
     /// Delete a specific tmf object by Id
     /// ```
-    /// # use tmf_client::{TMFClient,Operations};
+    /// # use tmf_client::{TMFClient,AsyncOperations};
     /// let categories = TMFClient::new("http://localhost:8000",None)
     ///     .tmf620()
     ///     .category()
     ///     .delete("ID123");
     /// ```
-    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError>;
+    fn delete(&self, id: impl Into<String>) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
 }
 
 /// Trait to create a new instance of a TMF object

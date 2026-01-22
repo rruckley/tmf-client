@@ -161,6 +161,27 @@ impl Operations for TMF620ProductOffering {
     }
 }
 
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF620ProductOffering {
+    type TMF = ProductOffering;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch).await
+    }
+}
+
 /// TMF620 ProductOffering API calls
 #[derive(Clone, Debug)]
 pub struct TMF620ProductOfferingPrice {
@@ -195,6 +216,27 @@ impl Operations for TMF620ProductOfferingPrice {
     }
 }
 
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF620ProductOfferingPrice {
+    type TMF = ProductOfferingPrice;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch).await
+    }
+}
+
 /// TMF620 ProductSpecification API calls
 #[derive(Clone, Debug)]
 pub struct TMF620ProductSpecification {
@@ -226,6 +268,27 @@ impl Operations for TMF620ProductSpecification {
     }
     fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
         update_tmf(&self.config, id, patch)
+    }
+}
+
+#[cfg(not(feature= "blocking"))]
+impl AsyncOperations for TMF620ProductSpecification {
+    type TMF = ProductSpecification;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch).await
     }
 }
 

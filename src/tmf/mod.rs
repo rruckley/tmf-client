@@ -1,7 +1,7 @@
 //! TMF Modules
 //!
 
-use std::io::Read;
+// use std::io::Read;
 
 use crate::common::tmf_error::TMFError;
 use crate::{Config, QueryOptions};
@@ -56,6 +56,7 @@ pub fn get_tmf<T: HasId + DeserializeOwned>(
     Ok(vec![output])
 }
 
+/// Get a single TMF record
 #[cfg(not(feature = "blocking"))]
 pub async fn get_tmf<T: HasId + DeserializeOwned>(
     config: &Config,
@@ -99,6 +100,7 @@ pub fn list_tmf<T: HasId + DeserializeOwned>(
     Ok(output)
 }
 
+/// List TMF records , optionally apply a filter
 #[cfg(not(feature= "blocking"))]
 pub async fn list_tmf<T: HasId + DeserializeOwned>(
     config: &Config,
@@ -150,6 +152,7 @@ pub fn create_tmf<T: HasId + Serialize + DeserializeOwned>(
     }
 }
 
+/// Create a new TMF record
 #[cfg(not(feature = "blocking"))]
 pub async fn create_tmf<T: HasId + Serialize + DeserializeOwned>(
     config: &Config,
@@ -202,6 +205,7 @@ pub fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
     Ok(item)
 }
 
+/// Update a TMF record 
 #[cfg(not(feature = "blocking"))]
 pub async fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
     config: &Config,
@@ -248,6 +252,7 @@ pub fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T,
     Ok(out)
 }
 
+/// Delete a single TMF record, returning deleted record
 #[cfg(not(feature = "blocking"))]
 pub async fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T, TMFError> {
     let url = format!(

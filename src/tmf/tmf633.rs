@@ -54,6 +54,27 @@ impl BlockingOperations for TMF633Candidate {
     }
 }
 
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF633Candidate {
+    type TMF = ServiceCandidate;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id.into()).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch).await
+    }
+}
+
 #[cfg(feature = "blocking")]
 impl BlockingOperations for TMF633Catalog {
     type TMF = ServiceCatalog;
@@ -72,6 +93,27 @@ impl BlockingOperations for TMF633Catalog {
     }
     fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
         update_tmf(&self.config, id, patch)
+    }
+}
+
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF633Catalog {
+    type TMF = ServiceCatalog;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id.into()).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch).await
     }
 }
 
@@ -96,6 +138,27 @@ impl BlockingOperations for TMF633Category {
     }
 }
 
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF633Category {
+    type TMF = ServiceCategory;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch).await
+    }
+}
+
 #[cfg(feature = "blocking")]
 impl BlockingOperations for TMF633Specification {
     type TMF = ServiceSpecification;
@@ -114,6 +177,27 @@ impl BlockingOperations for TMF633Specification {
     }
     fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
         update_tmf(&self.config, id, patch)
+    }
+}
+
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF633Specification {
+    type TMF = ServiceSpecification;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch).await
     }
 }
 
