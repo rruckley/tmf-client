@@ -219,28 +219,11 @@ pub trait AsyncOperations {
     type TMF: HasId;
 
     /// Get a specific TMF object by Id
-    /// ```
-    /// # use tmf_client::{TMFClient,AsyncOperations};
-    /// let categories = TMFClient::new("http://localhost:8000",None)
-    ///     .tmf620()
-    ///     .category()
-    ///     .get("ID123");
-    /// ```
     fn get(
         &self,
         id: impl Into<String>,
     ) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
     /// Get a list of tmf objects applying optional filter
-    /// ```
-    /// # use tmf_client::{TMFClient,QueryOptions,AsyncOperations};
-    /// let filter = QueryOptions::default()
-    ///     .limit(15)
-    ///     .offset(10);
-    /// let categories = TMFClient::new("http://localhost:8000",None)
-    ///     .tmf620()
-    ///     .category()
-    ///     .list(Some(filter));
-    /// ```
     fn list(
         &self,
         filter: Option<QueryOptions>,
@@ -257,13 +240,6 @@ pub trait AsyncOperations {
         patch: Self::TMF,
     ) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
     /// Delete a specific tmf object by Id
-    /// ```
-    /// # use tmf_client::{TMFClient,AsyncOperations};
-    /// let categories = TMFClient::new("http://localhost:8000",None)
-    ///     .tmf620()
-    ///     .category()
-    ///     .delete("ID123");
-    /// ```
     fn delete(
         &self,
         id: impl Into<String>,
