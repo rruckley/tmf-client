@@ -5,11 +5,11 @@ use tmflib::tmf632::organization_v4::Organization;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew};
-#[cfg(feature = "blocking")]
-use crate::BlockingOperations;
 #[cfg(not(feature = "blocking"))]
 use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 #[cfg(feature = "v4")]
 use tmflib::tmf632::individual_v4::Individual;
 #[cfg(feature = "v5")]
@@ -33,7 +33,7 @@ impl TMF632Individual {
     }
 }
 
-#[cfg(feature= "blocking")]
+#[cfg(feature = "blocking")]
 impl BlockingOperations for TMF632Individual {
     type TMF = Individual;
 

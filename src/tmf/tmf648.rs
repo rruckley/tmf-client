@@ -4,11 +4,11 @@ use tmflib::tmf648::quote::Quote;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew};
-#[cfg(feature = "blocking")]
-use crate::BlockingOperations;
 #[cfg(not(feature = "blocking"))]
 use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 
 /// Interact with the quote object from TMF648
 pub struct TMF648Quote {
@@ -44,7 +44,7 @@ impl AsyncOperations for TMF648Quote {
         create_tmf(&self.config, item).await
     }
     async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
-        delete_tmf(&self.config, id.into()).await 
+        delete_tmf(&self.config, id.into()).await
     }
     async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
         get_tmf(&self.config, id.into()).await

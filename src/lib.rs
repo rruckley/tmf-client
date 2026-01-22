@@ -226,7 +226,10 @@ pub trait AsyncOperations {
     ///     .category()
     ///     .get("ID123");
     /// ```
-    fn get(&self, id: impl Into<String>) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
+    fn get(
+        &self,
+        id: impl Into<String>,
+    ) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
     /// Get a list of tmf objects applying optional filter
     /// ```
     /// # use tmf_client::{TMFClient,QueryOptions,AsyncOperations};
@@ -238,11 +241,21 @@ pub trait AsyncOperations {
     ///     .category()
     ///     .list(Some(filter));
     /// ```
-    fn list(&self, filter: Option<QueryOptions>) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
+    fn list(
+        &self,
+        filter: Option<QueryOptions>,
+    ) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
     /// Create a new instance of a TMF object
-    fn create(&self, item: Self::TMF) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
+    fn create(
+        &self,
+        item: Self::TMF,
+    ) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
     /// Update an existing TMF Object using the provided patch object
-    fn update(&self, id: impl Into<String>, patch: Self::TMF) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
+    fn update(
+        &self,
+        id: impl Into<String>,
+        patch: Self::TMF,
+    ) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
     /// Delete a specific tmf object by Id
     /// ```
     /// # use tmf_client::{TMFClient,AsyncOperations};
@@ -251,7 +264,10 @@ pub trait AsyncOperations {
     ///     .category()
     ///     .delete("ID123");
     /// ```
-    fn delete(&self, id: impl Into<String>) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
+    fn delete(
+        &self,
+        id: impl Into<String>,
+    ) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
 }
 
 /// Trait to create a new instance of a TMF object

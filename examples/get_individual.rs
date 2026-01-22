@@ -4,7 +4,6 @@ use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "blocking")]
 use tmf_client::{BlockingOperations, TMFClient};
 
-
 fn main() -> Result<(), TMFError> {
     #[cfg(feature = "blocking")]
     {

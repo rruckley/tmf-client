@@ -1,9 +1,9 @@
 //! TMF622 Product Order
-use crate::{Config, HasNew};
-#[cfg(feature = "blocking")]
-use crate::BlockingOperations;
 #[cfg(not(feature = "blocking"))]
 use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 use tmflib::tmf622::product_order_v4::ProductOrder;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
@@ -56,7 +56,10 @@ impl BlockingOperations for TMF622ProductOrder {
 impl AsyncOperations for TMF622ProductOrder {
     type TMF = ProductOrder;
 
-    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, crate::common::tmf_error::TMFError> {
+    async fn create(
+        &self,
+        item: Self::TMF,
+    ) -> Result<Self::TMF, crate::common::tmf_error::TMFError> {
         create_tmf(&self.config, item).await
     }
 

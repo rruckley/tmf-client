@@ -102,7 +102,7 @@ pub fn list_tmf<T: HasId + DeserializeOwned>(
 }
 
 /// List TMF records , optionally apply a filter
-#[cfg(not(feature= "blocking"))]
+#[cfg(not(feature = "blocking"))]
 pub async fn list_tmf<T: HasId + DeserializeOwned>(
     config: &Config,
     filter: Option<QueryOptions>,
@@ -206,7 +206,7 @@ pub fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
     Ok(item)
 }
 
-/// Update a TMF record 
+/// Update a TMF record
 #[cfg(not(feature = "blocking"))]
 pub async fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
     config: &Config,

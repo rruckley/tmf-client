@@ -5,11 +5,11 @@ use tmflib::tmf639::resource::Resource;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew};
-#[cfg(feature = "blocking")]
-use crate::BlockingOperations;
 #[cfg(not(feature = "blocking"))]
 use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 
 /// TMF639 Resource Inventory Management API
 pub struct TMF639ResourceInventoryManagement {

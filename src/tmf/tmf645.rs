@@ -5,11 +5,11 @@ use tmflib::tmf645::check_service_qualification::CheckServiceQualification;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew};
-#[cfg(feature = "blocking")]
-use crate::BlockingOperations;
 #[cfg(not(feature = "blocking"))]
 use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 
 /// TMF645 Service Qualification API
 pub struct TMF645CheckServiceQualification {
@@ -64,7 +64,6 @@ impl AsyncOperations for TMF645CheckServiceQualification {
         update_tmf(&self.config, id.into(), patch).await
     }
 }
-
 
 /// TMF645 Service Qualification API
 #[derive(Clone, Default, Debug)]

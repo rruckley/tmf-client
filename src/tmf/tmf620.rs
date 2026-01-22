@@ -7,15 +7,13 @@ use tmflib::tmf620::product_offering_price::ProductOfferingPrice;
 use tmflib::tmf620::product_specification::ProductSpecification;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
+use crate::common::tmf_error::TMFError;
 #[cfg(not(feature = "blocking"))]
 use crate::AsyncOperations;
 #[cfg(feature = "blocking")]
 use crate::BlockingOperations;
-use crate::common::tmf_error::TMFError;
 
 use crate::{Config, HasNew, QueryOptions};
-
-
 
 /// TMF620 Category API calls
 #[derive(Clone, Debug)]
@@ -30,7 +28,7 @@ impl TMF620Category {
     }
 }
 
-#[cfg(feature= "blocking")]
+#[cfg(feature = "blocking")]
 impl BlockingOperations for TMF620Category {
     type TMF = Category;
 
@@ -85,7 +83,7 @@ impl TMF620Catalog {
     }
 }
 
-#[cfg(feature= "blocking")]
+#[cfg(feature = "blocking")]
 impl BlockingOperations for TMF620Catalog {
     type TMF = Catalog;
 
@@ -271,7 +269,7 @@ impl BlockingOperations for TMF620ProductSpecification {
     }
 }
 
-#[cfg(not(feature= "blocking"))]
+#[cfg(not(feature = "blocking"))]
 impl AsyncOperations for TMF620ProductSpecification {
     type TMF = ProductSpecification;
 

@@ -8,10 +8,9 @@ use tmf_client::BlockingOperations;
 fn main() -> Result<(), TMFError> {
     #[cfg(feature = "blocking")]
     {
-        use tmf_client::DEFAULT_PORT;
         use tmf_client::TMFClient;
+        use tmf_client::DEFAULT_PORT;
         use tmflib::tmf645::check_service_qualification::CheckServiceQualification;
-
 
         let qualification = CheckServiceQualification::new("A Qualification Example");
 

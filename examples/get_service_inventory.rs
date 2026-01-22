@@ -9,7 +9,7 @@ fn main() -> Result<(), TMFError> {
     #[cfg(feature = "blocking")]
     {
         use tmf_client::QueryOptions;
-        
+
         let opt = QueryOptions::default()
             // .name("SD L3 Service CFS Instance #0123087452")
             .limit(1)

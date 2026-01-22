@@ -9,7 +9,7 @@ fn main() {
     #[cfg(feature = "tmf620")]
     {
         use tmf_client::BlockingOperations;
-        
+
         let mut client = TMFClient::new("https://localhost:8001", None);
         let filter = QueryOptions::default()
             //.limit(2)

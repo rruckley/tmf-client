@@ -4,11 +4,11 @@ use tmflib::tmf637::v4::product::Product;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew};
-#[cfg(feature = "blocking")]
-use crate::BlockingOperations;
 #[cfg(not(feature = "blocking"))]
 use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 
 // /// TMF645 Service Qualification API
 // #[derive(Clone,Default,Debug)]

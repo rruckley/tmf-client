@@ -9,13 +9,11 @@ use tmflib::tmf663::shopping_cart::ShoppingCart;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew};
-#[cfg(feature = "blocking")]
-use crate::BlockingOperations;
 #[cfg(not(feature = "blocking"))]
 use crate::AsyncOperations;
-
-
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 
 /// TMF663 Shopping Cart API Object
 #[derive(Clone, Default, Debug)]
@@ -71,7 +69,7 @@ impl BlockingOperations for TMF663ShoppingCart {
         update_tmf(&self.config, id, patch)
     }
 }
-   
+
 #[cfg(not(feature = "blocking"))]
 impl AsyncOperations for TMF663ShoppingCart {
     type TMF = ShoppingCart;
@@ -92,4 +90,3 @@ impl AsyncOperations for TMF663ShoppingCart {
         update_tmf(&self.config, id, patch).await
     }
 }
-
