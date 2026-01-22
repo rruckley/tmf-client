@@ -171,13 +171,14 @@ impl From<QueryOptions> for String {
 }
 
 /// Standard set of operations for all TMF objects
-pub trait Operations {
+#[cfg(feature = "blocking")]
+pub trait BlockingOperations {
     /// The TMF object type that this trait operates on
     type TMF: HasId;
 
     /// Get a specific TMF object by Id
     /// ```
-    /// # use tmf_client::{TMFClient,Operations};
+    /// # use tmf_client::{TMFClient,BlockingOperations};
     /// let categories = TMFClient::new("http://localhost:8000",None)
     ///     .tmf620()
     ///     .category()
@@ -186,7 +187,7 @@ pub trait Operations {
     fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError>;
     /// Get a list of tmf objects applying optional filter
     /// ```
-    /// # use tmf_client::{TMFClient,QueryOptions,Operations};
+    /// # use tmf_client::{TMFClient,QueryOptions,BlockingOperations};
     /// let filter = QueryOptions::default()
     ///     .limit(15)
     ///     .offset(10);
@@ -202,13 +203,47 @@ pub trait Operations {
     fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError>;
     /// Delete a specific tmf object by Id
     /// ```
-    /// # use tmf_client::{TMFClient,Operations};
+    /// # use tmf_client::{TMFClient,BlockingOperations};
     /// let categories = TMFClient::new("http://localhost:8000",None)
     ///     .tmf620()
     ///     .category()
     ///     .delete("ID123");
     /// ```
     fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError>;
+}
+
+/// Standard set of operations for all TMF objects
+#[cfg(not(feature = "blocking"))]
+pub trait AsyncOperations {
+    /// The TMF object type that this trait operates on
+    type TMF: HasId;
+
+    /// Get a specific TMF object by Id
+    fn get(
+        &self,
+        id: impl Into<String>,
+    ) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
+    /// Get a list of tmf objects applying optional filter
+    fn list(
+        &self,
+        filter: Option<QueryOptions>,
+    ) -> impl std::future::Future<Output = Result<Vec<Self::TMF>, TMFError>>;
+    /// Create a new instance of a TMF object
+    fn create(
+        &self,
+        item: Self::TMF,
+    ) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
+    /// Update an existing TMF Object using the provided patch object
+    fn update(
+        &self,
+        id: impl Into<String>,
+        patch: Self::TMF,
+    ) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
+    /// Delete a specific tmf object by Id
+    fn delete(
+        &self,
+        id: impl Into<String>,
+    ) -> impl std::future::Future<Output = Result<Self::TMF, TMFError>>;
 }
 
 /// Trait to create a new instance of a TMF object

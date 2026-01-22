@@ -4,14 +4,19 @@ use tmflib::tmf674::geographic_site_v4::GeographicSite;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew, Operations};
+#[cfg(not(feature = "blocking"))]
+use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 
 /// TMF674 GeographicSite API Object
 pub struct TMF674GeographicSite {
     config: Config,
 }
 
-impl Operations for TMF674GeographicSite {
+#[cfg(feature = "blocking")]
+impl BlockingOperations for TMF674GeographicSite {
     type TMF = GeographicSite;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
@@ -28,6 +33,27 @@ impl Operations for TMF674GeographicSite {
     }
     fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
         update_tmf(&self.config, id, patch)
+    }
+}
+
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF674GeographicSite {
+    type TMF = GeographicSite;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id, patch).await
     }
 }
 

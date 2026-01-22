@@ -1,13 +1,12 @@
 //! Get Category Example
 
-#[cfg(feature = "tmf620")]
-use tmf_client::{Operations, QueryOptions, TMFClient};
-#[cfg(feature = "tmf620")]
-use tmflib::HasName;
+#[cfg(feature = "blocking")]
+use tmf_client::{BlockingOperations, QueryOptions, TMFClient};
 
 fn main() {
-    #[cfg(feature = "tmf620")]
+    #[cfg(feature = "blocking")]
     {
+        use tmflib::HasName;
         // Get a list of categories from TMF620
         let mut client = TMFClient::new("https://localhost:8001", None);
         let filter = QueryOptions::default().limit(2).offset(0);

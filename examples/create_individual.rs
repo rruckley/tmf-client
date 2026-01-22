@@ -1,8 +1,10 @@
 //! Create Individual Example
 
 use tmf_client::common::tmf_error::TMFError;
-#[cfg(feature = "tmf632")]
-use tmf_client::{Operations, TMFClient};
+#[cfg(not(feature = "blocking"))]
+use tmf_client::{AsyncOperations, TMFClient};
+#[cfg(feature = "blocking")]
+use tmf_client::{BlockingOperations, TMFClient};
 #[cfg(feature = "tmf632")]
 use tmflib::tmf632::individual_v4::Individual;
 

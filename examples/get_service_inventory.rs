@@ -1,12 +1,15 @@
 //! TMF638 Service Inventory API Example
 
 use tmf_client::common::tmf_error::TMFError;
-use tmf_client::QueryOptions;
-use tmf_client::{Operations, TMFClient};
+
+#[cfg(feature = "blocking")]
+use tmf_client::{BlockingOperations, TMFClient};
 
 fn main() -> Result<(), TMFError> {
-    #[cfg(feature = "tmf638")]
+    #[cfg(feature = "blocking")]
     {
+        use tmf_client::QueryOptions;
+
         let opt = QueryOptions::default()
             // .name("SD L3 Service CFS Instance #0123087452")
             .limit(1)

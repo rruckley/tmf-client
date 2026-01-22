@@ -1,10 +1,12 @@
 use tmf_client::common::tmf_error::TMFError;
 #[cfg(feature = "tmf648")]
-use tmf_client::{Operations, TMFClient};
+use tmf_client::{BlockingOperations, TMFClient};
 
 fn main() -> Result<(), TMFError> {
     #[cfg(feature = "tmf648")]
     {
+        use tmf_client::BlockingOperations;
+
         let mut client = TMFClient::new("https://localhost:8001", None);
 
         let quotes = client.tmf648().quote().list(None)?;

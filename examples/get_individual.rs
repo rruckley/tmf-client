@@ -1,14 +1,13 @@
 //! Get Individual Example
 
 use tmf_client::common::tmf_error::TMFError;
-#[cfg(feature = "tmf632")]
-use tmf_client::{Operations, TMFClient};
-#[cfg(feature = "tmf632")]
-use tmflib::{HasId, HasName};
+#[cfg(feature = "blocking")]
+use tmf_client::{BlockingOperations, TMFClient};
 
 fn main() -> Result<(), TMFError> {
-    #[cfg(feature = "tmf632")]
+    #[cfg(feature = "blocking")]
     {
+        use tmflib::{HasId, HasName};
         let mut client = TMFClient::new("https://localhost:8001", None);
 
         let individuals = client.tmf632().individual().list(None)?;

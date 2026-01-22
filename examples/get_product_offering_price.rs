@@ -1,13 +1,15 @@
 //! Product Offering Example
 
 #[cfg(feature = "tmf620")]
-use tmf_client::{Operations, QueryOptions, TMFClient};
+use tmf_client::{QueryOptions, TMFClient};
 #[cfg(feature = "tmf620")]
 use tmflib::{HasId, HasName};
 
 fn main() {
     #[cfg(feature = "tmf620")]
     {
+        use tmf_client::BlockingOperations;
+
         let mut client = TMFClient::new("https://localhost:8001", None);
         let filter = QueryOptions::default()
             //.limit(2)

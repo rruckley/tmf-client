@@ -5,7 +5,11 @@ use tmflib::tmf639::resource::Resource;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
 use crate::common::tmf_error::TMFError;
-use crate::{Config, HasNew, Operations};
+#[cfg(not(feature = "blocking"))]
+use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 
 /// TMF639 Resource Inventory Management API
 pub struct TMF639ResourceInventoryManagement {
@@ -19,7 +23,8 @@ impl TMF639ResourceInventoryManagement {
     }
 }
 
-impl Operations for TMF639ResourceInventoryManagement {
+#[cfg(feature = "blocking")]
+impl BlockingOperations for TMF639ResourceInventoryManagement {
     type TMF = Resource;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
@@ -36,6 +41,27 @@ impl Operations for TMF639ResourceInventoryManagement {
     }
     fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
         update_tmf(&self.config, id.into(), patch)
+    }
+}
+
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF639ResourceInventoryManagement {
+    type TMF = Resource;
+
+    async fn create(&self, item: Self::TMF) -> Result<Self::TMF, TMFError> {
+        create_tmf(&self.config, item).await
+    }
+    async fn delete(&self, id: impl Into<String>) -> Result<Self::TMF, TMFError> {
+        delete_tmf(&self.config, id.into()).await
+    }
+    async fn get(&self, id: impl Into<String>) -> Result<Vec<Self::TMF>, TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+    async fn list(&self, filter: Option<crate::QueryOptions>) -> Result<Vec<Self::TMF>, TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+    async fn update(&self, id: impl Into<String>, patch: Self::TMF) -> Result<Self::TMF, TMFError> {
+        update_tmf(&self.config, id.into(), patch).await
     }
 }
 

@@ -1,7 +1,7 @@
 //! Product Offering Example
 
 #[cfg(feature = "tmf620")]
-use tmf_client::{Operations, QueryOptions, TMFClient};
+use tmf_client::{BlockingOperations, QueryOptions, TMFClient};
 #[cfg(feature = "tmf620")]
 use tmflib::{HasId, HasName};
 

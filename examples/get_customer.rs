@@ -1,14 +1,13 @@
 //! Get Customer Exfample
 
 use tmf_client::common::tmf_error::TMFError;
-#[cfg(feature = "tmf629")]
-use tmf_client::{Operations, TMFClient};
-#[cfg(feature = "tmf629")]
-use tmflib::{HasId, HasName};
+#[cfg(feature = "blocking")]
+use tmf_client::{BlockingOperations, TMFClient};
 
 fn main() -> Result<(), TMFError> {
-    #[cfg(feature = "tmf629")]
+    #[cfg(feature = "blocking")]
     {
+        use tmflib::{HasId, HasName};
         let clients = TMFClient::new("https://localhost:8001", None)
             .tmf629()
             .customer()

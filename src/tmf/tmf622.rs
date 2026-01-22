@@ -1,5 +1,9 @@
 //! TMF622 Product Order
-use crate::{Config, HasNew, Operations};
+#[cfg(not(feature = "blocking"))]
+use crate::AsyncOperations;
+#[cfg(feature = "blocking")]
+use crate::BlockingOperations;
+use crate::{Config, HasNew};
 use tmflib::tmf622::product_order_v4::ProductOrder;
 
 use super::{create_tmf, delete_tmf, get_tmf, list_tmf, update_tmf};
@@ -10,7 +14,8 @@ pub struct TMF622ProductOrder {
     config: Config,
 }
 
-impl Operations for TMF622ProductOrder {
+#[cfg(feature = "blocking")]
+impl BlockingOperations for TMF622ProductOrder {
     type TMF = ProductOrder;
 
     fn create(&self, item: Self::TMF) -> Result<Self::TMF, crate::common::tmf_error::TMFError> {
@@ -44,6 +49,47 @@ impl Operations for TMF622ProductOrder {
         patch: Self::TMF,
     ) -> Result<Self::TMF, crate::common::tmf_error::TMFError> {
         update_tmf(&self.config, id.into(), patch)
+    }
+}
+
+#[cfg(not(feature = "blocking"))]
+impl AsyncOperations for TMF622ProductOrder {
+    type TMF = ProductOrder;
+
+    async fn create(
+        &self,
+        item: Self::TMF,
+    ) -> Result<Self::TMF, crate::common::tmf_error::TMFError> {
+        create_tmf(&self.config, item).await
+    }
+
+    async fn delete(
+        &self,
+        id: impl Into<String>,
+    ) -> Result<Self::TMF, crate::common::tmf_error::TMFError> {
+        delete_tmf(&self.config, id.into()).await
+    }
+
+    async fn get(
+        &self,
+        id: impl Into<String>,
+    ) -> Result<Vec<Self::TMF>, crate::common::tmf_error::TMFError> {
+        get_tmf(&self.config, id.into()).await
+    }
+
+    async fn list(
+        &self,
+        filter: Option<crate::QueryOptions>,
+    ) -> Result<Vec<Self::TMF>, crate::common::tmf_error::TMFError> {
+        list_tmf(&self.config, filter).await
+    }
+
+    async fn update(
+        &self,
+        id: impl Into<String>,
+        patch: Self::TMF,
+    ) -> Result<Self::TMF, crate::common::tmf_error::TMFError> {
+        update_tmf(&self.config, id.into(), patch).await
     }
 }
 

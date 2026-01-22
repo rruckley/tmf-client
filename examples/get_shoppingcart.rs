@@ -4,15 +4,16 @@
 //!
 
 use tmf_client::common::tmf_error::TMFError;
-use tmflib::HasId;
 
 fn main() -> Result<(), TMFError> {
     // This example demonstrates how to create a shopping cart using the TMF663 API.
     // Ensure you have the necessary dependencies and the TMFClient set up in your project.
 
-    #[cfg(feature = "tmf663")]
+    #[cfg(feature = "blocking")]
     {
-        use tmf_client::{Operations, TMFClient};
+        use tmflib::HasId;
+
+        use tmf_client::{BlockingOperations, TMFClient};
 
         // Initialize the TMF client with the base URI of your TMF server
         let mut client = TMFClient::new("https://localhost:8001", None);
