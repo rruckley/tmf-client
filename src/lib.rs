@@ -80,7 +80,7 @@ impl Config {
     /// Create a new configuration for the TMF Client
     /// ```
     /// # use tmf_client::Config;
-    /// let config = Config::new("http://localhost:8000", 8000);
+    /// let config = Config::new("http://localhost", 8000);
     /// ```
     pub fn new(host: impl Into<String>, port: u16) -> Config {
         Config {
@@ -179,7 +179,7 @@ pub trait BlockingOperations {
     /// Get a specific TMF object by Id
     /// ```
     /// # use tmf_client::{TMFClient,BlockingOperations};
-    /// let categories = TMFClient::new("http://localhost:8000",None)
+    /// let categories = TMFClient::new("http://localhost",Some(8000))
     ///     .tmf620()
     ///     .category()
     ///     .get("ID123");
@@ -191,7 +191,7 @@ pub trait BlockingOperations {
     /// let filter = QueryOptions::default()
     ///     .limit(15)
     ///     .offset(10);
-    /// let categories = TMFClient::new("http://localhost:8000",None)
+    /// let categories = TMFClient::new("http://localhost",Some(8000))
     ///     .tmf620()
     ///     .category()
     ///     .list(Some(filter));
@@ -204,7 +204,7 @@ pub trait BlockingOperations {
     /// Delete a specific tmf object by Id
     /// ```
     /// # use tmf_client::{TMFClient,BlockingOperations};
-    /// let categories = TMFClient::new("http://localhost:8000",None)
+    /// let categories = TMFClient::new("http://localhost",None)
     ///     .tmf620()
     ///     .category()
     ///     .delete("ID123");
@@ -333,7 +333,7 @@ impl TMFClient {
     /// Create access to TMF620 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf620 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf620 = TMFClient::new("http://localhost",None)
     ///     .tmf620();
     /// ```
     #[cfg(feature = "tmf620")]
@@ -348,7 +348,7 @@ impl TMFClient {
     /// Create access to TMF622 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf620 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf620 = TMFClient::new("http://localhost",None)
     ///     .tmf622();
     /// ```
     #[cfg(feature = "tmf622")]
@@ -359,7 +359,7 @@ impl TMFClient {
     /// Create access to TMF632 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf632 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf632 = TMFClient::new("http://localhost",None)
     ///     .tmf629();
     /// ```
     #[cfg(feature = "tmf629")]
@@ -370,7 +370,7 @@ impl TMFClient {
     /// Create access to TMF632 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf632 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf632 = TMFClient::new("http://localhost",None)
     ///     .tmf632();
     /// ```
     #[cfg(feature = "tmf632")]
@@ -381,7 +381,7 @@ impl TMFClient {
     /// Create access to TMF633 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf633 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf633 = TMFClient::new("http://localhost",None)
     ///     .tmf633();
     /// ```
     #[cfg(feature = "tmf633")]
@@ -392,7 +392,7 @@ impl TMFClient {
     /// Create access to TMF637 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf637 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf637 = TMFClient::new("http://localhost",None)
     ///     .tmf637();
     /// ```
     #[cfg(feature = "tmf637")]
@@ -403,7 +403,7 @@ impl TMFClient {
     /// Create access to TMF638 API
     /// ```
     /// # use tmf_client::TMFClient;                
-    /// let tmf638 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf638 = TMFClient::new("http://localhost",None)
     ///     .tmf638();
     /// ```
     #[cfg(feature = "tmf638")]
@@ -414,7 +414,7 @@ impl TMFClient {
     /// Create access to TMF639 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf639 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf639 = TMFClient::new("http://localhost",None)
     ///     .tmf639();
     /// ```
     #[cfg(feature = "tmf639")]
@@ -425,7 +425,7 @@ impl TMFClient {
     /// Create access to TMF645 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf645 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf645 = TMFClient::new("http://localhost",None)
     ///     .tmf645();
     /// ```
     #[cfg(feature = "tmf645")]
@@ -436,7 +436,7 @@ impl TMFClient {
     /// Create access to TMF648 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf648 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf648 = TMFClient::new("http://localhost",None)
     ///     .tmf648();
     /// ```
     #[cfg(feature = "tmf648")]
@@ -447,7 +447,7 @@ impl TMFClient {
     /// Create access to TMF663 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf663 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf663 = TMFClient::new("http://localhost",None)
     ///     .tmf663();
     /// ```
     #[cfg(feature = "tmf663")]
@@ -458,7 +458,7 @@ impl TMFClient {
     /// Create access to TMF674 API
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let tmf674 = TMFClient::new("http://localhost:8000",None)
+    /// let tmf674 = TMFClient::new("http://localhost",None)
     ///     .tmf674();
     /// ```
     #[cfg(feature = "tmf674")]

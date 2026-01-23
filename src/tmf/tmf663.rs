@@ -39,7 +39,7 @@ impl TMF663 {
     /// to perform operations related to shopping carts.
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let shopping_cart = TMFClient::new("http://localhost:8000",None)
+    /// let shopping_cart = TMFClient::new("http://localhost",None)
     ///     .tmf663()
     ///     .shopping_cart();
     /// ```
