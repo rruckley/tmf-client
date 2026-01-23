@@ -37,8 +37,8 @@ pub mod tmf674;
 
 static USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
-fn gen_url(config : &Config) -> String {
-    format!("{}:{}/",config.host,config.port)
+fn gen_url(config: &Config) -> String {
+    format!("{}:{}/", config.host, config.port)
 }
 
 /// Make API call to retrieve a single TMF object
