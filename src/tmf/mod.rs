@@ -37,6 +37,10 @@ pub mod tmf674;
 
 static USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
+fn gen_url(config : &Config) -> String {
+    format!("{}:{}/",config.host,config.port)
+}
+
 /// Make API call to retrieve a single TMF object
 #[cfg(feature = "blocking")]
 pub fn get_tmf<T: HasId + DeserializeOwned>(
@@ -44,7 +48,7 @@ pub fn get_tmf<T: HasId + DeserializeOwned>(
     id: String,
 ) -> Result<Vec<T>, TMFError> {
     // Return results
-    let url = format!("{}{}/{}", config.host, T::get_class_href(), id);
+    let url = format!("{}{}/{}", gen_url(config), T::get_class_href(), id);
 
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
@@ -64,7 +68,7 @@ pub async fn get_tmf<T: HasId + DeserializeOwned>(
     id: String,
 ) -> Result<Vec<T>, TMFError> {
     // Return results
-    let url = format!("{}{}/{}", config.host, T::get_class_href(), id);
+    let url = format!("{}{}/{}", gen_url(config), T::get_class_href(), id);
 
     let client = reqwest::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
@@ -88,7 +92,7 @@ pub fn list_tmf<T: HasId + DeserializeOwned>(
         Some(f) => f.into(),
         None => String::default(),
     };
-    let url = format!("{}{}?{}", config.host, T::get_class_href(), filter);
+    let url = format!("{}{}?{}", gen_url(config), T::get_class_href(), filter);
 
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
@@ -112,7 +116,7 @@ pub async fn list_tmf<T: HasId + DeserializeOwned>(
         Some(f) => f.into(),
         None => String::default(),
     };
-    let url = format!("{}{}?{}", config.host, T::get_class_href(), filter);
+    let url = format!("{}{}?{}", gen_url(config), T::get_class_href(), filter);
 
     let client = reqwest::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
@@ -131,7 +135,7 @@ pub fn create_tmf<T: HasId + Serialize + DeserializeOwned>(
     config: &Config,
     item: T,
 ) -> Result<T, TMFError> {
-    let url = format!("{}{}", config.host, T::get_class_href());
+    let url = format!("{}{}", gen_url(config), T::get_class_href());
 
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
@@ -159,7 +163,7 @@ pub async fn create_tmf<T: HasId + Serialize + DeserializeOwned>(
     config: &Config,
     item: T,
 ) -> Result<T, TMFError> {
-    let url = format!("{}{}", config.host, T::get_class_href());
+    let url = format!("{}{}", gen_url(config), T::get_class_href());
 
     let client = reqwest::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
@@ -190,7 +194,7 @@ pub fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
     id: impl Into<String>,
     patch: T,
 ) -> Result<T, TMFError> {
-    let url = format!("{}{}/{}", config.host, T::get_class_href(), id.into());
+    let url = format!("{}{}/{}", gen_url(config), T::get_class_href(), id.into());
 
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
@@ -213,7 +217,7 @@ pub async fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
     id: impl Into<String>,
     patch: T,
 ) -> Result<T, TMFError> {
-    let url = format!("{}{}/{}", config.host, T::get_class_href(), id.into());
+    let url = format!("{}{}/{}", gen_url(config), T::get_class_href(), id.into());
 
     let client = reqwest::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
@@ -234,7 +238,7 @@ pub async fn update_tmf<T: HasId + Serialize + DeserializeOwned>(
 pub fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T, TMFError> {
     let url = format!(
         "{}{}/{}",
-        config.host,
+        gen_url(config),
         T::get_class_href(),
         id.into().clone()
     );
@@ -258,7 +262,7 @@ pub fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T,
 pub async fn delete_tmf<T: HasId>(config: &Config, id: impl Into<String>) -> Result<T, TMFError> {
     let url = format!(
         "{}{}/{}",
-        config.host,
+        gen_url(config),
         T::get_class_href(),
         id.into().clone()
     );
