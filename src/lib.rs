@@ -298,7 +298,7 @@ impl TMFClient {
     /// Create a new TMFClient instance
     /// ```
     /// # use tmf_client::TMFClient;
-    /// let client = TMFClient::new("http://localhost:8000",None);
+    /// let client = TMFClient::new("http://localhost",Some(8000));
     /// ```
     pub fn new(host: impl Into<String>, port: Option<u16>) -> TMFClient {
         TMFClient {
