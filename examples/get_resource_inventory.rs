@@ -1,7 +1,7 @@
 //! TMF639 Resource Inventory API Example
 
 use tmf_client::common::tmf_error::TMFError;
-use tmf_client::{BlockingOperations, TMFClient};
+use tmf_client::TMFClient;
 
 fn main() -> Result<(), TMFError> {
     #[cfg(feature = "tmf639")]
