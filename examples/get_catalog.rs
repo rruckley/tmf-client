@@ -8,15 +8,10 @@ use tmflib::HasName;
 fn main() {
     #[cfg(feature = "blocking")]
     {
-        // print!("Create Client...");
         let mut client = TMFClient::new("https://localhost", None);
-        // println!("Done!");
-        // print!("Set Options...");
         let filter = QueryOptions::default().limit(2).offset(0);
-        // println!("Done!");
-        // print!("Get Catalog...");
         let tmf = client.tmf620().catalog().list(Some(filter));
-        // println!("Done!");
+
         match tmf {
             Ok(r) => {
                 // It worked
