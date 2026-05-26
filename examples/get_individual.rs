@@ -8,7 +8,7 @@ fn main() -> Result<(), TMFError> {
     #[cfg(feature = "blocking")]
     {
         use tmflib::{HasId, HasName};
-        let mut client = TMFClient::new("https://localhost:8001", None);
+        let mut client = TMFClient::new("https://localhost", None);
 
         let individuals = client.tmf632().individual().list(None)?;
 

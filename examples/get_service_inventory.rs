@@ -15,7 +15,7 @@ fn main() -> Result<(), TMFError> {
             .limit(1)
             .offset(1);
 
-        let services = TMFClient::new("https://localhost:8001", None)
+        let services = TMFClient::new("https://localhost", None)
             .tmf638()
             .service()
             // .list(Some(opt))?;

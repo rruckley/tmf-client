@@ -10,7 +10,7 @@ fn main() {
     {
         use tmf_client::BlockingOperations;
 
-        let mut client = TMFClient::new("https://localhost:8001", None);
+        let mut client = TMFClient::new("https://localhost", None);
         let filter = QueryOptions::default()
             //.limit(2)
             .offset(0);

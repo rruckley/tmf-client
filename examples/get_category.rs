@@ -8,7 +8,7 @@ fn main() {
     {
         use tmflib::HasName;
         // Get a list of categories from TMF620
-        let mut client = TMFClient::new("https://localhost:8001", None);
+        let mut client = TMFClient::new("https://localhost", None);
         let filter = QueryOptions::default().limit(2).offset(0);
         let tmf = client.tmf620().category().list(Some(filter));
         match tmf {

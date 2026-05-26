@@ -23,7 +23,7 @@ fn main() -> Result<(), TMFError> {
 
         let customer = Customer::new(org);
 
-        let new_customer = TMFClient::new("https://localhost:8001", Some(DEFAULT_PORT))
+        let new_customer = TMFClient::new("https://localhost", Some(DEFAULT_PORT))
             .tmf629()
             .customer()
             .create(customer)?;

@@ -12,7 +12,7 @@ fn main() -> Result<(), TMFError> {
         use tmf_client::{BlockingOperations, TMFClient};
         let quote = Quote::new();
 
-        let new_quote = TMFClient::new("https://localhost:8001", None)
+        let new_quote = TMFClient::new("https://localhost", None)
             .tmf648()
             .quote()
             .create(quote)?;

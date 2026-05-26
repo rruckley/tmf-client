@@ -9,7 +9,7 @@ fn main() -> Result<(), TMFError> {
         use tmf_client::BlockingOperations;
         use tmflib::HasName;
 
-        let resources = TMFClient::new("https://localhost:8001", None)
+        let resources = TMFClient::new("https://localhost", None)
             .tmf639()
             .resource()
             .list(None)?;

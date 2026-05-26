@@ -13,7 +13,7 @@ fn main() -> Result<(), TMFError> {
         #[cfg(feature = "tmf632")]
         use tmflib::tmf632::organization_v4::Organization;
 
-        let client = TMFClient::new("https://localhost:8001", Some(DEFAULT_PORT))
+        let client = TMFClient::new("https://localhost", Some(DEFAULT_PORT))
             .tmf632()
             .organization()
             .create(org)?;

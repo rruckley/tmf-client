@@ -18,7 +18,7 @@ fn main() -> Result<(), TMFError> {
             .gender("Male")
             .title("Master");
 
-        let mut client = TMFClient::new("https://localhost:8001", Some(DEFAULT_PORT));
+        let mut client = TMFClient::new("https://localhost", Some(DEFAULT_PORT));
 
         let new_individual = client.tmf632().individual().create(individual)?;
 

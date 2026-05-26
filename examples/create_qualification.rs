@@ -14,7 +14,7 @@ fn main() -> Result<(), TMFError> {
 
         let qualification = CheckServiceQualification::new("A Qualification Example");
 
-        let new_qual = TMFClient::new("https://localhost:8001", Some(DEFAULT_PORT))
+        let new_qual = TMFClient::new("https://localhost", Some(DEFAULT_PORT))
             .tmf645()
             .check_qualifcation()
             .create(qualification)?;

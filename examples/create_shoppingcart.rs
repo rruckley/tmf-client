@@ -12,7 +12,7 @@ fn main() -> Result<(), TMFError> {
     use tmflib::tmf663::shopping_cart::ShoppingCart;
 
     // Initialize the TMF client with the base URI of your TMF server
-    let mut client = TMFClient::new("https://localhost:8001", None);
+    let mut client = TMFClient::new("https://localhost", None);
 
     let cart = ShoppingCart::new();
 

@@ -9,7 +9,7 @@ use tmflib::{HasId, HasName};
 fn main() -> Result<(), TMFError> {
     #[cfg(feature = "blocking")]
     {
-        let organizations = TMFClient::new("https://localhost:8001", None)
+        let organizations = TMFClient::new("https://localhost", None)
             .tmf632()
             .organization()
             .list(None)?;

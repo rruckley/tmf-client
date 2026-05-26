@@ -7,7 +7,7 @@ fn main() -> Result<(), TMFError> {
     {
         use tmf_client::BlockingOperations;
 
-        let mut client = TMFClient::new("https://localhost:8001", None);
+        let mut client = TMFClient::new("https://localhost", None);
 
         let quotes = client.tmf648().quote().list(None)?;
 

@@ -8,6 +8,7 @@ use crate::common::tmf_error::TMFError;
 use crate::{Config, QueryOptions};
 use serde::{de::DeserializeOwned, Serialize};
 use tmflib::HasId;
+use log::debug;
 // use log::info;
 
 #[cfg(feature = "tmf620")]
@@ -38,7 +39,8 @@ pub mod tmf674;
 static USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
 fn gen_url(config: &Config) -> String {
-    format!("{}:{}/", config.host, config.port)
+    // println!("Host: {}, Port: {}", config.host, config.port);
+    format!("{}:{}", config.host, config.port)
 }
 
 /// Make API call to retrieve a single TMF object
@@ -92,14 +94,16 @@ pub fn list_tmf<T: HasId + DeserializeOwned>(
         Some(f) => f.into(),
         None => String::default(),
     };
+    print!("Generating url...");
     let url = format!("{}{}?{}", gen_url(config), T::get_class_href(), filter);
+    println!("Done! [{url}]");
 
     let client = reqwest::blocking::Client::builder()
         .danger_accept_invalid_certs(config.insecure) // For testing purposes only, do not use in production
         .user_agent(USER_AGENT)
         .use_rustls_tls()
         .build()?;
-
+    debug!("testing url: {url}");
     let objects = client.get(url).send()?.text()?;
     let output: Vec<T> = serde_json::from_str(objects.as_str())?;
     Ok(output)

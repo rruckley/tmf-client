@@ -11,7 +11,7 @@ fn main() -> Result<(), TMFError> {
     {
         use tmf_client::BlockingOperations;
 
-        let qualifications = TMFClient::new("https://localhost:8001", None)
+        let qualifications = TMFClient::new("https://localhost", None)
             .tmf645()
             .check_qualifcation()
             .list(None)?;

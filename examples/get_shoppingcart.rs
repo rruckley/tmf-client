@@ -16,7 +16,7 @@ fn main() -> Result<(), TMFError> {
         use tmf_client::{BlockingOperations, TMFClient};
 
         // Initialize the TMF client with the base URI of your TMF server
-        let mut client = TMFClient::new("https://localhost:8001", None);
+        let mut client = TMFClient::new("https://localhost", None);
 
         let out = client.tmf663().shopping_cart().list(None)?;
 
